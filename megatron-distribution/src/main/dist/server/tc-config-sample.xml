@@ -1,0 +1,90 @@
+<!--
+
+    Copyright © 2017 Mathieu Carbou (mathieu.carbou@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<tc-config xmlns="http://www.terracotta.org/config">
+  <plugins>
+
+    <config xmlns:mc='http://www.mycila.com/config/megatron-config'>
+      <mc:megatron-config>
+
+        <!-- interval to collect stats on servers and clients -->
+        <mc:statisticCollectorInterval unit="seconds">10</mc:statisticCollectorInterval>
+
+        <!-- CONSOLE plugin -->
+        <mc:set name="megatron.console.enable" value="true"/>
+
+        <!-- REST plugin -->
+        <mc:set name="megatron.rest.enable" value="true"/>
+        <mc:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
+        <mc:set name="megatron.rest.port" value="9470"/>
+
+        <!-- Datadog plugin -->
+        <mc:set name="megatron.datadog.enable" value="false"/>
+        <mc:set name="megatron.datadog.server" value="localhost"/>
+        <mc:set name="megatron.datadog.port" value="8125"/>
+        <mc:set name="megatron.datadog.prefix" value="megatron"/>
+        <mc:set name="megatron.datadog.tags" value="stripe:stripe1,cluster:MyCluster"/>
+        <mc:set name="megatron.datadog.async" value="true"/>
+        <mc:set name="megatron.datadog.queueSize" value="-1"/>
+
+        <!-- Librato plugin -->
+        <mc:set name="megatron.librato.enable" value="false"/>
+        <mc:set name="megatron.librato.server" value="localhost"/>
+        <mc:set name="megatron.librato.port" value="8125"/>
+        <mc:set name="megatron.librato.prefix" value="megatron"/>
+        <mc:set name="megatron.librato.tags" value="stripe=tripe1,cluster=MyCluster"/>
+        <mc:set name="megatron.librato.async" value="true"/>
+        <mc:set name="megatron.librato.queueSize" value="-1"/>
+
+        <!-- Graphite plugin -->
+        <mc:set name="megatron.graphite.enable" value="false"/>
+        <mc:set name="megatron.graphite.server" value="localhost"/>
+        <mc:set name="megatron.graphite.port" value="2003"/>
+        <mc:set name="megatron.graphite.prefix" value="megatron"/>
+        <mc:set name="megatron.graphite.tags" value="stripe=tripe1;cluster=MyCluster"/>
+        <mc:set name="megatron.graphite.async" value="true"/>
+        <mc:set name="megatron.graphite.queueSize" value="-1"/>
+
+        <!-- StatsD plugin -->
+        <mc:set name="megatron.statsd.enable" value="false"/>
+        <mc:set name="megatron.statsd.server" value="localhost"/>
+        <mc:set name="megatron.statsd.port" value="8125"/>
+        <mc:set name="megatron.statsd.prefix" value="megatron"/>
+        <mc:set name="megatron.statsd.async" value="true"/>
+        <mc:set name="megatron.statsd.queueSize" value="-1"/>
+      </mc:megatron-config>
+    </config>
+
+    <config xmlns:ohr='http://www.terracotta.org/config/offheap-resource'>
+      <ohr:offheap-resources>
+        <ohr:resource name="main" unit="MB">128</ohr:resource>
+      </ohr:offheap-resources>
+    </config>
+  </plugins>
+  <entities>
+  </entities>
+  <tc-properties>
+  </tc-properties>
+  <servers>
+    <server host="localhost" name="testServer0">
+      <logs>terracotta-kit-test/testServer0/logs</logs>
+      <tsa-port>19279</tsa-port>
+      <tsa-group-port>19280</tsa-group-port>
+    </server>
+    <client-reconnect-window>120</client-reconnect-window>
+  </servers>
+</tc-config>

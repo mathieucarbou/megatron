@@ -1,0 +1,44 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+header {
+  webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+section {
+  ul:first-child {
+    float: right;
+    width: 170px;
+    position: fixed;
+    padding: 34px 50px 22px 25px;
+    margin: 30px 0 0 710px;
+    background-color: #171717;
+    border: 1px solid #000;
+    color: #FDFDFB;
+    webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-font-smoothing: antialiased;
+    display: block;
+    font-size: 16px;
+
+    a {
+      color: #FDFDFB;
+      font-weight: normal;
+    }
+  }
+}
+
+@media print, screen and (max-width: 960px) {
+  section {
+    ul:first-child {
+      float: none;
+      position: inherit;
+      margin: 0;
+    }
+  }
+}

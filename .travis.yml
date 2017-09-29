@@ -1,0 +1,14 @@
+language: java
+install: mvn clean install --quiet -B -DskipTests=true -Denforcer.skip=true -Dmaven.javadoc.skip=true
+script: mvn verify -B --fail-never
+sudo: false
+jdk:
+  - openjdk8
+  - oraclejdk8
+branches:
+  only:
+    - master
+notifications:
+  email:
+    on_success: change 
+    on_failure: always
