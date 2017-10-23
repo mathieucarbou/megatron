@@ -44,6 +44,7 @@
       <includes>
         <include>org.ehcache.modules:ehcache-management</include>
         <include>org.terracotta.management.dist:mnm-nms-agent</include>
+        <include>org.terracotta.management.dist:mnm-common</include>
       </includes>
     </dependencySet>
   </dependencySets>
