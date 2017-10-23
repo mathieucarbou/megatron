@@ -35,11 +35,13 @@ Megatron is a Terracotta server plugin that enables to query or stream statistic
 
 ## Installation
 
-  1. Download the distribution at [https://github.com/mathieucarbou/megatron/releases](https://github.com/mathieucarbou/megatron/releases)
-  2. Unzip the archive
-  3. Copy all the jar files from `server/plugins/lib` directory into your Terracotta Ehcache Kit.
-  4. Configure your `tc-config.xml` file to add one or several properties to enable plugins. See `server/tc-config-sample.xml` as an example.
-  5. Start the servers and look inside your monitoring platform!
+  1. Unzip the distribution at [https://github.com/mathieucarbou/megatron/releases](https://github.com/mathieucarbou/megatron/releases)
+  2. Copy all the jar files from `server/plugins/lib` directory into your Terracotta Ehcache Kit ([http://www.ehcache.org/downloads/](http://www.ehcache.org/downloads/)).
+  3. Configure your `tc-config.xml` file to add one or several properties to enable plugins. See `server/tc-config-sample.xml` as an example.
+  4. Start the servers and look inside your monitoring platform!
+
+_Note_: some platforms, like Librato, NewRelix, Datadog, etc, require a StatsD server to be used. 
+The official StatsD server can be found at [https://github.com/etsy/statsd](https://github.com/etsy/statsd)
 
 ## Usage
 
