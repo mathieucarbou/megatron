@@ -85,7 +85,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.graphite.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.graphite.queueSize\" value=\"-1\"/>\n" +
 
-          "    <mc:set name=\"megatron.statsd.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.statsd.enable\" value=\"false\"/>\n" +
           "    <mc:set name=\"megatron.statsd.server\" value=\"statsd.hostedgraphite.com\"/>\n" +
           "    <mc:set name=\"megatron.statsd.port\" value=\"8125\"/>" +
           "    <mc:set name=\"megatron.statsd.prefix\" value=\"cb54b2cb-cb68-49f0-8250-0bb79f3fee19.megatron\"/>" +
