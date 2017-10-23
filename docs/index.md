@@ -40,7 +40,17 @@ Megatron is a Terracotta server plugin that enables to query or stream statistic
   3. Copy all the jar files from `server/plugins/lib` directory into your Terracotta Ehcache Kit.
   4. Configure your `tc-config.xml` file to add one or several properties to enable plugins. See `server/tc-config-sample.xml` as an example.
   5. Start the servers and look inside your monitoring platform!
-  
+
+## Usage
+
+After installation, just edit the properties for the plugins you want to activate.
+
+__Megatron is only enabled on active servers.__
+
+Passive servers always send their data to the current active. 
+So in case of a failover, it will change nothing for the plugins streaming data to some servers: the emitter will just change. 
+But for plugins like the REST plugin, then you'll gave to connect to the newly active server. 
+
 ## CONSOLE Plugin
 
 Just outputs in the server console the received statistics and notifications.
