@@ -268,8 +268,7 @@ Edit your `tc-config.xml` file to add the plugin configurations:
 
 ### Screenshots
 
-![https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite-1.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite-1.png)
-![https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite-2.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite-2.png)
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite.png)
 
 ## StatsD Plugin
 
