@@ -13,25 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mycila.megatron.server.service;
+package com.mycila.megatron;
 
-import com.mycila.megatron.MegatronConfiguration;
-import com.mycila.megatron.MegatronEventListener;
-import com.mycila.megatron.MegatronPlugin;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
-import org.terracotta.management.service.monitoring.ManagementService;
-import org.terracotta.monitoring.PlatformService;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ServiceLoader;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Mathieu Carbou
  */
-class MegatronPlugins implements MegatronEventListener {
+public class DisoveringMegatronPlugins implements MegatronPlugin {
 
-  private final Collection<MegatronPlugin> plugins = new ArrayList<>();
+  private final Collection<MegatronPlugin> plugins = new CopyOnWriteArrayList<>();
+
+  public DisoveringMegatronPlugins() {
+    this(Thread.currentThread().getContextClassLoader());
+  }
+
+  public DisoveringMegatronPlugins(ClassLoader classLoader) {
+    ServiceLoader.load(MegatronPlugin.class, classLoader).forEach(plugins::add);
+  }
+
+  public void add(MegatronPlugin plugin) {
+    plugins.add(plugin);
+  }
+
+  public boolean remove(MegatronPlugin plugin) {
+    return plugins.remove(plugin);
+  }
+
+  public Collection<MegatronPlugin> getPlugins() {
+    return plugins;
+  }
+
+  @Override
+  public void setApi(MegatronApi api) {
+    plugins.forEach(p -> p.setApi(api));
+  }
 
   @Override
   public void onNotification(ContextualNotification notification) {
@@ -47,24 +68,27 @@ class MegatronPlugins implements MegatronEventListener {
         .forEach(plugin -> plugin.onStatistics(statistics));
   }
 
-  void add(MegatronPlugin plugin) {
-    plugins.add(plugin);
+  @Override
+  public void init(MegatronConfiguration configuration) {
+    plugins.forEach(plugin -> plugin.init(configuration));
   }
 
-  Collection<MegatronPlugin> getPlugins() {
-    return plugins;
+  @Override
+  public boolean isEnable() {
+    return plugins.stream().allMatch(MegatronPlugin::isEnable);
+  }
+
+  @Override
+  public void close() {
+    plugins.forEach(MegatronPlugin::close);
   }
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("MegatronPlugins{");
+    final StringBuilder sb = new StringBuilder("DisoveringMegatronPlugins{");
     sb.append("plugins=").append(plugins);
     sb.append('}');
     return sb.toString();
   }
 
-  void init(MegatronConfiguration configuration, ManagementService managementService, PlatformService platformService, String serverName) {
-    DefaultMegatronApi api = new DefaultMegatronApi(managementService, platformService, serverName);
-    plugins.forEach(plugin -> plugin.init(configuration, api));
-  }
 }

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mycila.megatron.AbstractMegatronPlugin;
 import com.mycila.megatron.Config;
-import com.mycila.megatron.MegatronApi;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
 import io.undertow.Undertow;
@@ -34,6 +33,7 @@ import org.terracotta.management.model.context.Context;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ import static java.util.stream.Collectors.toMap;
 @Namespace("megatron.rest")
 public class MegatronRestPlugin extends AbstractMegatronPlugin {
 
-  private final Map<Context, Map<String, Number>> statsPerContexts = new ConcurrentHashMap<>();
+  private final Map<Context, Map<String, Serializable>> statsPerContexts = new ConcurrentHashMap<>();
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Config private int port = 9470;
@@ -68,7 +68,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   private Undertow server;
 
   @Override
-  public void enable(MegatronConfiguration configuration, MegatronApi api) {
+  public void enable(MegatronConfiguration configuration) {
     mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -79,34 +79,34 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
 
             // platform service endpoints
 
-            .add("/api/v1/platform/server", json((exchange, params) -> Collections.singletonMap("serverName", api.getServerName())))
+            .add("/api/v1/platform/server", json((exchange, params) -> Collections.singletonMap("serverName", getApi().getServerName())))
 
             .add("/api/v1/platform/dump", json((exchange, params) -> {
-              api.dumpPlatformState();
+              getApi().dumpPlatformState();
               return Boolean.TRUE;
             }))
 
-            .add("/api/v1/platform/config", xml((exchange, params) -> api.getPlatformXMLConfiguration()))
+            .add("/api/v1/platform/config", xml((exchange, params) -> getApi().getPlatformXMLConfiguration()))
 
             // topology endpoints
 
-            .add("/api/v1/topology", json((exchange, params) -> api.readLiveTopology().toMap()))
+            .add("/api/v1/topology", json((exchange, params) -> getApi().readLiveTopology().toMap()))
 
-            .add("/api/v1/topology/servers", json((exchange, params) -> api.readLiveTopology()
+            .add("/api/v1/topology/servers", json((exchange, params) -> getApi().readLiveTopology()
                 .serverStream()
                 .sorted(comparing(Node::getId))
                 .map(Server::toMap)
                 .peek(map -> map.remove("serverEntities"))
                 .collect(toList())))
 
-            .add("/api/v1/topology/clients", json((exchange, params) -> api.readLiveTopology()
+            .add("/api/v1/topology/clients", json((exchange, params) -> getApi().readLiveTopology()
                 .clientStream()
                 .sorted(comparing(Node::getId))
                 .map(Client::toMap)
                 .peek(map -> map.keySet().removeAll(asList("managementRegistry", "connections")))
                 .collect(toList())))
 
-            .add("/api/v1/topology/clients/ehcache", json((exchange, params) -> api.readLiveTopology()
+            .add("/api/v1/topology/clients/ehcache", json((exchange, params) -> getApi().readLiveTopology()
                 .clientStream()
                 .filter(client -> client.getName().startsWith("Ehcache:"))
                 .sorted(comparing(Node::getId))
@@ -142,7 +142,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
               String clientId = params.get("clientId");
               String cacheManagerName = params.get("cacheManagerName");
               String statNames = params.getOrDefault("statNames", "");
-              Map<Context, Map<String, Number>> allStatistics = findAllStatistics(context ->
+              Map<Context, Map<String, Serializable>> allStatistics = findAllStatistics(context ->
                   clientId.equals(context.get(Client.KEY))
                       && cacheManagerName.equals(context.get("cacheManagerName"))
                       && context.contains("cacheName"));
@@ -154,7 +154,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
             .add("/api/v1/statistics/clients/{clientId}", json((exchange, params) -> {
               String clientId = params.get("clientId");
               String statNames = params.getOrDefault("statNames", "");
-              Map<Context, Map<String, Number>> allStatistics = findAllStatistics(context ->
+              Map<Context, Map<String, Serializable>> allStatistics = findAllStatistics(context ->
                   clientId.equals(context.get(Client.KEY))
                       && context.contains("cacheManagerName")
                       && context.contains("cacheName"));
@@ -167,6 +167,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
             }))
         ))
         .build();
+    logger.info("Listening on port " + port + "...");
     server.start();
   }
 
@@ -198,8 +199,8 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   public void onStatistics(ContextualStatistics statistics) {
     if (enable) {
       logger.trace("onStatistics({})", statistics.size());
-      Map<String, Number> stats = statsPerContexts.computeIfAbsent(statistics.getContext(), context -> new ConcurrentHashMap<>());
-      stats.putAll(statistics.getStatistics());
+      Map<String, Serializable> stats = statsPerContexts.computeIfAbsent(statistics.getContext(), context -> new ConcurrentHashMap<>());
+      stats.putAll(statistics.getLatestSampleValues());
     }
   }
 
@@ -210,8 +211,12 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
       for (String key : exchange.getQueryParameters().keySet()) {
         params.put(key, exchange.getQueryParameters().get(key).getFirst());
       }
-      Object o = handler.handleRequest(exchange, params);
-      exchange.getResponseSender().send(mapper.writeValueAsString(o));
+      try {
+        Object o = handler.handleRequest(exchange, params);
+        exchange.getResponseSender().send(mapper.writeValueAsString(o));
+      } catch (RuntimeException e) {
+        exchange.getResponseSender().send(mapper.writeValueAsString(Collections.singletonMap("error", e.getLocalizedMessage())));
+      }
     };
   }
 
@@ -222,12 +227,16 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
       for (String key : exchange.getQueryParameters().keySet()) {
         params.put(key, exchange.getQueryParameters().get(key).getFirst());
       }
-      Object o = handler.handleRequest(exchange, params);
-      exchange.getResponseSender().send(String.valueOf(o));
+      try {
+        Object o = handler.handleRequest(exchange, params);
+        exchange.getResponseSender().send(String.valueOf(o));
+      } catch (Exception e) {
+        exchange.getResponseSender().send(mapper.writeValueAsString(Collections.singletonMap("error", e.getLocalizedMessage())));
+      }
     };
   }
 
-  private Map<String, Number> findStatistics(Predicate<Context> p) {
+  private Map<String, Serializable> findStatistics(Predicate<Context> p) {
     return statsPerContexts.entrySet()
         .stream()
         .filter(e -> p.test(e.getKey()))
@@ -236,14 +245,14 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
         .orElse(Collections.emptyMap());
   }
 
-  private Map<Context, Map<String, Number>> findAllStatistics(Predicate<Context> p) {
+  private Map<Context, Map<String, Serializable>> findAllStatistics(Predicate<Context> p) {
     return statsPerContexts.entrySet()
         .stream()
         .filter(e -> p.test(e.getKey()))
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  private Map<String, Number> filter(Map<String, Number> statistics, String statNames) {
+  private Map<String, Serializable> filter(Map<String, Serializable> statistics, String statNames) {
     if (statNames != null) {
       Set<String> statSet = new HashSet<String>(asList(statNames.split(",")));
       return statistics.entrySet()

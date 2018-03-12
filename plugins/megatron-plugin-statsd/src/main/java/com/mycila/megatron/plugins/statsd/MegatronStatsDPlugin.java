@@ -16,7 +16,6 @@
 package com.mycila.megatron.plugins.statsd;
 
 import com.mycila.megatron.AbstractMegatronUdpPlugin;
-import com.mycila.megatron.MegatronApi;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
 import com.mycila.megatron.format.DefaultFormatter;
@@ -24,6 +23,7 @@ import com.mycila.megatron.format.Formatter;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -36,8 +36,8 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
   private Formatter formatter;
 
   @Override
-  public void enable(MegatronConfiguration configuration, MegatronApi api) {
-    super.enable(configuration, api);
+  public void enable(MegatronConfiguration configuration) {
+    super.enable(configuration);
     formatter = new DefaultFormatter()
         .prefixSeparator(".")
         .globalPrefix(prefix);
@@ -58,7 +58,7 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
   public void onStatistics(ContextualStatistics statistics) {
     if (enable) {
       logger.trace("onStatistics({})", statistics.size());
-      for (Map.Entry<String, Number> entry : statistics.getStatistics().entrySet()) {
+      for (Map.Entry<String, ? extends Serializable> entry : statistics.getLatestSampleValues().entrySet()) {
         String metric = formatter.formatMetricName("statistics", statistics, entry.getKey());
         String value = formatter.formatValue(entry.getValue());
         send(metric, value, "g");

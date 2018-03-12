@@ -15,6 +15,8 @@
  */
 package com.mycila.megatron.server.service;
 
+import com.mycila.megatron.DisoveringMegatronPlugins;
+import com.mycila.megatron.MegatronApi;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.MegatronEventListener;
 import com.mycila.megatron.MegatronPlugin;
@@ -25,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.terracotta.entity.PlatformConfiguration;
 import org.terracotta.entity.ServiceConfiguration;
 import org.terracotta.entity.ServiceProvider;
-import org.terracotta.entity.ServiceProviderCleanupException;
 import org.terracotta.entity.ServiceProviderConfiguration;
 import org.terracotta.entity.StateDumpCollector;
 import org.terracotta.management.service.monitoring.ManagementService;
@@ -34,7 +35,7 @@ import org.terracotta.monitoring.PlatformService;
 import java.io.Closeable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -50,10 +51,12 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
       MegatronEventListener.class
   );
 
-  private final MegatronPlugins plugins = new MegatronPlugins();
+  private final DisoveringMegatronPlugins plugins = new DisoveringMegatronPlugins();
 
   private final DefaultMegatronConfiguration megatronConfiguration = new DefaultMegatronConfiguration();
   private PlatformConfiguration platformConfiguration;
+
+  private CompletableFuture<MegatronApi> api = new CompletableFuture<>();
 
   public MegatronServiceProvider() {
     Runtime.getRuntime().addShutdownHook(new Thread(this::close));
@@ -65,27 +68,33 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
   }
 
   @Override
-  public void prepareForSynchronization() throws ServiceProviderCleanupException {
+  public void prepareForSynchronization() {
+    api = new CompletableFuture<>();
   }
 
   @Override
   public boolean initialize(ServiceProviderConfiguration configuration, PlatformConfiguration platformConfiguration) {
     this.platformConfiguration = platformConfiguration;
+
     Collection<DefaultMegatronConfiguration> configurations = platformConfiguration.getExtendedConfiguration(DefaultMegatronConfiguration.class);
     configurations.forEach(megatronConfiguration::merge);
-    ServiceLoader.load(MegatronPlugin.class, MegatronPlugin.class.getClassLoader()).forEach(plugins::add);
 
     Collection<MegatronPlugin> list = plugins.getPlugins();
     LOGGER.info("Plugins found: {}{}",
         list.size(),
         list.isEmpty() ? "" : list.stream().map(p -> "\n - " + p.getClass().getName()).collect(Collectors.joining()));
 
+    LOGGER.info("init({})", megatronConfiguration);
+    plugins.init(megatronConfiguration);
+
+    api.thenAccept(plugins::setApi);
+
     return true;
   }
 
   @Override
   public void close() {
-    plugins.getPlugins().forEach(MegatronPlugin::close);
+    plugins.close();
   }
 
   @Override
@@ -105,11 +114,11 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     if (MegatronEventListener.class == serviceType && configuration instanceof MegatronServiceConfiguration) {
       ManagementService managementService = ((MegatronServiceConfiguration) configuration).getManagementService();
       PlatformService platformService = ((MegatronServiceConfiguration) configuration).getPlatformService();
-      LOGGER.info("init({}, {})", consumerID, megatronConfiguration);
-      plugins.init(megatronConfiguration, managementService, platformService, platformConfiguration.getServerName());
+      api.complete(new DefaultMegatronApi(managementService, platformService, platformConfiguration.getServerName()));
       return serviceType.cast(plugins);
     }
 
     throw new IllegalStateException("Unable to provide service " + serviceType.getName() + " to consumerID: " + consumerID);
   }
+
 }

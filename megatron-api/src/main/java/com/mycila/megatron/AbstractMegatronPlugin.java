@@ -41,6 +41,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Config protected boolean enable = false;
 
   private final Map<String, Object> pluginConfig = new TreeMap<>();
+  private MegatronApi api;
 
   public AbstractMegatronPlugin() {
     converters.put(String.class, s -> s);
@@ -53,7 +54,12 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   }
 
   @Override
-  public final void init(MegatronConfiguration configuration, MegatronApi api) {
+  public final void setApi(MegatronApi api) {
+    this.api = api;
+  }
+
+  @Override
+  public final void init(MegatronConfiguration configuration) {
     Namespace namespace = getClass().getAnnotation(Namespace.class);
     String ns = namespace == null ? "" : (namespace.value() + ".");
 
@@ -114,7 +120,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     }
 
     if (enable) {
-      enable(configuration, api);
+      enable(configuration);
     }
   }
 
@@ -128,6 +134,10 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     return getClass().getSimpleName() + pluginConfig;
   }
 
-  protected void enable(MegatronConfiguration configuration, MegatronApi api) {}
+  protected void enable(MegatronConfiguration configuration) {}
+
+  protected MegatronApi getApi() {
+    return api;
+  }
 
 }

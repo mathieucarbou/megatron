@@ -15,14 +15,12 @@
  */
 package com.mycila.megatron.server.entity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terracotta.entity.StateDumpCollector;
 import org.terracotta.management.model.call.ContextualCall;
 import org.terracotta.management.model.call.ContextualReturn;
-import org.terracotta.management.model.call.Parameter;
 import org.terracotta.management.model.cluster.Server;
-import org.terracotta.management.model.context.Context;
-import org.terracotta.management.model.notification.ContextualNotification;
-import org.terracotta.management.model.stats.ContextualStatistics;
 import org.terracotta.management.registry.CapabilityManagementSupport;
 import org.terracotta.management.registry.CombiningCapabilityManagementSupport;
 import org.terracotta.management.service.monitoring.EntityManagementRegistry;
@@ -34,7 +32,9 @@ import java.util.Objects;
 /**
  * @author Mathieu Carbou
  */
-class MegatronPassiveServerEntity extends PassiveProxiedServerEntity implements MegatronEntity, ManagementCallMessenger {
+class MegatronPassiveServerEntity extends PassiveProxiedServerEntity implements MegatronEntity, MegatronEntityCallback {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(MegatronPassiveServerEntity.class);
 
   private final EntityManagementRegistry entityManagementRegistry;
   private final CapabilityManagementSupport capabilityManagementSupport;
@@ -57,6 +57,7 @@ class MegatronPassiveServerEntity extends PassiveProxiedServerEntity implements 
   @Override
   public void createNew() {
     super.createNew();
+    entityManagementRegistry.entityCreated();
     entityManagementRegistry.refresh();
   }
 
@@ -65,12 +66,10 @@ class MegatronPassiveServerEntity extends PassiveProxiedServerEntity implements 
     dump.addState("consumerId", String.valueOf(entityManagementRegistry.getMonitoringService().getConsumerId()));
   }
 
-  /////////////////////////////
-  // ManagementCallMessenger //
-  /////////////////////////////
+  // NmsCallback
 
   @Override
-  public void callbackToExecuteManagementCall(String managementCallIdentifier, ContextualCall<?> call) {
+  public void executeManagementCallOnPassive(String managementCallIdentifier, ContextualCall<?> call) {
     String serverName = call.getContext().get(Server.NAME_KEY);
     if (entityManagementRegistry.getMonitoringService().getServerName().equals(serverName)) {
       ContextualReturn<?> contextualReturn = capabilityManagementSupport.withCapability(call.getCapability())
@@ -79,28 +78,16 @@ class MegatronPassiveServerEntity extends PassiveProxiedServerEntity implements 
           .build()
           .execute()
           .getSingleResult();
-      entityManagementRegistry.getMonitoringService().answerManagementCall(managementCallIdentifier, contextualReturn);
+      LOGGER.trace("[{}] executeManagementCallOnPassive({}, {}): {}", entityManagementRegistry.getMonitoringService().getConsumerId(), managementCallIdentifier, call, contextualReturn);
+      if (contextualReturn.hasExecuted()) {
+        entityManagementRegistry.getMonitoringService().answerManagementCall(managementCallIdentifier, contextualReturn);
+      }
     }
   }
 
   @Override
-  public void callbackToSendManagementCall(Context context, String capabilityName, String methodName, Class<?> returnType, Parameter... parameters) {
-    throw new UnsupportedOperationException("Cannot be called on a passive server");
-  }
-
-  @Override
-  public void callbackToSendNotification(ContextualNotification notification) {
-    throw new UnsupportedOperationException("Cannot be called on a passive server");
-  }
-
-  @Override
-  public void callbackToSendStatistics(ContextualStatistics statistics) {
-    throw new UnsupportedOperationException("Cannot be called on a passive server");
-  }
-
-  @Override
-  public void unSchedule() {
-    throw new UnsupportedOperationException("Cannot be called on a passive server");
+  public void restartStatisticCollectors() {
+    throw new UnsupportedOperationException();
   }
 
 }
