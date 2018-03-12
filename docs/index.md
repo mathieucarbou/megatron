@@ -27,7 +27,7 @@
 
 # Megatron
 
-[![Build Status](https://travis-ci.org/mathieucarbou/megatron.svg?branch=master)](https://travis-ci.org/mathieucarbou/megatron)
+[![Build Status](https://travis-ci.org/mathieucarbou/megatron.svg?branch=master)](https://travis-ci.org/mathieucarbou/megatron) [![Waffle.io - Columns and their card count](https://badge.waffle.io/mathieucarbou/megatron.svg?columns=all)](https://waffle.io/mathieucarbou/megatron)
 
 Megatron is a Terracotta server plugin that enables to query or stream statistics and notifications from the platform and clients to an external monitoring system like NewRelic, Librato, Datadog, Graphite, any StatsD collector, etc.
 
