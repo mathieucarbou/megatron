@@ -43,6 +43,10 @@
       <artifactId>megatron-server</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.mycila.megatron</groupId>
+      <artifactId>megatron-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.mycila.megatron.plugins</groupId>
       <artifactId>megatron-plugin-console</artifactId>
     </dependency>

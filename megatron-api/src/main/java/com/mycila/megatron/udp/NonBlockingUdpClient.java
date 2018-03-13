@@ -106,7 +106,7 @@ public final class NonBlockingUdpClient implements UdpClient {
 
   private void internalSend(String message) throws IOException {
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Sending: %s", target.getHostName(), target.getPort(), message);
+      LOGGER.trace("[{}:{}] Sending: {}", target.getHostName(), target.getPort(), message);
     }
     ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(UTF8));
     channel.send(buffer, target);

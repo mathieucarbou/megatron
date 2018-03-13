@@ -57,7 +57,7 @@ public class RunServers {
 
           "    <mc:set name=\"megatron.console.enable\" value=\"true\"/>" +
 
-          "    <mc:set name=\"megatron.rest.enable\" value=\"true\"/>" +
+          "    <mc:set name=\"megatron.rest.enable\" value=\"false\"/>" +
           "    <mc:set name=\"megatron.rest.bindAddress\" value=\"0.0.0.0\"/>" +
           "    <mc:set name=\"megatron.rest.port\" value=\"9470\"/>" +
 
@@ -69,7 +69,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.datadog.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.datadog.queueSize\" value=\"-1\"/>\n" +
 
-          "    <mc:set name=\"megatron.librato.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.librato.enable\" value=\"false\"/>\n" +
           "    <mc:set name=\"megatron.librato.server\" value=\"localhost\"/>\n" +
           "    <mc:set name=\"megatron.librato.port\" value=\"8135\"/>\n" +
           "    <mc:set name=\"megatron.librato.prefix\" value=\"megatron\"/>\n" +
