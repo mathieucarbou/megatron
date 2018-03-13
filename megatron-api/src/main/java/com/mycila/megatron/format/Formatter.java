@@ -18,8 +18,6 @@ package com.mycila.megatron.format;
 import com.tc.classloader.CommonComponent;
 import org.terracotta.management.model.context.Contextual;
 
-import java.io.Serializable;
-
 /**
  * @author Mathieu Carbou
  */
@@ -31,5 +29,5 @@ public interface Formatter {
 
   String formatTags(Contextual contextual);
 
-  String formatValue(Serializable value);
+  String formatValue(Number value);
 }
