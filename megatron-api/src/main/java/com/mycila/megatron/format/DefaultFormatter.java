@@ -34,7 +34,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Mathieu Carbou
@@ -67,6 +66,7 @@ public class DefaultFormatter implements Formatter {
   private String globalTagLine = "";
   private String tagAssignement = "=";
   private String tagSeparator = ",";
+  private String tagSurroundValue = "";
 
   public DefaultFormatter globalPrefix(String globalPrefix) {
     this.globalPrefix = globalPrefix;
@@ -98,11 +98,14 @@ public class DefaultFormatter implements Formatter {
     return this;
   }
 
+  public DefaultFormatter tagSurroundValueChar(String tagSurroundValue) {
+    this.tagSurroundValue = tagSurroundValue;
+    return this;
+  }
+
   @Override
   public void init() {
-    globalTagLine = globalTags.length == 0 ? "" : Stream.of(globalTags)
-        .map(DefaultFormatter::escape)
-        .collect(Collectors.joining(tagSeparator));
+    globalTagLine = globalTags.length == 0 ? "" : String.join(tagSeparator, globalTags);
   }
 
   @Override
@@ -125,7 +128,7 @@ public class DefaultFormatter implements Formatter {
     }
     String tags = tags(contextual.getContext()).entrySet()
         .stream()
-        .map(e -> e.getKey() + tagAssignement + e.getValue())
+        .map(e -> e.getKey() + tagAssignement + surroundValue(e.getValue()))
         .collect(Collectors.joining(tagSeparator));
     tags = tags.isEmpty() ? globalTagLine : (globalTagLine + tagSeparator + tags);
     return tags;
@@ -223,6 +226,10 @@ public class DefaultFormatter implements Formatter {
     return String.join(prefixSeparator, prefixes);
   }
 
+  private String surroundValue(String val) {
+    return tagSurroundValue.isEmpty() ? val : (tagSurroundValue + val + tagSurroundValue);
+  }
+
   private static void add(List<String> prefixes, String key, String value) {
     if (value != null) {
       prefixes.add(key);
@@ -231,7 +238,7 @@ public class DefaultFormatter implements Formatter {
   }
 
   private static String escape(String s) {
-    return s.replaceAll("[@$,.:|#;]+", "_");
+    return s.replaceAll("[@$,.:|#;'\"]+", "_");
   }
 
 }

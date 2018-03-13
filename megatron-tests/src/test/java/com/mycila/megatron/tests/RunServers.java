@@ -55,7 +55,7 @@ public class RunServers {
           "  <mc:megatron-config>" +
           "    <mc:statisticCollectorInterval unit=\"seconds\">10</mc:statisticCollectorInterval>" +
 
-          "    <mc:set name=\"megatron.console.enable\" value=\"true\"/>" +
+          "    <mc:set name=\"megatron.console.enable\" value=\"false\"/>" +
 
           "    <mc:set name=\"megatron.rest.enable\" value=\"false\"/>" +
           "    <mc:set name=\"megatron.rest.bindAddress\" value=\"0.0.0.0\"/>" +
@@ -92,13 +92,21 @@ public class RunServers {
           "    <mc:set name=\"megatron.statsd.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.statsd.queueSize\" value=\"-1\"/>\n" +
 
-          "    <mc:set name=\"megatron.prometheus.statsd.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.enable\" value=\"false\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.server\" value=\"localhost\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.port\" value=\"9125\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.prefix\" value=\"megatron\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.tags\" value=\"stripe:stripe1,cluster:MyCluster\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.queueSize\" value=\"-1\"/>\n" +
+
+          "    <mc:set name=\"megatron.prometheus.gateway.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.server\" value=\"localhost\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.port\" value=\"9091\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.prefix\" value=\"megatron\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.tags\" value=\"stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.async\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.queueSize\" value=\"-1\"/>\n" +
 
           "  </mc:megatron-config>" +
           "</config>" +
@@ -167,10 +175,13 @@ public class RunServers {
 
     pounder = new Thread(() -> {
       while (!Thread.currentThread().isInterrupted()) {
-        byte[] data = new byte[RANDOM.nextInt(1024)];
-        caches.get(RANDOM.nextInt(caches.size())).put("key-" + RANDOM.nextInt(1000), data);
-        caches.get(RANDOM.nextInt(caches.size())).get("key-" + RANDOM.nextInt(1000));
-        caches.get(RANDOM.nextInt(caches.size())).remove("key-" + RANDOM.nextInt(1000));
+        try {
+          byte[] data = new byte[RANDOM.nextInt(1024)];
+          caches.get(RANDOM.nextInt(caches.size())).put("key-" + RANDOM.nextInt(1000), data);
+          caches.get(RANDOM.nextInt(caches.size())).get("key-" + RANDOM.nextInt(1000));
+          caches.get(RANDOM.nextInt(caches.size())).remove("key-" + RANDOM.nextInt(1000));
+        } catch (Exception ignored) {
+        }
         try {
           Thread.sleep(250);
         } catch (InterruptedException e) {

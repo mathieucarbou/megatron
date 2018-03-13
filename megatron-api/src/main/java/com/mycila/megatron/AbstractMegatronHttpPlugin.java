@@ -15,15 +15,15 @@
  */
 package com.mycila.megatron;
 
-import com.mycila.megatron.udp.BlockingUdpClient;
-import com.mycila.megatron.udp.NonBlockingUdpClient;
+import com.mycila.megatron.http.BlockingHttpClient;
+import com.mycila.megatron.http.NonBlockingHttpClient;
 import com.tc.classloader.CommonComponent;
 
 /**
  * @author Mathieu Carbou
  */
 @CommonComponent
-public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
+public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin {
 
   @Config protected String server = "localhost";
   @Config protected int port = 8125;
@@ -37,8 +37,8 @@ public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
   @Override
   public void enable(MegatronConfiguration configuration) {
     client = async ?
-        new NonBlockingUdpClient(server, port, queueSize <= 0 ? Integer.MAX_VALUE : queueSize) :
-        new BlockingUdpClient(server, port);
+        new NonBlockingHttpClient(server, port, queueSize <= 0 ? Integer.MAX_VALUE : queueSize) :
+        new BlockingHttpClient(server, port);
   }
 
   @Override

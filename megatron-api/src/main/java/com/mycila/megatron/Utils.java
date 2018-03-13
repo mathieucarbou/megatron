@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mycila.megatron.udp;
+package com.mycila.megatron;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * @author Mathieu Carbou
  */
-public interface UdpClient extends Closeable {
+public class Utils {
 
-  @Override
-  default void close() {}
-
-  void send(String message);
+  public static void closeSilently(Closeable... closeables) {
+    for (Closeable closeable : closeables) {
+      try {
+        closeable.close();
+      } catch (IOException ignored) {
+      }
+    }
+  }
 
 }

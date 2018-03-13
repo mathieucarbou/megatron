@@ -75,7 +75,7 @@ public class MegatronLibratoPlugin extends AbstractMegatronUdpPlugin {
 
   private void send(String metric, String tags, String value, String type) {
     metric = tags.isEmpty() ? metric : (metric + "#" + tags);
-    udpClient.send(metric + ":" + value + "|" + type);
+    client.send(metric + ":" + value + "|" + type);
   }
 
 }

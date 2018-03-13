@@ -39,6 +39,7 @@
     <module>megatron-plugin-graphite</module>
     <module>megatron-plugin-statsd</module>
     <module>megatron-plugin-prometheus-statsd</module>
+    <module>megatron-plugin-prometheus-gateway</module>
   </modules>
 
   <dependencies>

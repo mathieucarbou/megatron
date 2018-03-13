@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mycila.megatron.plugins.statsd;
+package com.mycila.megatron.plugins.prometheus.gateway;
 
-import com.mycila.megatron.AbstractMegatronUdpPlugin;
+import com.mycila.megatron.AbstractMegatronHttpPlugin;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
 import com.mycila.megatron.format.DefaultFormatter;
@@ -30,8 +30,8 @@ import java.util.Map;
  * @author Mathieu Carbou
  */
 
-@Namespace("megatron.statsd")
-public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
+@Namespace("megatron.prometheus.gateway")
+public class MegatronPrometheusGatewayPlugin extends AbstractMegatronHttpPlugin {
 
   private Formatter formatter;
 
@@ -39,8 +39,14 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
   public void enable(MegatronConfiguration configuration) {
     super.enable(configuration);
     formatter = new DefaultFormatter()
-        .prefixSeparator(".")
-        .globalPrefix(prefix);
+        .prefixSeparator("_")
+        .globalPrefix(prefix)
+        .tagSupport()
+        .globalTags(tags)
+        .tagAssignementChar("=")
+        .tagSeparatorChar(",")
+        .tagSurroundValueChar("\"")
+    ;
     formatter.init();
   }
 
@@ -50,7 +56,8 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
       logger.trace("onNotification({})", notification.getType());
       String metric = formatter.formatMetricName("events", notification, notification.getType());
       String value = formatter.formatValue(1);
-      send(metric, value, "c");
+      String tags = formatter.formatTags(notification);
+      send(metric, value, tags);
     }
   }
 
@@ -59,16 +66,22 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
     if (enable) {
       Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
+      String tags = formatter.formatTags(contextualStatistics);
       for (Map.Entry<String, Number> entry : statistics.entrySet()) {
         String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
         String value = formatter.formatValue(entry.getValue());
-        send(metric, value, "g");
+        send(metric, value, tags);
       }
     }
   }
 
-  private void send(String metric, String value, String type) {
-    client.send(metric + ":" + value + "|" + type);
+  private void send(String metric, String value, String tags) {
+    String message = metric;
+    if (!tags.isEmpty()) {
+      message = message + "{" + tags + "}";
+    }
+    message = message + " " + value + "\n";
+    client.send(message);
   }
 
 }

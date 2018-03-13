@@ -77,7 +77,7 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
 
   private void send(String metric, String tags, String value, String time) {
     metric = tags.isEmpty() ? metric : (metric + ";" + tags);
-    udpClient.send(metric + " " + value + " " + time);
+    client.send(metric + " " + value + " " + time);
   }
 
 }
