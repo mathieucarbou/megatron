@@ -170,8 +170,7 @@ public class RestIT {
     String xml = Unirest.get(REST + "/platform/config").asObject(String.class).getBody();
     System.out.println("==> config\n" + xml);
     assertThat(xml, containsString(
-        "<tc-config xmlns=\"http://www.terracotta.org/config\">\n" +
-            "    <plugins>\n" +
+        "<plugins>\n" +
             "        <config>\n" +
             "            <mc:megatron-config xmlns:mc=\"http://www.mycila.com/config/megatron-config\">\n" +
             "                <mc:statisticCollectorInterval unit=\"seconds\">1</mc:statisticCollectorInterval>\n" +
@@ -186,9 +185,7 @@ public class RestIT {
             "                <ohr:resource name=\"main\" unit=\"MB\">128</ohr:resource>\n" +
             "            </ohr:offheap-resources>\n" +
             "        </config>\n" +
-            "    </plugins>\n" +
-            "    <entities/>\n" +
-            "    <tc-properties/>"));
+            "    </plugins>"));
   }
 
   @Test
@@ -239,6 +236,7 @@ public class RestIT {
     List<Map<String, Object>> list = Unirest.get(REST + "/statistics")
         .queryString("statNames", "Cache:PutCount,OffHeapResource:AllocatedMemory,Pool:AllocatedSize,Store:AllocatedMemory")
         .asObject(List.class).getBody();
+    System.out.println(list);
     assertThat(list.size(), equalTo(10));
     for (Map<String, Object> context : list) {
       Map<String, Number> stats = (Map<String, Number>) context.get("statistics");
@@ -263,6 +261,7 @@ public class RestIT {
         .routeParam("cacheName", "cache-1")
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
+    System.out.println(stats);
     assertThat(stats.size(), equalTo(2));
     assertThat(stats.keySet(), hasItems("Cache:PutCount", "Cache:HitCount"));
   }
@@ -282,6 +281,7 @@ public class RestIT {
         .routeParam("cacheManagerName", "cm1")
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
+    System.out.println(caches);
     assertThat(caches.size(), equalTo(3));
     Map<String, Object> stats = caches.get("cache-1");
     assertThat(stats.size(), equalTo(2));
@@ -302,6 +302,7 @@ public class RestIT {
         .routeParam("clientId", clientId)
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
+    System.out.println(cms);
     assertThat(cms.size(), equalTo(1));
     Map<String, Map<String, Object>> caches = cms.get("cm1");
     assertThat(caches.size(), equalTo(3));

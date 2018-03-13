@@ -17,7 +17,7 @@
 
 -->
 <included>
-  <!--<logger name="com.tc.objectserver" level="WARN"/>-->
+  <logger name="com.tc.objectserver" level="WARN"/>
   <!--<logger name="org.terracotta.management" level="TRACE"/>-->
   <!--<logger name="com.mycila.megatron" level="TRACE"/>-->
 </included>

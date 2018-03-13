@@ -24,9 +24,9 @@ import org.terracotta.entity.ConfigurationException;
 import org.terracotta.entity.ServiceException;
 import org.terracotta.entity.ServiceRegistry;
 import org.terracotta.management.service.monitoring.EntityManagementRegistry;
-import org.terracotta.management.service.monitoring.ManagementRegistryConfiguration;
 import org.terracotta.management.service.monitoring.ManagementService;
 import org.terracotta.management.service.monitoring.ManagementServiceConfiguration;
+import org.terracotta.management.service.monitoring.ServerManagementRegistryConfiguration;
 import org.terracotta.management.service.monitoring.SharedEntityManagementRegistry;
 import org.terracotta.monitoring.PlatformService;
 import org.terracotta.voltron.proxy.SerializationCodec;
@@ -39,10 +39,10 @@ import java.util.Objects;
  * @author Mathieu Carbou
  */
 @PermanentEntity(type = MegatronEntity.TYPE, names = "MegatronEntity")
-public class MegatronEntityServerService extends ProxyServerEntityService<Void, Void, Void, ManagementCallMessenger> {
+public class MegatronEntityServerService extends ProxyServerEntityService<Void, Void, Void, MegatronEntityCallback> {
 
   public MegatronEntityServerService() {
-    super(MegatronEntity.class, Void.class, null, null, null, ManagementCallMessenger.class);
+    super(MegatronEntity.class, Void.class, null, null, null, MegatronEntityCallback.class);
     setCodec(new SerializationCodec());
   }
 
@@ -50,13 +50,16 @@ public class MegatronEntityServerService extends ProxyServerEntityService<Void, 
   public MegatronActiveServerEntity createActiveEntity(ServiceRegistry registry, Void configuration) throws ConfigurationException {
     try {
       ManagementService managementService = Objects.requireNonNull(registry.getService(new ManagementServiceConfiguration()));
-      PlatformService platformService = Objects.requireNonNull(registry.getService(new BasicServiceConfiguration<>(PlatformService.class)));
-      EntityManagementRegistry entityManagementRegistry = Objects.requireNonNull(registry.getService(new ManagementRegistryConfiguration(registry, true, true)));
+      EntityManagementRegistry entityManagementRegistry = Objects.requireNonNull(registry.getService(new ServerManagementRegistryConfiguration(registry, true)));
       SharedEntityManagementRegistry sharedEntityManagementRegistry = Objects.requireNonNull(registry.getService(new BasicServiceConfiguration<>(SharedEntityManagementRegistry.class)));
+
+      PlatformService platformService = Objects.requireNonNull(registry.getService(new BasicServiceConfiguration<>(PlatformService.class)));
       MegatronConfiguration megatronConfiguration = Objects.requireNonNull(registry.getService(new BasicServiceConfiguration<>(MegatronConfiguration.class)));
       Collection<MegatronEventListener> listeners = registry.getServices(new MegatronServiceConfiguration(managementService, platformService));
+
       MegatronActiveServerEntity entity = new MegatronActiveServerEntity(managementService, entityManagementRegistry, sharedEntityManagementRegistry, megatronConfiguration, listeners);
       managementService.setManagementExecutor(entity);
+
       return entity;
     } catch (ServiceException e) {
       throw new ConfigurationException("Unable to retrieve service: " + e.getMessage(), e);
@@ -66,7 +69,7 @@ public class MegatronEntityServerService extends ProxyServerEntityService<Void, 
   @Override
   protected MegatronPassiveServerEntity createPassiveEntity(ServiceRegistry registry, Void configuration) throws ConfigurationException {
     try {
-      EntityManagementRegistry entityManagementRegistry = Objects.requireNonNull(registry.getService(new ManagementRegistryConfiguration(registry, false, true)));
+      EntityManagementRegistry entityManagementRegistry = Objects.requireNonNull(registry.getService(new ServerManagementRegistryConfiguration(registry, false)));
       SharedEntityManagementRegistry sharedEntityManagementRegistry = Objects.requireNonNull(registry.getService(new BasicServiceConfiguration<>(SharedEntityManagementRegistry.class)));
       return new MegatronPassiveServerEntity(entityManagementRegistry, sharedEntityManagementRegistry);
     } catch (ServiceException e) {

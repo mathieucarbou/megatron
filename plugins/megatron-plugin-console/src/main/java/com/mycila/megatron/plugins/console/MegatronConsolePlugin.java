@@ -20,7 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mycila.megatron.AbstractMegatronPlugin;
-import com.mycila.megatron.MegatronApi;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
 import org.terracotta.management.model.notification.ContextualNotification;
@@ -37,7 +36,7 @@ public class MegatronConsolePlugin extends AbstractMegatronPlugin {
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Override
-  public void enable(MegatronConfiguration configuration, MegatronApi api) {
+  public void enable(MegatronConfiguration configuration) {
     mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

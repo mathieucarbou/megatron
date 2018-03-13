@@ -16,36 +16,23 @@
 package com.mycila.megatron.server.entity;
 
 import org.terracotta.management.model.call.ContextualCall;
-import org.terracotta.management.model.call.Parameter;
-import org.terracotta.management.model.context.Context;
-import org.terracotta.management.model.notification.ContextualNotification;
-import org.terracotta.management.model.stats.ContextualStatistics;
 import org.terracotta.voltron.proxy.ConcurrencyStrategy;
 import org.terracotta.voltron.proxy.ExecutionStrategy;
 import org.terracotta.voltron.proxy.server.Messenger;
 
 import static org.terracotta.voltron.proxy.ExecutionStrategy.Location.ACTIVE;
-import static org.terracotta.voltron.proxy.ExecutionStrategy.Location.BOTH;
+import static org.terracotta.voltron.proxy.ExecutionStrategy.Location.PASSIVE;
 
 /**
  * @author Mathieu Carbou
  */
-public interface ManagementCallMessenger extends Messenger {
+public interface MegatronEntityCallback extends Messenger {
 
   @ConcurrencyStrategy(key = ConcurrencyStrategy.UNIVERSAL_KEY)
-  @ExecutionStrategy(location = BOTH)
-  void callbackToExecuteManagementCall(String managementCallIdentifier, ContextualCall<?> call);
-
-  @ConcurrencyStrategy(key = ConcurrencyStrategy.UNIVERSAL_KEY)
-  @ExecutionStrategy(location = ACTIVE)
-  void callbackToSendManagementCall(Context context, String capabilityName, String methodName, Class<?> returnType, Parameter... parameters);
+  @ExecutionStrategy(location = PASSIVE)
+  void executeManagementCallOnPassive(String managementCallIdentifier, ContextualCall<?> call);
 
   @ConcurrencyStrategy(key = ConcurrencyStrategy.UNIVERSAL_KEY)
   @ExecutionStrategy(location = ACTIVE)
-  void callbackToSendNotification(ContextualNotification notification);
-
-  @ConcurrencyStrategy(key = ConcurrencyStrategy.UNIVERSAL_KEY)
-  @ExecutionStrategy(location = ACTIVE)
-  void callbackToSendStatistics(ContextualStatistics statistics);
-
+  void restartStatisticCollectors();
 }

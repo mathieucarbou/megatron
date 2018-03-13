@@ -36,7 +36,7 @@ public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
   protected UdpClient udpClient;
 
   @Override
-  public void enable(MegatronConfiguration configuration, MegatronApi api) {
+  public void enable(MegatronConfiguration configuration) {
     udpClient = async ?
         new NonBlockingUdpClient(server, port, queueSize <= 0 ? Integer.MAX_VALUE : queueSize) :
         new BlockingUdpClient(server, port);

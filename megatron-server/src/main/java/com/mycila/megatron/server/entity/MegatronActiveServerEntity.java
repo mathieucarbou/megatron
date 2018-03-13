@@ -25,11 +25,13 @@ import org.terracotta.management.model.call.ContextualCall;
 import org.terracotta.management.model.call.ContextualReturn;
 import org.terracotta.management.model.call.Parameter;
 import org.terracotta.management.model.cluster.AbstractManageableNode;
+import org.terracotta.management.model.cluster.Client;
 import org.terracotta.management.model.cluster.Cluster;
 import org.terracotta.management.model.cluster.Server;
-import org.terracotta.management.model.cluster.Stripe;
+import org.terracotta.management.model.cluster.ServerEntity;
 import org.terracotta.management.model.context.Context;
 import org.terracotta.management.model.context.ContextContainer;
+import org.terracotta.management.model.context.Contextual;
 import org.terracotta.management.model.message.Message;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
@@ -43,14 +45,15 @@ import org.terracotta.voltron.proxy.server.ActiveProxiedServerEntity;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * @author Mathieu Carbou
  */
-class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, ManagementCallMessenger> implements MegatronEntity, ManagementExecutor, ManagementCallMessenger {
+class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, MegatronEntityCallback> implements MegatronEntity, ManagementExecutor, MegatronEntityCallback {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MegatronActiveServerEntity.class);
 
@@ -61,6 +64,7 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
   private final MegatronConfiguration megatronConfiguration;
   private final Collection<MegatronEventListener> listeners;
   private final MegatronClientDescriptor megatronClientDescriptor = new MegatronClientDescriptor();
+  private final Set<Context> pendingStarts = ConcurrentHashMap.newKeySet();
 
   MegatronActiveServerEntity(ManagementService managementService, EntityManagementRegistry entityManagementRegistry, SharedEntityManagementRegistry sharedEntityManagementRegistry, MegatronConfiguration megatronConfiguration, Collection<MegatronEventListener> listeners) {
     this.entityManagementRegistry = Objects.requireNonNull(entityManagementRegistry);
@@ -71,9 +75,7 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
     this.listeners = Objects.requireNonNull(listeners);
   }
 
-  ///////////////////////////////
-  // ActiveProxiedServerEntity //
-  ///////////////////////////////
+  // ActiveProxiedServerEntity
 
   @Override
   public void destroy() {
@@ -85,13 +87,14 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
   @Override
   public void createNew() {
     super.createNew();
+    entityManagementRegistry.entityCreated();
     entityManagementRegistry.refresh();
   }
 
   @Override
   public void loadExisting() {
     super.loadExisting();
-    entityManagementRegistry.cleanupPreviousPassiveStates();
+    entityManagementRegistry.entityPromotionCompleted();
     entityManagementRegistry.refresh();
   }
 
@@ -101,13 +104,14 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
     dump.addState("listeners", listeners);
   }
 
-  ///////////////////////////////////////////////////////////////////
-  // ManagementCallMessenger: execute callbacks from the Messenger //
-  ///////////////////////////////////////////////////////////////////
+  // ManagementExecutor
 
   @Override
-  public void callbackToExecuteManagementCall(String managementCallIdentifier, ContextualCall<?> call) {
+  public void executeManagementCallOnServer(String managementCallIdentifier, ContextualCall<?> call) {
     String serverName = call.getContext().get(Server.NAME_KEY);
+    if (serverName == null) {
+      throw new IllegalArgumentException("Bad context: " + call.getContext());
+    }
     if (entityManagementRegistry.getMonitoringService().getServerName().equals(serverName)) {
       ContextualReturn<?> contextualReturn = capabilityManagementSupport.withCapability(call.getCapability())
           .call(call.getMethodName(), call.getReturnType(), call.getParameters())
@@ -115,56 +119,18 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
           .build()
           .execute()
           .getSingleResult();
-      entityManagementRegistry.getMonitoringService().answerManagementCall(managementCallIdentifier, contextualReturn);
-    }
-  }
-
-  @Override
-  public void callbackToSendManagementCall(Context context, String capabilityName, String methodName, Class<?> returnType, Parameter... parameters) {
-    if (context.contains(Stripe.KEY)) {
-      context = context.with(Stripe.KEY, "SINGLE");
-    }
-    managementService.sendManagementCallRequest(megatronClientDescriptor, context, capabilityName, methodName, returnType, parameters);
-  }
-
-  @Override
-  public void callbackToSendNotification(ContextualNotification notification) {
-    listeners.forEach(plugin -> {
-      try {
-        plugin.onNotification(notification);
-      } catch (Exception e) {
-        LOGGER.error("[{}] onNotification({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+      if (contextualReturn.hasExecuted()) {
+        LOGGER.trace("[{}] executeManagementCallOnServer({}, {}): {}", consumerId, managementCallIdentifier, call, contextualReturn);
+        entityManagementRegistry.getMonitoringService().answerManagementCall(managementCallIdentifier, contextualReturn);
       }
-    });
-  }
-
-  @Override
-  public void callbackToSendStatistics(ContextualStatistics statistics) {
-    listeners.forEach(plugin -> {
-      try {
-        plugin.onStatistics(statistics);
-      } catch (Exception e) {
-        LOGGER.error("[{}] onStatistics({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
-      }
-    });
-  }
-
-  @Override
-  public void unSchedule() {
-    throw new UnsupportedOperationException();
-  }
-
-  ////////////////////////////////////////////////////////
-  // ManagementExecutor: callback of monitoring service //
-  ////////////////////////////////////////////////////////
-
-  @Override
-  public void executeManagementCallOnServer(String managementCallIdentifier, ContextualCall<?> call) {
-    getMessenger().callbackToExecuteManagementCall(managementCallIdentifier, call);
+    } else {
+      getMessenger().executeManagementCallOnPassive(managementCallIdentifier, call);
+    }
   }
 
   @Override
   public void sendMessageToClients(Message message) {
+    // hook on notifications here
     try {
       switch (message.getType()) {
 
@@ -176,18 +142,20 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
 
               // start collecting stats on a new client registry
               case "ENTITY_REGISTRY_AVAILABLE": {
-                executeOnAllManageables(this::startStatisticCollector);
+                needToStartStatisticCollector(notification.getContext());
+                getMessenger().restartStatisticCollectors();
                 break;
               }
 
               // start collecting stats on a new entity registry
               case "CLIENT_REGISTRY_AVAILABLE": {
-                executeOnAllManageables(this::startStatisticCollector);
+                needToStartStatisticCollector(notification.getContext());
+                getMessenger().restartStatisticCollectors();
                 break;
               }
             }
 
-            getMessenger().callbackToSendNotification(notification);
+            sendNotificationToPlugins(notification);
           });
           break;
         }
@@ -195,7 +163,7 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
         case "STATISTICS": {
           message.unwrap(ContextualStatistics.class).forEach(statistics -> {
             LOGGER.trace("[{}] onStatistics({}): {}", consumerId, statistics.size(), statistics.getContext());
-            getMessenger().callbackToSendStatistics(statistics);
+            sendStatisticsToPlugins(statistics);
           });
           break;
         }
@@ -207,29 +175,86 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
 
   @Override
   public void sendMessageToClient(Message message, ClientDescriptor to) {
-    // do nothing: notifications are sent to every clients
+    if (message.getType().equals("MANAGEMENT_CALL_RETURN")) {
+      Context context = message.unwrap(Contextual.class).get(0).getContext();
+      if (pendingStarts.removeIf(context::contains)) {
+        LOGGER.trace("[{}] sendMessageToClient({}): statistic collector started.", consumerId, context);
+      }
+    }
   }
 
-  private void executeOnAllManageables(Consumer<AbstractManageableNode<?>> consumer) {
-    Cluster cluster = managementService.readTopology();
-    Stream.concat(cluster.serverEntityStream(), cluster.clientStream())
-        .filter(AbstractManageableNode::isManageable)
-        .filter(source -> source.getManagementRegistry().get().getCapability("StatisticCollectorCapability").isPresent())
-        .forEach(consumer);
+  // MegatronEntityCallback
+
+  @Override
+  public void executeManagementCallOnPassive(String managementCallIdentifier, ContextualCall<?> call) {
+    throw new UnsupportedOperationException();
   }
 
-  private void startStatisticCollector(AbstractManageableNode<?> source) {
-    LOGGER.trace("[{}] startStatisticCollector({})", consumerId, source);
-    source.getManagementRegistry().ifPresent(managementRegistry -> {
-      ContextContainer contextContainer = managementRegistry.getContextContainer();
-      Context context = source.getContext().with(contextContainer.getName(), contextContainer.getValue());
-      getMessenger().callbackToSendManagementCall(
-          context,
+  // called by IEntityMessenger
+  @Override
+  public void restartStatisticCollectors() {
+    if (!pendingStarts.isEmpty()) {
+      Cluster cluster = managementService.readTopology();
+      pendingStarts.removeIf(context -> !restartStatisticCollector(cluster, context));
+      if (!pendingStarts.isEmpty()) {
+        // try again for pending contexts
+        try {
+          Thread.sleep(500);
+          getMessenger().restartStatisticCollectors();
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    }
+  }
+
+  private boolean restartStatisticCollector(Cluster cluster, Context context) {
+    Optional<? extends AbstractManageableNode<?>> o;
+    if (context.contains(Client.KEY)) {
+      o = cluster.getClient(context);
+    } else {
+      o = cluster.getServerEntity(context)
+          .filter(serverEntity -> serverEntity.getType().equals(MegatronEntity.TYPE));
+    }
+    return o.filter(AbstractManageableNode::isManageable).map(node -> {
+      ContextContainer contextContainer = node.getManagementRegistry().get().getContextContainer();
+      Context ctx = node.getContext().with(contextContainer.getName(), contextContainer.getValue());
+      LOGGER.trace("[{}] restartStatisticCollector({})", consumerId, ctx);
+      return managementService.sendManagementCallRequest(
+          megatronClientDescriptor,
+          ctx,
           "StatisticCollectorCapability",
           "startStatisticCollector",
           Void.TYPE,
           new Parameter(megatronConfiguration.getStatisticCollectorInterval(), long.class.getName()),
           new Parameter(TimeUnit.MILLISECONDS, TimeUnit.class.getName()));
+    }).isPresent();
+  }
+
+  private void needToStartStatisticCollector(Context context) {
+    if (context.contains(Client.KEY) || MegatronEntity.TYPE.equals(context.get(ServerEntity.TYPE_KEY))) {
+      LOGGER.trace("[{}] needToStartStatisticCollector({})", consumerId, context);
+      pendingStarts.add(context);
+    }
+  }
+
+  private void sendNotificationToPlugins(ContextualNotification notification) {
+    listeners.forEach(plugin -> {
+      try {
+        plugin.onNotification(notification);
+      } catch (Exception e) {
+        LOGGER.error("[{}] onNotification({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+      }
+    });
+  }
+
+  private void sendStatisticsToPlugins(ContextualStatistics statistics) {
+    listeners.forEach(plugin -> {
+      try {
+        plugin.onStatistics(statistics);
+      } catch (Exception e) {
+        LOGGER.error("[{}] onStatistics({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+      }
     });
   }
 

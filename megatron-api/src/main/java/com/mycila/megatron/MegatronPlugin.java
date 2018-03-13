@@ -33,10 +33,15 @@ import java.io.Closeable;
 public interface MegatronPlugin extends MegatronEventListener, Closeable {
 
   /**
+   * Used to receive an accessor of internal management methods
+   */
+  default void setApi(MegatronApi api) {}
+
+  /**
    * Called at plugin initialization time.
    * Can be used to start a socket or prepare the streaming and access the plugin configuration.
    */
-  default void init(MegatronConfiguration configuration, MegatronApi api) {}
+  default void init(MegatronConfiguration configuration) {}
 
   /**
    * @return True is this plugin must be enabled
