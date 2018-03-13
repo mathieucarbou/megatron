@@ -41,7 +41,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Config protected boolean enable = false;
 
   private final Map<String, Object> pluginConfig = new TreeMap<>();
-  private MegatronApi api;
+  private MegatronApi api = new EmptyMegatronApi();
 
   public AbstractMegatronPlugin() {
     converters.put(String.class, s -> s);

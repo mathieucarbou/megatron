@@ -33,6 +33,7 @@
 
   <!--<logger name="org.terracotta.management" level="TRACE"/>-->
   <!--<logger name="org.ehcache.management" level="TRACE"/>-->
+  <logger name="com.mycila.megatron" level="TRACE"/>
 
   <root level="INFO">
     <appender-ref ref="CONSOLE"/>

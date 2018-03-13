@@ -45,6 +45,8 @@
         <include>org.ehcache.modules:ehcache-management</include>
         <include>org.terracotta.management.dist:mnm-nms-agent</include>
         <include>org.terracotta.management.dist:mnm-common</include>
+        <include>com.mycila.megatron:megatron-api</include>
+        <include>com.mycila.megatron.plugins:*</include>
       </includes>
     </dependencySet>
   </dependencySets>
