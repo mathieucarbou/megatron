@@ -22,7 +22,7 @@
   <parent>
     <artifactId>megatron</artifactId>
     <groupId>com.mycila.megatron</groupId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -38,6 +38,7 @@
     <module>megatron-plugin-librato</module>
     <module>megatron-plugin-graphite</module>
     <module>megatron-plugin-statsd</module>
+    <module>megatron-plugin-prometheus-statsd</module>
   </modules>
 
   <dependencies>

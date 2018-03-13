@@ -196,11 +196,12 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   }
 
   @Override
-  public void onStatistics(ContextualStatistics statistics) {
+  public void onStatistics(ContextualStatistics contextualStatistics) {
     if (enable) {
+      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
-      Map<String, Number> stats = statsPerContexts.computeIfAbsent(statistics.getContext(), context -> new ConcurrentHashMap<>());
-      stats.putAll(Statistics.extractStatistics(statistics));
+      Map<String, Number> stats = statsPerContexts.computeIfAbsent(contextualStatistics.getContext(), context -> new ConcurrentHashMap<>());
+      stats.putAll(statistics);
     }
   }
 

@@ -21,6 +21,9 @@
   - [StatsD Plugin](#statsd-plugin)
     - [Configuration](#configuration-5)
     - [Screenshots](#screenshots-4)
+  - [Prometheus StatsD Plugin](#prometheus-statsd-plugin)
+    - [Configuration](#configuration-6)
+    - [Screenshots](#screenshots-5)
   - [Write your own plugin!](#write-your-own-plugin)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -354,6 +357,55 @@ There are several examples of StatsD backend configurations in the [distribution
 - With Graphite (using the StatsD collector)
 
 ![https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-graphite.png)
+
+## Prometheus StatsD Plugin
+
+The Prometheus StatsD plugin supports __metrics tagging__ to facilitate aggregation filtering.
+The format of the data sent is: `metric.name:value|type|@sample_rate|#tag1:value,tag2`.
+See [https://github.com/prometheus/statsd_exporter](https://github.com/prometheus/statsd_exporter).
+
+### Configuration
+
+1. Edit your `tc-config.xml` file to add the plugin configurations:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<tc-config xmlns="http://www.terracotta.org/config">
+  <plugins>
+    <config xmlns:mc='http://www.mycila.com/config/megatron-config'>
+      <mc:megatron-config>
+        <mc:statisticCollectorInterval unit="seconds">5</mc:statisticCollectorInterval>
+          <mc:set name="megatron.prometheus.statsd.enable" value="true"/>
+          <mc:set name="megatron.prometheus.statsd.server" value="localhost"/>
+          <mc:set name="megatron.prometheus.statsd.port" value="9125"/>
+          <mc:set name="megatron.prometheus.statsd.prefix" value="megatron"/>
+          <mc:set name="megatron.prometheus.statsd.tags" value="stripe:stripe1,cluster:MyCluster"/>
+          <mc:set name="megatron.prometheus.statsd.async" value="true"/>
+          <mc:set name="megatron.prometheus.statsd.queueSize" value="-1"/>
+      </mc:megatron-config>
+    </config>
+  </plugins>
+</tc-config>
+```
+
+`megatron.prometheus.statsd.server` is your Prometheus StatsD Exporter server address ([https://github.com/prometheus/statsd_exporter](https://github.com/prometheus/statsd_exporter)).
+
+You can run one by executing:
+
+```bash
+docker pull prom/statsd-exporter
+docker run -d -p 9102:9102 -p 9125:9125/udp \
+        -v $PWD/statsd_mapping.conf:/tmp/statsd_mapping.conf \
+        prom/statsd-exporter -statsd.mapping-config=/tmp/statsd_mapping.conf
+```
+
+See [https://hub.docker.com/r/prom/statsd-exporter/](https://hub.docker.com/r/prom/statsd-exporter/) 
+
+### Screenshots
+
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-1.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-1.png)
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-2.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-2.png)
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-3.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-3.png)
 
 ## Write your own plugin!
 

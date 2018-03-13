@@ -33,6 +33,6 @@ public interface MegatronEventListener {
   /**
    * Callback called when a new set of statistics has been collected from a manageable element on teh stripe.
    */
-  default void onStatistics(ContextualStatistics statistics) {}
+  default void onStatistics(ContextualStatistics contextualStatistics) {}
 
 }

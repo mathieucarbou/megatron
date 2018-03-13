@@ -61,7 +61,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.rest.bindAddress\" value=\"0.0.0.0\"/>" +
           "    <mc:set name=\"megatron.rest.port\" value=\"9470\"/>" +
 
-          "    <mc:set name=\"megatron.datadog.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.datadog.enable\" value=\"false\"/>\n" +
           "    <mc:set name=\"megatron.datadog.server\" value=\"localhost\"/>\n" +
           "    <mc:set name=\"megatron.datadog.port\" value=\"8125\"/>\n" +
           "    <mc:set name=\"megatron.datadog.prefix\" value=\"megatron\"/>\n" +
@@ -91,6 +91,14 @@ public class RunServers {
           "    <mc:set name=\"megatron.statsd.prefix\" value=\"cb54b2cb-cb68-49f0-8250-0bb79f3fee19.megatron\"/>" +
           "    <mc:set name=\"megatron.statsd.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.statsd.queueSize\" value=\"-1\"/>\n" +
+
+          "    <mc:set name=\"megatron.prometheus.statsd.enable\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.server\" value=\"localhost\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.port\" value=\"9125\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.prefix\" value=\"megatron\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.tags\" value=\"stripe:stripe1,cluster:MyCluster\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.async\" value=\"true\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.queueSize\" value=\"-1\"/>\n" +
 
           "  </mc:megatron-config>" +
           "</config>" +

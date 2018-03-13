@@ -27,6 +27,6 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>megatron-plugin-datadoghq</artifactId>
+  <artifactId>megatron-plugin-prometheus-statsd</artifactId>
 
 </project>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mycila.megatron.plugins.graphite;
+package com.mycila.megatron.plugins.prometheus.statsd;
 
 import com.mycila.megatron.AbstractMegatronUdpPlugin;
 import com.mycila.megatron.MegatronConfiguration;
@@ -30,8 +30,8 @@ import java.util.Map;
  * @author Mathieu Carbou
  */
 
-@Namespace("megatron.graphite")
-public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
+@Namespace("megatron.prometheus.statsd")
+public class MegatronPrometheusStatsDPlugin extends AbstractMegatronUdpPlugin {
 
   private Formatter formatter;
 
@@ -43,8 +43,9 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
         .globalPrefix(prefix)
         .tagSupport()
         .globalTags(tags)
-        .tagAssignementChar("=")
-        .tagSeparatorChar(";");
+        .tagAssignementChar(":")
+        .tagSeparatorChar(",")
+    ;
     formatter.init();
   }
 
@@ -52,11 +53,10 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
   public void onNotification(ContextualNotification notification) {
     if (enable) {
       logger.trace("onNotification({})", notification.getType());
-      String time = String.valueOf(System.currentTimeMillis() / 1000);
-      String tags = formatter.formatTags(notification);
       String metric = formatter.formatMetricName("events", notification, notification.getType());
       String value = formatter.formatValue(1);
-      send(metric, tags, value, time);
+      String tags = formatter.formatTags(notification);
+      send(metric, value, tags, "c");
     }
   }
 
@@ -65,19 +65,21 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
     if (enable) {
       Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
-      String time = String.valueOf(System.currentTimeMillis() / 1000);
       String tags = formatter.formatTags(contextualStatistics);
       for (Map.Entry<String, Number> entry : statistics.entrySet()) {
         String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
         String value = formatter.formatValue(entry.getValue());
-        send(metric, tags, value, time);
+        send(metric, value, tags, "g");
       }
     }
   }
 
-  private void send(String metric, String tags, String value, String time) {
-    metric = tags.isEmpty() ? metric : (metric + ";" + tags);
-    udpClient.send(metric + " " + value + " " + time);
+  private void send(String metric, String value, String tags, String type) {
+    String message = metric + ":" + value + "|" + type;
+    if (!tags.isEmpty()) {
+      message = message + "|#" + tags;
+    }
+    udpClient.send(message);
   }
 
 }
