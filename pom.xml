@@ -24,7 +24,7 @@
   <groupId>com.mycila.megatron</groupId>
   <artifactId>megatron</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <inceptionYear>2017</inceptionYear>
 
   <modules>
