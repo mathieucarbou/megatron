@@ -38,6 +38,7 @@
     <module>megatron-plugin-librato</module>
     <module>megatron-plugin-graphite</module>
     <module>megatron-plugin-statsd</module>
+    <module>megatron-plugin-prometheus-statsd</module>
   </modules>
 
   <dependencies>

@@ -22,9 +22,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mycila.megatron.AbstractMegatronPlugin;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
+import com.mycila.megatron.format.Statistics;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -50,16 +52,17 @@ public class MegatronConsolePlugin extends AbstractMegatronPlugin {
   }
 
   @Override
-  public void onStatistics(ContextualStatistics statistics) {
+  public void onStatistics(ContextualStatistics contextualStatistics) {
     if (enable) {
+      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       System.out.println("STATISTICS:\n - " +
-          statistics.getStatistics()
+          statistics
               .entrySet()
               .stream()
               .map(e -> e.getKey() + "=" + e.getValue())
               .sorted()
               .collect(Collectors.joining("\n - ")) + "\n" +
-          json(statistics.getContext()));
+          json(contextualStatistics.getContext()));
     }
   }
 

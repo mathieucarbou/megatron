@@ -68,6 +68,10 @@
     </dependency>
     <dependency>
       <groupId>com.mycila.megatron.plugins</groupId>
+      <artifactId>megatron-plugin-prometheus-statsd</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mycila.megatron.plugins</groupId>
       <artifactId>megatron-plugin-graphite</artifactId>
     </dependency>
     <dependency>

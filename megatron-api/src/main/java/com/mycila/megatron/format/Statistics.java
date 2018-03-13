@@ -18,6 +18,7 @@ package com.mycila.megatron.format;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terracotta.management.model.stats.ContextualStatistics;
+import org.terracotta.statistics.Sample;
 import org.terracotta.statistics.registry.Statistic;
 
 import java.io.Serializable;
@@ -46,6 +47,7 @@ public class Statistics {
           // aggregate by averaging the samples
           statistic.getSamples()
               .stream()
+              .map(Sample::getSample)
               .filter(Number.class::isInstance)
               .map(Number.class::cast)
               .mapToDouble(Number::doubleValue)
@@ -58,6 +60,7 @@ public class Statistics {
           // aggregate by taking the maximum from the samples
           statistic.getSamples()
               .stream()
+              .map(Sample::getSample)
               .filter(Number.class::isInstance)
               .map(Number.class::cast)
               .max(NUMBER_COMPARATOR)

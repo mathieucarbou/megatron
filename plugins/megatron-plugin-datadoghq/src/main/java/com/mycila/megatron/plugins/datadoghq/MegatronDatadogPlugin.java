@@ -61,12 +61,13 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
   }
 
   @Override
-  public void onStatistics(ContextualStatistics statistics) {
+  public void onStatistics(ContextualStatistics contextualStatistics) {
     if (enable) {
+      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
-      String tags = formatter.formatTags(statistics);
-      for (Map.Entry<String, Number> entry : Statistics.extractStatistics(statistics).entrySet()) {
-        String metric = formatter.formatMetricName("statistics", statistics, entry.getKey());
+      String tags = formatter.formatTags(contextualStatistics);
+      for (Map.Entry<String, Number> entry : statistics.entrySet()) {
+        String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
         String value = formatter.formatValue(entry.getValue());
         send(metric, value, tags, "g");
       }
