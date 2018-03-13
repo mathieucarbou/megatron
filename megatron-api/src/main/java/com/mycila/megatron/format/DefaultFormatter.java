@@ -24,7 +24,6 @@ import org.terracotta.management.model.cluster.Stripe;
 import org.terracotta.management.model.context.Context;
 import org.terracotta.management.model.context.Contextual;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -133,16 +132,12 @@ public class DefaultFormatter implements Formatter {
   }
 
   @Override
-  public String formatValue(Serializable value) {
-    if (value instanceof Number) {
-      Number v = (Number) value;
-      if (value instanceof Double || value instanceof Float) {
-        return NUMBER_FORMATTERS.get().format(v.doubleValue());
-      } else {
-        return value.toString();
-      }
+  public String formatValue(Number value) {
+    if (value instanceof Double || value instanceof Float) {
+      return NUMBER_FORMATTERS.get().format(value.doubleValue());
+    } else {
+      return value.toString();
     }
-    return String.valueOf(value);
   }
 
   private static Map<String, String> tags(Context context) {

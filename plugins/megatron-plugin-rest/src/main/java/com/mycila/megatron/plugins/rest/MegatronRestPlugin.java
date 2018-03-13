@@ -22,6 +22,7 @@ import com.mycila.megatron.AbstractMegatronPlugin;
 import com.mycila.megatron.Config;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.Namespace;
+import com.mycila.megatron.format.Statistics;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -33,7 +34,6 @@ import org.terracotta.management.model.context.Context;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
-import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ import static java.util.stream.Collectors.toMap;
 @Namespace("megatron.rest")
 public class MegatronRestPlugin extends AbstractMegatronPlugin {
 
-  private final Map<Context, Map<String, Serializable>> statsPerContexts = new ConcurrentHashMap<>();
+  private final Map<Context, Map<String, Number>> statsPerContexts = new ConcurrentHashMap<>();
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Config private int port = 9470;
@@ -142,7 +142,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
               String clientId = params.get("clientId");
               String cacheManagerName = params.get("cacheManagerName");
               String statNames = params.getOrDefault("statNames", "");
-              Map<Context, Map<String, Serializable>> allStatistics = findAllStatistics(context ->
+              Map<Context, Map<String, Number>> allStatistics = findAllStatistics(context ->
                   clientId.equals(context.get(Client.KEY))
                       && cacheManagerName.equals(context.get("cacheManagerName"))
                       && context.contains("cacheName"));
@@ -154,7 +154,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
             .add("/api/v1/statistics/clients/{clientId}", json((exchange, params) -> {
               String clientId = params.get("clientId");
               String statNames = params.getOrDefault("statNames", "");
-              Map<Context, Map<String, Serializable>> allStatistics = findAllStatistics(context ->
+              Map<Context, Map<String, Number>> allStatistics = findAllStatistics(context ->
                   clientId.equals(context.get(Client.KEY))
                       && context.contains("cacheManagerName")
                       && context.contains("cacheName"));
@@ -199,8 +199,8 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   public void onStatistics(ContextualStatistics statistics) {
     if (enable) {
       logger.trace("onStatistics({})", statistics.size());
-      Map<String, Serializable> stats = statsPerContexts.computeIfAbsent(statistics.getContext(), context -> new ConcurrentHashMap<>());
-      stats.putAll(statistics.getLatestSampleValues());
+      Map<String, Number> stats = statsPerContexts.computeIfAbsent(statistics.getContext(), context -> new ConcurrentHashMap<>());
+      stats.putAll(Statistics.extractStatistics(statistics));
     }
   }
 
@@ -236,7 +236,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
     };
   }
 
-  private Map<String, Serializable> findStatistics(Predicate<Context> p) {
+  private Map<String, Number> findStatistics(Predicate<Context> p) {
     return statsPerContexts.entrySet()
         .stream()
         .filter(e -> p.test(e.getKey()))
@@ -245,14 +245,14 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
         .orElse(Collections.emptyMap());
   }
 
-  private Map<Context, Map<String, Serializable>> findAllStatistics(Predicate<Context> p) {
+  private Map<Context, Map<String, Number>> findAllStatistics(Predicate<Context> p) {
     return statsPerContexts.entrySet()
         .stream()
         .filter(e -> p.test(e.getKey()))
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  private Map<String, Serializable> filter(Map<String, Serializable> statistics, String statNames) {
+  private Map<String, Number> filter(Map<String, Number> statistics, String statNames) {
     if (statNames != null) {
       Set<String> statSet = new HashSet<String>(asList(statNames.split(",")));
       return statistics.entrySet()
