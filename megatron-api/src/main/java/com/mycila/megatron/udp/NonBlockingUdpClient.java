@@ -27,6 +27,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -95,9 +96,11 @@ public final class NonBlockingUdpClient implements Client {
     }
   }
 
-  public void send(String message) {
+  public void send(List<String> messages) {
     if (!closed) {
-      messages.offer(message);
+      for (String message : messages) {
+        this.messages.offer(message);
+      }
     }
   }
 

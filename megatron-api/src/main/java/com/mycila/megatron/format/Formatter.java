@@ -16,7 +16,7 @@
 package com.mycila.megatron.format;
 
 import com.tc.classloader.CommonComponent;
-import org.terracotta.management.model.context.Contextual;
+import org.terracotta.management.model.context.Context;
 
 /**
  * @author Mathieu Carbou
@@ -25,9 +25,9 @@ import org.terracotta.management.model.context.Contextual;
 public interface Formatter {
   void init();
 
-  String formatMetricName(String prefix, Contextual contextual, String suffix);
+  String formatMetricName(String prefix, Context context, String suffix);
 
-  String formatTags(Contextual contextual);
+  String formatTags(Context context);
 
   String formatValue(Number value);
 }

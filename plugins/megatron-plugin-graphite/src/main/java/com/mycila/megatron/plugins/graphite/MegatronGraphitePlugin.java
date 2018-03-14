@@ -25,6 +25,7 @@ import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Mathieu Carbou
@@ -53,10 +54,10 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
     if (enable) {
       logger.trace("onNotification({})", notification.getType());
       String time = String.valueOf(System.currentTimeMillis() / 1000);
-      String tags = formatter.formatTags(notification);
-      String metric = formatter.formatMetricName("events", notification, notification.getType());
+      String tags = formatter.formatTags(notification.getContext());
+      String metric = formatter.formatMetricName("events", notification.getContext(), notification.getType());
       String value = formatter.formatValue(1);
-      send(metric, tags, value, time);
+      client.send(formatLine(metric, tags, value, time));
     }
   }
 
@@ -66,18 +67,21 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
       Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
       String time = String.valueOf(System.currentTimeMillis() / 1000);
-      String tags = formatter.formatTags(contextualStatistics);
-      for (Map.Entry<String, Number> entry : statistics.entrySet()) {
-        String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
-        String value = formatter.formatValue(entry.getValue());
-        send(metric, tags, value, time);
-      }
+      String tags = formatter.formatTags(contextualStatistics.getContext());
+      client.send(statistics.entrySet()
+          .stream()
+          .map(entry -> {
+            String metric = formatter.formatMetricName("statistics", contextualStatistics.getContext(), entry.getKey());
+            String value = formatter.formatValue(entry.getValue());
+            return formatLine(metric, tags, value, time);
+          })
+          .collect(Collectors.toList()));
     }
   }
 
-  private void send(String metric, String tags, String value, String time) {
+  private static String formatLine(String metric, String tags, String value, String time) {
     metric = tags.isEmpty() ? metric : (metric + ";" + tags);
-    client.send(metric + " " + value + " " + time);
+    return metric + " " + value + " " + time;
   }
 
 }

@@ -16,6 +16,8 @@
 package com.mycila.megatron;
 
 import java.io.Closeable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Mathieu Carbou
@@ -25,6 +27,9 @@ public interface Client extends Closeable {
   @Override
   default void close() {}
 
-  void send(String message);
+  default void send(String message) {
+    send(Collections.singletonList(message));
+  }
 
+  void send(List<String> messages);
 }
