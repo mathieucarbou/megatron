@@ -76,6 +76,15 @@
         <mc:set name="megatron.prometheus.statsd.async" value="true"/>
         <mc:set name="megatron.prometheus.statsd.queueSize" value="-1"/>
 
+        <!-- Prometheus StatsD Plugin -->
+        <mc:set name="megatron.prometheus.gateway.enable" value="false"/>
+        <mc:set name="megatron.prometheus.gateway.server" value="localhost"/>
+        <mc:set name="megatron.prometheus.gateway.port" value="9091"/>
+        <mc:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
+        <mc:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
+        <mc:set name="megatron.prometheus.gateway.async" value="true"/>
+        <mc:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
+
       </mc:megatron-config>
     </config>
 

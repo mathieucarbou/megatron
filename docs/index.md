@@ -24,6 +24,9 @@
   - [Prometheus StatsD Plugin](#prometheus-statsd-plugin)
     - [Configuration](#configuration-6)
     - [Screenshots](#screenshots-5)
+  - [Prometheus PushGateway Plugin](#prometheus-pushgateway-plugin)
+    - [Configuration](#configuration-7)
+    - [Screenshots](#screenshots-6)
   - [Write your own plugin!](#write-your-own-plugin)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -400,6 +403,52 @@ docker run -d -p 9102:9102 -p 9125:9125/udp \
 ```
 
 See [https://hub.docker.com/r/prom/statsd-exporter/](https://hub.docker.com/r/prom/statsd-exporter/) 
+
+### Screenshots
+
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-1.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-1.png)
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-2.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-2.png)
+![https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-3.png](https://mathieucarbou.github.io/megatron/assets/images/plugin-prometheus-statsd-3.png)
+
+## Prometheus PushGateway Plugin
+
+The Prometheus PushGateway plugin supports __metrics tagging__ to facilitate aggregation filtering.
+See [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway).
+
+### Configuration
+
+1. Edit your `tc-config.xml` file to add the plugin configurations:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<tc-config xmlns="http://www.terracotta.org/config">
+  <plugins>
+    <config xmlns:mc='http://www.mycila.com/config/megatron-config'>
+      <mc:megatron-config>
+        <mc:statisticCollectorInterval unit="seconds">5</mc:statisticCollectorInterval>
+          <mc:set name="megatron.prometheus.gateway.enable" value="true"/>
+          <mc:set name="megatron.prometheus.gateway.server" value="localhost"/>
+          <mc:set name="megatron.prometheus.gateway.port" value="9091"/>
+          <mc:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
+          <mc:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
+          <mc:set name="megatron.prometheus.gateway.async" value="true"/>
+          <mc:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
+      </mc:megatron-config>
+    </config>
+  </plugins>
+</tc-config>
+```
+
+`megatron.prometheus.gateway.server` is your Prometheus PushGateway server address ([https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway)).
+
+You can run one by executing:
+
+```bash
+docker pull prom/pushgateway
+docker run -d -p 9091:9091 prom/pushgateway
+```
+
+See [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway) 
 
 ### Screenshots
 

@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron.udp;
 
+import com.mycila.megatron.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,16 +26,17 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public final class NonBlockingUdpClient implements UdpClient {
+import static com.mycila.megatron.Utils.closeSilently;
+
+public final class NonBlockingUdpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonBlockingUdpClient.class);
-  private static final Charset UTF8 = Charset.forName("UTF-8");
 
   private final InetSocketAddress target;
   private final BlockingQueue<String> messages;
@@ -63,17 +65,13 @@ public final class NonBlockingUdpClient implements UdpClient {
           String message = messages.poll(1, TimeUnit.SECONDS);
           if (message != null) {
             internalSend(message);
-            channel.send(ByteBuffer.wrap((message + "\n").getBytes(UTF8)), target);
           }
         } catch (InterruptedException e) {
           tryDequeue();
           closed = true;
-          try {
-            channel.close();
-          } catch (IOException ignored) {
-          }
+          closeSilently(channel);
         } catch (IOException e) {
-          LOGGER.error("ERR: {}", hostname, port, e.getMessage(), e);
+          LOGGER.warn("[{}:{}] ERR: {}", hostname, port, e.getMessage(), e);
         }
       }
     }, NonBlockingUdpClient.class.getSimpleName() + "[" + hostname + ":" + port + "]");
@@ -82,19 +80,18 @@ public final class NonBlockingUdpClient implements UdpClient {
 
   @Override
   public void close() {
-    closed = true;
+    if (!closed) {
+      closed = true;
 
-    try {
-      sender.join();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-    }
+      try {
+        sender.join();
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
 
-    tryDequeue();
+      tryDequeue();
 
-    try {
-      channel.close();
-    } catch (IOException ignored) {
+      closeSilently(channel);
     }
   }
 
@@ -106,9 +103,9 @@ public final class NonBlockingUdpClient implements UdpClient {
 
   private void internalSend(String message) throws IOException {
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("[{}:{}] Sending: {}", target.getHostName(), target.getPort(), message);
+      LOGGER.trace("[{}:{}] > {}", target.getHostName(), target.getPort(), message);
     }
-    ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(UTF8));
+    ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(StandardCharsets.UTF_8));
     channel.send(buffer, target);
   }
 
@@ -129,7 +126,7 @@ public final class NonBlockingUdpClient implements UdpClient {
     }
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     NonBlockingUdpClient client = new NonBlockingUdpClient(args[0], Integer.parseInt(args[1]));
     UUID uuid = UUID.randomUUID();
     for (int i = 0; i < 100; i++) {

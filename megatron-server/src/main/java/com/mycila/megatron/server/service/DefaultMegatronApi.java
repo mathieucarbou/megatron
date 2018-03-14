@@ -23,6 +23,7 @@ import org.terracotta.monitoring.PlatformService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -57,7 +58,7 @@ class DefaultMegatronApi implements MegatronApi {
       while ((c = inputStream.read()) != -1) {
         baos.write(c);
       }
-      return new String(baos.toByteArray(), "UTF-8");
+      return new String(baos.toByteArray(), StandardCharsets.UTF_8);
     } catch (IOException e) {
       return "";
     }

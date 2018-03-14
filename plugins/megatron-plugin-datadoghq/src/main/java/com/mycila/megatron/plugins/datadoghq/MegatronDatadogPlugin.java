@@ -79,7 +79,7 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
     if (!tags.isEmpty()) {
       message = message + "|#" + tags;
     }
-    udpClient.send(message);
+    client.send(message);
   }
 
 }

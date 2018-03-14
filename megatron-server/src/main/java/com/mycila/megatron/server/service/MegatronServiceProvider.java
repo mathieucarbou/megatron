@@ -94,7 +94,11 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
 
   @Override
   public void close() {
-    plugins.close();
+    try {
+      plugins.close();
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage(), e);
+    }
   }
 
   @Override

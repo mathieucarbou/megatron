@@ -16,11 +16,17 @@
     limitations under the License.
 
 -->
-<included>
-  <logger name="com.tc.objectserver" level="WARN"/>
-  <!--<logger name="org.terracotta.management" level="TRACE"/>-->
-  <logger name="com.mycila.megatron" level="TRACE"/>
-  <logger name="com.mycila.megatron.udp" level="INFO"/>
-  <logger name="com.mycila.megatron.http" level="TRACE"/>
-  <logger name="com.mycila.megatron.http.Http" level="INFO"/>
-</included>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>megatron-plugins</artifactId>
+    <groupId>com.mycila.megatron.plugins</groupId>
+    <version>1.2.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>megatron-plugin-prometheus-gateway</artifactId>
+
+</project>

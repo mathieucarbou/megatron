@@ -194,6 +194,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>com.mycila.megatron.plugins</groupId>
+                  <artifactId>megatron-plugin-prometheus-gateway</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.mycila.megatron.plugins</groupId>
                   <artifactId>megatron-plugin-graphite</artifactId>
                   <version>${project.version}</version>
                 </artifactItem>

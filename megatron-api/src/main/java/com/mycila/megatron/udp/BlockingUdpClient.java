@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron.udp;
 
+import com.mycila.megatron.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,13 +26,14 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public final class BlockingUdpClient implements UdpClient {
+import static com.mycila.megatron.Utils.closeSilently;
+
+public final class BlockingUdpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BlockingUdpClient.class);
-  private static final Charset UTF8 = Charset.forName("UTF-8");
 
   private final InetSocketAddress target;
   private final DatagramChannel channel;
@@ -49,22 +51,21 @@ public final class BlockingUdpClient implements UdpClient {
 
   @Override
   public void close() {
-    closed = true;
-    try {
-      channel.close();
-    } catch (IOException ignored) {
+    if (!closed) {
+      closed = true;
+      closeSilently(channel);
     }
   }
 
   public void send(String message) {
     if (!closed) {
       if (LOGGER.isTraceEnabled()) {
-        LOGGER.trace("Sending: %s", target.getHostName(), target.getPort(), message);
+        LOGGER.trace("[{}:{}] > {}", target.getHostName(), target.getPort(), message);
       }
       try {
-        channel.send(ByteBuffer.wrap((message + "\n").getBytes(UTF8)), target);
+        channel.send(ByteBuffer.wrap((message + "\n").getBytes(StandardCharsets.UTF_8)), target);
       } catch (IOException e) {
-        LOGGER.error("ERR: {}", target.getHostName(), target.getPort(), e.getMessage(), e);
+        LOGGER.warn("[{}:{}] ERR: {}", target.getHostName(), target.getPort(), e.getMessage(), e);
       }
     }
   }
@@ -77,7 +78,7 @@ public final class BlockingUdpClient implements UdpClient {
     }
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     BlockingUdpClient client = new BlockingUdpClient(args[0], Integer.parseInt(args[1]));
     UUID uuid = UUID.randomUUID();
     for (int i = 0; i < 100; i++) {

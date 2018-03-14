@@ -72,6 +72,10 @@
     </dependency>
     <dependency>
       <groupId>com.mycila.megatron.plugins</groupId>
+      <artifactId>megatron-plugin-prometheus-gateway</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mycila.megatron.plugins</groupId>
       <artifactId>megatron-plugin-graphite</artifactId>
     </dependency>
     <dependency>
