@@ -19,6 +19,7 @@ import com.mycila.megatron.Client;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public final class BlockingHttpClient implements Client {
 
@@ -40,9 +41,11 @@ public final class BlockingHttpClient implements Client {
     }
   }
 
-  public void send(String message) {
+  public void send(List<String> messages) {
     if (!closed) {
-      Http.send(url, message);
+      for (String message : messages) {
+        Http.send(url, message);
+      }
     }
   }
 

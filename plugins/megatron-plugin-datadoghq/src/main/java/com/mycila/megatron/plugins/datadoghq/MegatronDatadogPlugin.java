@@ -25,6 +25,7 @@ import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Mathieu Carbou
@@ -44,8 +45,7 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
         .tagSupport()
         .globalTags(tags)
         .tagAssignementChar(":")
-        .tagSeparatorChar(",")
-    ;
+        .tagSeparatorChar(",");
     formatter.init();
   }
 
@@ -53,10 +53,10 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
   public void onNotification(ContextualNotification notification) {
     if (enable) {
       logger.trace("onNotification({})", notification.getType());
-      String metric = formatter.formatMetricName("events", notification, notification.getType());
+      String metric = formatter.formatMetricName("events", notification.getContext(), notification.getType());
       String value = formatter.formatValue(1);
-      String tags = formatter.formatTags(notification);
-      send(metric, value, tags, "c");
+      String tags = formatter.formatTags(notification.getContext());
+      client.send(formatLine(metric, value, tags, "c"));
     }
   }
 
@@ -65,21 +65,24 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
     if (enable) {
       Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
-      String tags = formatter.formatTags(contextualStatistics);
-      for (Map.Entry<String, Number> entry : statistics.entrySet()) {
-        String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
-        String value = formatter.formatValue(entry.getValue());
-        send(metric, value, tags, "g");
-      }
+      String tags = formatter.formatTags(contextualStatistics.getContext());
+      client.send(statistics.entrySet()
+          .stream()
+          .map(entry -> {
+            String metric = formatter.formatMetricName("statistics", contextualStatistics.getContext(), entry.getKey());
+            String value = formatter.formatValue(entry.getValue());
+            return formatLine(metric, value, tags, "g");
+          })
+          .collect(Collectors.toList()));
     }
   }
 
-  private void send(String metric, String value, String tags, String type) {
+  private static String formatLine(String metric, String value, String tags, String type) {
     String message = metric + ":" + value + "|" + type;
     if (!tags.isEmpty()) {
       message = message + "|#" + tags;
     }
-    client.send(message);
+    return message;
   }
 
 }

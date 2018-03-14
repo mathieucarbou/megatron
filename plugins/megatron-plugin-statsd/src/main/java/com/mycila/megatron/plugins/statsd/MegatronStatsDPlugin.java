@@ -25,6 +25,7 @@ import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Mathieu Carbou
@@ -48,9 +49,9 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
   public void onNotification(ContextualNotification notification) {
     if (enable) {
       logger.trace("onNotification({})", notification.getType());
-      String metric = formatter.formatMetricName("events", notification, notification.getType());
+      String metric = formatter.formatMetricName("events", notification.getContext(), notification.getType());
       String value = formatter.formatValue(1);
-      send(metric, value, "c");
+      client.send(formatLine(metric, value, "c"));
     }
   }
 
@@ -59,16 +60,19 @@ public class MegatronStatsDPlugin extends AbstractMegatronUdpPlugin {
     if (enable) {
       Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
       logger.trace("onStatistics({})", statistics.size());
-      for (Map.Entry<String, Number> entry : statistics.entrySet()) {
-        String metric = formatter.formatMetricName("statistics", contextualStatistics, entry.getKey());
-        String value = formatter.formatValue(entry.getValue());
-        send(metric, value, "g");
-      }
+      client.send(statistics.entrySet()
+          .stream()
+          .map(entry -> {
+            String metric = formatter.formatMetricName("statistics", contextualStatistics.getContext(), entry.getKey());
+            String value = formatter.formatValue(entry.getValue());
+            return formatLine(metric, value, "g");
+          })
+          .collect(Collectors.toList()));
     }
   }
 
-  private void send(String metric, String value, String type) {
-    client.send(metric + ":" + value + "|" + type);
+  private static String formatLine(String metric, String value, String type) {
+    return metric + ":" + value + "|" + type;
   }
 
 }

@@ -22,7 +22,6 @@ import org.terracotta.management.model.cluster.Server;
 import org.terracotta.management.model.cluster.ServerEntity;
 import org.terracotta.management.model.cluster.Stripe;
 import org.terracotta.management.model.context.Context;
-import org.terracotta.management.model.context.Contextual;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -109,9 +108,9 @@ public class DefaultFormatter implements Formatter {
   }
 
   @Override
-  public String formatMetricName(String prefix, Contextual contextual, String metricName) {
+  public String formatMetricName(String prefix, Context context, String metricName) {
     metricName = escape(metricName);
-    String metric = tagSupport ? buildSimplePrefix(contextual) : buildFullPrefix(contextual);
+    String metric = tagSupport ? buildSimplePrefix(context) : buildFullPrefix(context);
     // add suffix (exact stat name)
     metric = metric.isEmpty() ? metricName : metricName.isEmpty() ? metric : (metric + prefixSeparator + metricName);
     // add prefix (i.e. event, statistic, etc
@@ -122,11 +121,11 @@ public class DefaultFormatter implements Formatter {
   }
 
   @Override
-  public String formatTags(Contextual contextual) {
+  public String formatTags(Context context) {
     if (!tagSupport) {
       return "";
     }
-    String tags = tags(contextual.getContext()).entrySet()
+    String tags = tags(context).entrySet()
         .stream()
         .map(e -> e.getKey() + tagAssignement + surroundValue(e.getValue()))
         .collect(Collectors.joining(tagSeparator));
@@ -156,8 +155,7 @@ public class DefaultFormatter implements Formatter {
     return tags;
   }
 
-  private String buildSimplePrefix(Contextual contextual) {
-    Context context = contextual.getContext();
+  private String buildSimplePrefix(Context context) {
     List<String> prefixes = new ArrayList<>();
     if (context.contains(Client.KEY)) {
       prefixes.add("client");
@@ -190,8 +188,7 @@ public class DefaultFormatter implements Formatter {
     return String.join(prefixSeparator, prefixes);
   }
 
-  private String buildFullPrefix(Contextual contextual) {
-    Context context = contextual.getContext();
+  private String buildFullPrefix(Context context) {
     List<String> prefixes = new ArrayList<>();
     if (context.contains(Client.KEY)) {
       ClientIdentifier clientIdentifier = ClientIdentifier.valueOf(context.get(Client.KEY));

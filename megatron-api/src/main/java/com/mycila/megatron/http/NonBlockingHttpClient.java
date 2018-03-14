@@ -19,6 +19,7 @@ import com.mycila.megatron.Client;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -74,9 +75,9 @@ public final class NonBlockingHttpClient implements Client {
     }
   }
 
-  public void send(String message) {
+  public void send(List<String> messages) {
     if (!closed) {
-      messages.offer(message);
+      messages.forEach(this.messages::offer);
     }
   }
 

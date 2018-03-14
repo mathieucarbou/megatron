@@ -27,6 +27,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.UUID;
 
 import static com.mycila.megatron.Utils.closeSilently;
@@ -57,16 +58,18 @@ public final class BlockingUdpClient implements Client {
     }
   }
 
-  public void send(String message) {
+  public void send(List<String> messages) {
     if (!closed) {
-      if (LOGGER.isTraceEnabled()) {
-        LOGGER.trace("[{}:{}] > {}", target.getHostName(), target.getPort(), message);
-      }
-      try {
-        channel.send(ByteBuffer.wrap((message + "\n").getBytes(StandardCharsets.UTF_8)), target);
-      } catch (IOException e) {
-        LOGGER.warn("[{}:{}] ERR: {}", target.getHostName(), target.getPort(), e.getMessage(), e);
-      }
+      messages.forEach(message -> {
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("[{}:{}] > {}", target.getHostName(), target.getPort(), message);
+        }
+        try {
+          channel.send(ByteBuffer.wrap((message + "\n").getBytes(StandardCharsets.UTF_8)), target);
+        } catch (IOException e) {
+          LOGGER.warn("[{}:{}] ERR: {}", target.getHostName(), target.getPort(), e.getMessage(), e);
+        }
+      });
     }
   }
 
