@@ -17,6 +17,10 @@ package com.mycila.megatron;
 
 import org.terracotta.management.model.cluster.Cluster;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Mathieu Carbou
  */
@@ -32,11 +36,22 @@ public class EmptyMegatronApi implements MegatronApi {
 
   @Override
   public String getPlatformXMLConfiguration() {
-    return "";
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public String getServerName() {
-    return "";
+    throw new UnsupportedOperationException();
   }
+
+  @Override
+  public Executor getAsyncExecutor() {
+    return Runnable::run;
+  }
+
+  @Override
+  public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+    throw new UnsupportedOperationException();
+  }
+
 }
