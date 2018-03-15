@@ -243,7 +243,7 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
       try {
         plugin.onNotification(notification);
       } catch (Exception e) {
-        LOGGER.error("[{}] onNotification({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+        LOGGER.error("[{}] sendNotificationToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
       }
     });
   }
@@ -253,7 +253,7 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
       try {
         plugin.onStatistics(statistics);
       } catch (Exception e) {
-        LOGGER.error("[{}] onStatistics({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+        LOGGER.error("[{}] sendStatisticsToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
       }
     });
   }
