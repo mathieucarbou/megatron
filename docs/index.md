@@ -44,6 +44,8 @@ Megatron is a Terracotta server plugin that enables to query or stream statistic
 
 ## Installation
 
+### For Terracotta Servers
+
   1. Unzip the distribution at [https://github.com/mathieucarbou/megatron/releases](https://github.com/mathieucarbou/megatron/releases)
   2. Copy all the jar files from `server/plugins/lib` directory into your Terracotta Ehcache Kit ([http://www.ehcache.org/downloads/](http://www.ehcache.org/downloads/)).
   3. Configure your `tc-config.xml` file to add one or several properties to enable plugins. See `server/tc-config-sample.xml` as an example.
@@ -51,8 +53,6 @@ Megatron is a Terracotta server plugin that enables to query or stream statistic
 
 _Note_: some platforms, like Librato, NewRelix, Datadog, etc, require a StatsD server to be used. 
 The official StatsD server can be found at [https://github.com/etsy/statsd](https://github.com/etsy/statsd)
-
-### Usage
 
 After installation, just edit the properties for the plugins you want to activate.
 
@@ -62,9 +62,15 @@ Passive servers always send their data to the current active.
 So in case of a failover, it will change nothing for the plugins streaming data to some servers: the emitter will just change. 
 But for plugins like the REST plugin, then you'll gave to connect to the newly active server. 
 
+### Standalone Usage
+
+Coming soon!
+
 ### Cloud support
 
-Any megatron property can be also passed as a _Java System Property_ or an _Environment Variable_. For environment variables, property names must be set in upper-case and underscore replaces point.
+Any megatron property can be also passed as a _Java System Property_ or an _Environment Variable_. 
+
+For environment variables, property names must be set in upper-case and underscore replaces point.
 
 __Example:__
 
