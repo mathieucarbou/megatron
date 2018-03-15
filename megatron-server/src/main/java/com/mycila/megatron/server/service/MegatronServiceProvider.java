@@ -119,10 +119,11 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
         list.size(),
         list.isEmpty() ? "" : list.stream().map(p -> "\n - " + p.getClass().getName()).collect(Collectors.joining()));
 
-    LOGGER.info("init({})", megatronConfiguration);
-    plugins.init(megatronConfiguration);
-
-    api.thenAccept(plugins::setApi);
+    api.thenAccept(megatronApi -> {
+      LOGGER.info("init({})", megatronConfiguration);
+      plugins.setApi(megatronApi);
+      plugins.init(megatronConfiguration);
+    });
 
     return true;
   }
@@ -147,6 +148,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
+    threadGroup.interrupt();
   }
 
   @Override
@@ -166,7 +168,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     if (MegatronEventListener.class == serviceType && configuration instanceof MegatronServiceConfiguration) {
       ManagementService managementService = ((MegatronServiceConfiguration) configuration).getManagementService();
       PlatformService platformService = ((MegatronServiceConfiguration) configuration).getPlatformService();
-      api.complete(new ServerMegatronApi(managementService, platformService, platformConfiguration.getServerName(), executorService, scheduledExecutorService));
+      api.complete(new ServerMegatronApi(managementService, platformService, platformConfiguration.getServerName(), executorService, scheduledExecutorService, threadFactory));
       return serviceType.cast(plugins);
     }
 

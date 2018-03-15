@@ -19,14 +19,15 @@ import com.mycila.megatron.http.BlockingHttpClient;
 import com.mycila.megatron.http.NonBlockingHttpClient;
 import com.tc.classloader.CommonComponent;
 
+import java.net.URL;
+
 /**
  * @author Mathieu Carbou
  */
 @CommonComponent
 public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin {
 
-  @Config protected String server = "localhost";
-  @Config protected int port = 8125;
+  @Config protected URL url;
   @Config protected String prefix = "megatron";
   @Config protected int queueSize = Integer.MAX_VALUE;
   @Config protected boolean async = true;
@@ -37,8 +38,8 @@ public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin 
   @Override
   public void enable(MegatronConfiguration configuration) {
     client = async ?
-        new NonBlockingHttpClient(server, port, queueSize <= 0 ? Integer.MAX_VALUE : queueSize) :
-        new BlockingHttpClient(server, port);
+        new NonBlockingHttpClient(url, queueSize <= 0 ? Integer.MAX_VALUE : queueSize, getApi().getThreadFactory()) :
+        new BlockingHttpClient(url);
   }
 
   @Override

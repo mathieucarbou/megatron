@@ -20,6 +20,7 @@ import org.terracotta.management.model.cluster.Cluster;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
  */
 @CommonComponent
 public interface MegatronApi {
+
+  ThreadFactory getThreadFactory();
 
   Executor getAsyncExecutor();
 

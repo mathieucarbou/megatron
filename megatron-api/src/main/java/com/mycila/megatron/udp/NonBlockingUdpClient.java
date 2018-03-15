@@ -21,17 +21,21 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.channels.DatagramChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.mycila.megatron.Utils.closeSilently;
 
@@ -39,104 +43,97 @@ public final class NonBlockingUdpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonBlockingUdpClient.class);
 
-  private final InetSocketAddress target;
-  private final BlockingQueue<String> messages;
-  private final DatagramChannel channel;
+  private final BlockingQueue<List<String>> batches;
+  private final DatagramSocket channel;
+  private final String hostname;
+  private final int port;
   private final Thread sender;
 
+  private volatile InetSocketAddress cachedTarget;
   private volatile boolean closed;
 
-  public NonBlockingUdpClient(String hostname, int port) {
-    this(hostname, port, Integer.MAX_VALUE);
-  }
-
-  public NonBlockingUdpClient(String hostname, int port, int queueSize) {
-    target = resolve(hostname, port);
-    messages = new LinkedBlockingQueue<>(queueSize);
-
+  public NonBlockingUdpClient(String hostname, int port, int queueSize, ThreadFactory threadFactory) {
+    this.batches = new LinkedBlockingQueue<>(queueSize);
+    this.hostname = hostname;
+    this.port = port;
     try {
-      channel = DatagramChannel.open();
+      this.channel = new DatagramSocket();
     } catch (final IOException e) {
       throw new UncheckedIOException("Failed to start UDP client", e);
     }
-
-    sender = new Thread(() -> {
+    this.sender = threadFactory.newThread(() -> {
       while (!closed && !Thread.currentThread().isInterrupted()) {
         try {
-          String message = messages.poll(1, TimeUnit.SECONDS);
-          if (message != null) {
-            internalSend(message);
+          List<String> messages = batches.poll(1, TimeUnit.SECONDS);
+          if (messages != null) {
+            drainAndSend(messages);
           }
         } catch (InterruptedException e) {
-          tryDequeue();
+          drainAndSend(Collections.emptyList());
           closed = true;
-          closeSilently(channel);
-        } catch (IOException e) {
-          LOGGER.warn("[{}:{}] ERR: {}", hostname, port, e.getMessage(), e);
         }
       }
-    }, NonBlockingUdpClient.class.getSimpleName() + "[" + hostname + ":" + port + "]");
-    sender.start();
+    });
+    this.sender.start();
   }
 
   @Override
   public void close() {
     if (!closed) {
       closed = true;
-
+      LOGGER.info("Closing...");
       try {
         sender.join();
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
-
-      tryDequeue();
-
+      drainAndSend(Collections.emptyList());
       closeSilently(channel);
     }
   }
 
+  @Override
   public void send(List<String> messages) {
-    if (!closed) {
-      for (String message : messages) {
-        this.messages.offer(message);
-      }
+    if (!closed && !messages.isEmpty()) {
+      batches.offer(messages);
     }
   }
 
-  private void internalSend(String message) throws IOException {
+  private void drainAndSend(List<String> polled) {
+    List<List<String>> drained;
+    int size = batches.size();
+    if (size > 0) {
+      drained = new ArrayList<>(1 + size);
+      drained.add(polled);
+      batches.drainTo(drained);
+    } else {
+      drained = Collections.singletonList(polled);
+    }
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("[{}:{}] > {}", target.getHostName(), target.getPort(), message);
+      String message = drained.stream()
+          .flatMap(Collection::stream)
+          .collect(Collectors.joining("\n"));
+      LOGGER.trace("[{}:{}] UDP > \n{}", hostname, port, message);
     }
-    ByteBuffer buffer = ByteBuffer.wrap((message + "\n").getBytes(StandardCharsets.UTF_8));
-    channel.send(buffer, target);
-  }
-
-  private void tryDequeue() {
     try {
-      while (!messages.isEmpty()) {
-        internalSend(messages.poll());
+      InetSocketAddress target = getTarget();
+      for (List<String> messages : drained) {
+        for (String message : messages) {
+          byte[] bytes = (message + "\n").getBytes(StandardCharsets.UTF_8);
+          DatagramPacket packet = new DatagramPacket(bytes, bytes.length, target);
+          channel.send(packet);
+        }
       }
-    } catch (IOException ignored) {
+    } catch (IOException e) {
+      LOGGER.warn("[{}:{}] UDP ERROR: {}", hostname, port, e.getMessage(), e);
     }
   }
 
-  private static InetSocketAddress resolve(String hostname, int port) {
-    try {
-      return new InetSocketAddress(InetAddress.getByName(hostname), port);
-    } catch (UnknownHostException e) {
-      throw new UncheckedIOException(e);
+  private InetSocketAddress getTarget() throws UnknownHostException {
+    if (cachedTarget == null) {
+      cachedTarget = new InetSocketAddress(InetAddress.getByName(hostname), port);
     }
-  }
-
-  public static void main(String[] args) {
-    NonBlockingUdpClient client = new NonBlockingUdpClient(args[0], Integer.parseInt(args[1]));
-    UUID uuid = UUID.randomUUID();
-    for (int i = 0; i < 100; i++) {
-      client.send(i + " " + uuid);
-      //Thread.sleep(1_000);
-    }
-    client.close();
+    return cachedTarget;
   }
 
 }

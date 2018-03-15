@@ -427,8 +427,7 @@ See [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pu
       <mc:megatron-config>
         <mc:statisticCollectorInterval unit="seconds">5</mc:statisticCollectorInterval>
           <mc:set name="megatron.prometheus.gateway.enable" value="true"/>
-          <mc:set name="megatron.prometheus.gateway.server" value="localhost"/>
-          <mc:set name="megatron.prometheus.gateway.port" value="9091"/>
+          <mc:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
           <mc:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
           <mc:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
           <mc:set name="megatron.prometheus.gateway.async" value="true"/>
@@ -439,7 +438,7 @@ See [https://github.com/prometheus/pushgateway](https://github.com/prometheus/pu
 </tc-config>
 ```
 
-`megatron.prometheus.gateway.server` is your Prometheus PushGateway server address ([https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway)).
+`megatron.prometheus.gateway.url` is your Prometheus PushGateway server address ([https://github.com/prometheus/pushgateway](https://github.com/prometheus/pushgateway)).
 
 You can run one by executing:
 

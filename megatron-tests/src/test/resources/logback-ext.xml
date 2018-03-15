@@ -20,7 +20,6 @@
   <logger name="com.tc.objectserver" level="WARN"/>
   <!--<logger name="org.terracotta.management" level="TRACE"/>-->
   <logger name="com.mycila.megatron" level="TRACE"/>
-  <logger name="com.mycila.megatron.udp" level="INFO"/>
-  <logger name="com.mycila.megatron.http" level="TRACE"/>
-  <logger name="com.mycila.megatron.http.Http" level="INFO"/>
+  <!--<logger name="com.mycila.megatron.udp" level="INFO"/>-->
+  <!--<logger name="com.mycila.megatron.http.Http" level="INFO"/>-->
 </included>

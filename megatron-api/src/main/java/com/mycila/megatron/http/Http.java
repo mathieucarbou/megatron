@@ -33,9 +33,9 @@ public class Http {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Http.class);
 
-  public static void send(URL url, String text) {
+  public static void post(URL url, String text) {
     if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("[{}] send() > \n{}", url.getAuthority(), text);
+      LOGGER.trace("[{}] POST > \n{}", url.getAuthority(), text);
     }
 
     try {
@@ -54,10 +54,10 @@ public class Http {
         os.flush();
       }
 
-      String ret = connection.getResponseMessage();
+      String status = connection.getResponseMessage();
       int code = connection.getResponseCode();
       if (code / 100 == 2) {
-        LOGGER.trace("[{}] send() < {}", url.getAuthority(), ret);
+        LOGGER.trace("[{}] POST < {} {}", url.getAuthority(), code, status);
       } else {
         String err = "";
         try (InputStream is = connection.getInputStream()) {
@@ -68,10 +68,10 @@ public class Http {
           err += read(is);
         } catch (IOException ignored) {
         }
-        LOGGER.warn("[{}] send() < {}\n{}", url.getAuthority(), ret, err);
+        LOGGER.warn("[{}] POST < {} {}\n{}", url.getAuthority(), code, status, err);
       }
     } catch (IOException e) {
-      LOGGER.warn("[{}] send() ERR: {}", url.getAuthority(), e.getMessage(), e);
+      LOGGER.warn("[{}] POST ERROR: {}", url.getAuthority(), e.getMessage(), e);
     }
   }
 

@@ -29,6 +29,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,13 +42,15 @@ class ServerMegatronApi implements MegatronApi {
   private final String serverName;
   private final ExecutorService executorService;
   private final ScheduledExecutorService scheduledExecutorService;
+  private final ThreadFactory threadFactory;
 
-  ServerMegatronApi(ManagementService managementService, PlatformService platformService, String serverName, ExecutorService executorService, ScheduledExecutorService scheduledExecutorService) {
+  ServerMegatronApi(ManagementService managementService, PlatformService platformService, String serverName, ExecutorService executorService, ScheduledExecutorService scheduledExecutorService, ThreadFactory threadFactory) {
     this.managementService = Objects.requireNonNull(managementService);
     this.platformService = Objects.requireNonNull(platformService);
     this.serverName = Objects.requireNonNull(serverName);
     this.executorService = Objects.requireNonNull(executorService);
     this.scheduledExecutorService = Objects.requireNonNull(scheduledExecutorService);
+    this.threadFactory = Objects.requireNonNull(threadFactory);
   }
 
   @Override
@@ -76,6 +79,11 @@ class ServerMegatronApi implements MegatronApi {
   @Override
   public String getServerName() {
     return serverName;
+  }
+
+  @Override
+  public ThreadFactory getThreadFactory() {
+    return threadFactory;
   }
 
   @Override
