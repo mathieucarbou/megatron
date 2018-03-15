@@ -16,36 +16,35 @@
 package com.mycila.megatron.http;
 
 import com.mycila.megatron.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public final class BlockingHttpClient implements Client {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(BlockingHttpClient.class);
+
   private final URL url;
   private volatile boolean closed;
 
-  public BlockingHttpClient(String hostname, int port) {
-    try {
-      this.url = new URL("http://" + hostname + ":" + port + "/metrics/job/megatron");
-    } catch (MalformedURLException e) {
-      throw new IllegalArgumentException(hostname + ":" + port + " invalid: " + e.getMessage(), e);
-    }
+  public BlockingHttpClient(URL url) {
+    this.url = url;
   }
 
   @Override
   public void close() {
     if (!closed) {
       closed = true;
+      LOGGER.info("Closing...");
     }
   }
 
+  @Override
   public void send(List<String> messages) {
-    if (!closed) {
-      for (String message : messages) {
-        Http.send(url, message);
-      }
+    if (!closed && !messages.isEmpty()) {
+      Http.post(url, String.join("\n", messages) + "\n");
     }
   }
 

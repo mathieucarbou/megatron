@@ -16,49 +16,46 @@
 package com.mycila.megatron.http;
 
 import com.mycila.megatron.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public final class NonBlockingHttpClient implements Client {
 
-  private final BlockingQueue<String> messages;
+  private static final Logger LOGGER = LoggerFactory.getLogger(NonBlockingHttpClient.class);
+
+  private final BlockingQueue<List<String>> batches;
   private final Thread sender;
   private final URL url;
 
   private volatile boolean closed;
 
-  public NonBlockingHttpClient(String hostname, int port) {
-    this(hostname, port, Integer.MAX_VALUE);
-  }
-
-  public NonBlockingHttpClient(String hostname, int port, int queueSize) {
-    try {
-      this.url = new URL("http://" + hostname + ":" + port + "/metrics/job/megatron");
-    } catch (MalformedURLException e) {
-      throw new IllegalArgumentException(hostname + ":" + port + " invalid: " + e.getMessage(), e);
-    }
-
-    this.messages = new LinkedBlockingQueue<>(queueSize);
-
-    this.sender = new Thread(() -> {
+  public NonBlockingHttpClient(URL url, int queueSize, ThreadFactory threadFactory) {
+    this.url = url;
+    this.batches = new LinkedBlockingQueue<>(queueSize);
+    this.sender = threadFactory.newThread(() -> {
       while (!closed && !Thread.currentThread().isInterrupted()) {
         try {
-          String message = messages.poll(1, TimeUnit.SECONDS);
-          if (message != null) {
-            internalSend(message);
+          List<String> messages = batches.poll(1, TimeUnit.SECONDS);
+          if (messages != null) {
+            drainAndSend(messages);
           }
         } catch (InterruptedException e) {
-          tryDequeue();
+          drainAndSend(Collections.emptyList());
           closed = true;
         }
       }
-    }, NonBlockingHttpClient.class.getSimpleName() + "[" + hostname + ":" + port + "]");
-
+    });
     this.sender.start();
   }
 
@@ -66,29 +63,37 @@ public final class NonBlockingHttpClient implements Client {
   public void close() {
     if (!closed) {
       closed = true;
+      LOGGER.info("Closing...");
       try {
         sender.join();
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
-      tryDequeue();
+      drainAndSend(Collections.emptyList());
     }
   }
 
+  @Override
   public void send(List<String> messages) {
-    if (!closed) {
-      messages.forEach(this.messages::offer);
+    if (!closed && !messages.isEmpty()) {
+      batches.offer(messages);
     }
   }
 
-  private void internalSend(String message) {
-    Http.send(url, message);
-  }
-
-  private void tryDequeue() {
-    while (!messages.isEmpty()) {
-      internalSend(messages.poll());
+  private void drainAndSend(List<String> messages) {
+    List<List<String>> drained;
+    int size = batches.size();
+    if (size > 0) {
+      drained = new ArrayList<>(1 + size);
+      drained.add(messages);
+      batches.drainTo(drained);
+    } else {
+      drained = Collections.singletonList(messages);
     }
+    String message = drained.stream()
+        .flatMap(Collection::stream)
+        .collect(Collectors.joining("\n")) + "\n";
+    Http.post(url, message);
   }
 
 }

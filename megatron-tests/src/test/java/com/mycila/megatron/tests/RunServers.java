@@ -101,8 +101,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.prometheus.statsd.queueSize\" value=\"-1\"/>\n" +
 
           "    <mc:set name=\"megatron.prometheus.gateway.enable\" value=\"true\"/>\n" +
-          "    <mc:set name=\"megatron.prometheus.gateway.server\" value=\"localhost\"/>\n" +
-          "    <mc:set name=\"megatron.prometheus.gateway.port\" value=\"9091\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.url\" value=\"http://localhost:9091/metrics/job/megatron\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.prefix\" value=\"megatron\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.tags\" value=\"stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.async\" value=\"true\"/>\n" +

@@ -21,10 +21,13 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -41,7 +44,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Config protected boolean enable = false;
 
   private final Map<String, Object> pluginConfig = new TreeMap<>();
-  private MegatronApi api = new EmptyMegatronApi();
+  private MegatronApi api;
 
   public AbstractMegatronPlugin() {
     converters.put(String.class, s -> s);
@@ -51,6 +54,13 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     converters.put(float.class, Float::parseFloat);
     converters.put(double.class, Double::parseDouble);
     converters.put(List.class, Double::parseDouble);
+    converters.put(URL.class, s -> {
+      try {
+        return new URL(s);
+      } catch (MalformedURLException e) {
+        throw new IllegalArgumentException(s, e);
+      }
+    });
   }
 
   @Override
@@ -137,7 +147,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   protected void enable(MegatronConfiguration configuration) {}
 
   protected MegatronApi getApi() {
-    return api;
+    return Objects.requireNonNull(api);
   }
 
 }

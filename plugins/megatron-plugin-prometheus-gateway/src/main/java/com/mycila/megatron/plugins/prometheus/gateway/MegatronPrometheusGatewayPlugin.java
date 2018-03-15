@@ -83,7 +83,7 @@ public class MegatronPrometheusGatewayPlugin extends AbstractMegatronHttpPlugin 
     if (!tags.isEmpty()) {
       message = message + "{" + tags + "}";
     }
-    return message + " " + value + "\n";
+    return message + " " + value;
   }
 
 }
