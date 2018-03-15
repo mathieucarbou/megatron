@@ -120,6 +120,8 @@ public class RunServers {
   public Cluster voltron = newCluster(N_SERVERS)
       .in(new File("target/galvan"))
       .withServiceFragment(RESOURCE_CONFIG)
+      //.withSystemProperty("megatron.console.enable", "true")
+      //.withSystemProperty("megatron.prometheus.gateway.prefix", "FOO")
       .build();
 
   private CacheManager cacheManager;

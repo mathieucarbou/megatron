@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron.server.config;
 
+import com.mycila.megatron.DefaultMegatronConfiguration;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.server.config.model.MegatronConfigType;
 import com.mycila.megatron.server.config.model.SetType;

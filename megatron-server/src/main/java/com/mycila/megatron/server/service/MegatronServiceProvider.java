@@ -20,7 +20,7 @@ import com.mycila.megatron.MegatronApi;
 import com.mycila.megatron.MegatronConfiguration;
 import com.mycila.megatron.MegatronEventListener;
 import com.mycila.megatron.MegatronPlugin;
-import com.mycila.megatron.server.config.DefaultMegatronConfiguration;
+import com.mycila.megatron.DefaultMegatronConfiguration;
 import com.tc.classloader.BuiltinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

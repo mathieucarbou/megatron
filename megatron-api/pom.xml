@@ -35,7 +35,7 @@
     </dependency>
     <dependency>
       <groupId>org.terracotta</groupId>
-      <artifactId>standard-cluster-services</artifactId>
+      <artifactId>packaging-support</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>

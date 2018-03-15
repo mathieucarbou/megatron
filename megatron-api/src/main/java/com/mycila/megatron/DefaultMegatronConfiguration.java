@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mycila.megatron.server.config;
+package com.mycila.megatron;
 
-import com.mycila.megatron.MegatronConfiguration;
 import com.tc.classloader.CommonComponent;
-import org.terracotta.entity.StateDumpCollector;
-import org.terracotta.entity.StateDumpable;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author Mathieu Carbou
  */
 @CommonComponent
-public class DefaultMegatronConfiguration implements MegatronConfiguration, StateDumpable {
+public class DefaultMegatronConfiguration implements MegatronConfiguration {
 
   private long statisticCollectorInterval = 5_000L;
   private final Properties properties = new Properties();
@@ -39,26 +36,37 @@ public class DefaultMegatronConfiguration implements MegatronConfiguration, Stat
 
   @Override
   public String getProperty(String key, String def) {
+    String val = System.getenv(key.toUpperCase().replace('.', '_'));
+    if (val != null) {
+      return val;
+    }
+    val = System.getProperty(key);
+    if (val != null) {
+      return val;
+    }
     return properties.getProperty(key, def);
   }
 
-  @Override
-  public void addStateTo(StateDumpCollector stateDumpCollector) {
-    stateDumpCollector.addState("statisticCollectorInterval", String.valueOf(stateDumpCollector));
-    stateDumpCollector.addState("properties", properties);
-  }
-
-  public void setStatisticCollectorInterval(long statisticCollectorInterval, TimeUnit timeUnit) {
+  public DefaultMegatronConfiguration setStatisticCollectorInterval(long statisticCollectorInterval, TimeUnit timeUnit) {
     this.statisticCollectorInterval = TimeUnit.MILLISECONDS.convert(statisticCollectorInterval, timeUnit);
+    return this;
   }
 
-  public void setProperty(String name, String val) {
+  public DefaultMegatronConfiguration setProperty(String name, String val) {
     properties.setProperty(name, val);
+    return this;
   }
 
-  public void merge(DefaultMegatronConfiguration configuration) {
+  @SuppressWarnings("CollectionAddedToSelf")
+  public DefaultMegatronConfiguration setProperties(Properties properties) {
+    properties.putAll(properties);
+    return this;
+  }
+
+  public DefaultMegatronConfiguration merge(DefaultMegatronConfiguration configuration) {
     this.statisticCollectorInterval = configuration.statisticCollectorInterval;
     this.properties.putAll(configuration.properties);
+    return this;
   }
 
   @Override
@@ -69,4 +77,5 @@ public class DefaultMegatronConfiguration implements MegatronConfiguration, Stat
     sb.append('}');
     return sb.toString();
   }
+
 }
