@@ -41,6 +41,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -59,32 +60,30 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
       MegatronEventListener.class
   );
 
-  private static final AtomicLong schedulerCounter = new AtomicLong();
-  private static final AtomicLong executerCounter = new AtomicLong();
-
+  private final AtomicLong threadCounter = new AtomicLong();
+  private final ThreadGroup threadGroup = new ThreadGroup("Megatron");
+  private final ThreadFactory threadFactory = r -> {
+    Thread t = new Thread(threadGroup, r, "megatron-" + threadCounter.incrementAndGet(), 0);
+    if (t.isDaemon()) {
+      t.setDaemon(false);
+    }
+    if (t.getPriority() != Thread.NORM_PRIORITY) {
+      t.setPriority(Thread.NORM_PRIORITY);
+    }
+    t.setUncaughtExceptionHandler((thread, err) -> LOGGER.error("UncaughtException in thread " + thread.getName() + ": " + err.getMessage(), err));
+    return t;
+  };
   private final ScheduledExecutorService scheduledExecutorService = Executors.unconfigurableScheduledExecutorService(new ScheduledThreadPoolExecutor(
       Runtime.getRuntime().availableProcessors(),
-      r -> {
-        Thread t = Executors.defaultThreadFactory().newThread(r);
-        t.setDaemon(true);
-        t.setName("MegatronScheduler-" + schedulerCounter.incrementAndGet());
-        t.setUncaughtExceptionHandler((thread, err) -> LOGGER.error("UncaughtException in thread " + thread.getName() + ": " + err.getMessage(), err));
-        return t;
-      },
+      threadFactory,
       new ThreadPoolExecutor.AbortPolicy()
   ));
 
   private final ExecutorService executorService = Executors.unconfigurableExecutorService(new ThreadPoolExecutor(
-      0, Math.min(Integer.MAX_VALUE / 100, Runtime.getRuntime().availableProcessors()) * 100,
+      0, Integer.MAX_VALUE,
       10, TimeUnit.SECONDS,
       new SynchronousQueue<>(),
-      r -> {
-        Thread t = Executors.defaultThreadFactory().newThread(r);
-        t.setDaemon(true);
-        t.setName("MegatronScheduler-" + schedulerCounter.incrementAndGet());
-        t.setUncaughtExceptionHandler((thread, err) -> LOGGER.error("UncaughtException in thread " + thread.getName() + ": " + err.getMessage(), err));
-        return t;
-      },
+      threadFactory,
       new ThreadPoolExecutor.AbortPolicy()
   ));
 
@@ -167,7 +166,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     if (MegatronEventListener.class == serviceType && configuration instanceof MegatronServiceConfiguration) {
       ManagementService managementService = ((MegatronServiceConfiguration) configuration).getManagementService();
       PlatformService platformService = ((MegatronServiceConfiguration) configuration).getPlatformService();
-      api.complete(new DefaultMegatronApi(managementService, platformService, platformConfiguration.getServerName(), executorService, scheduledExecutorService));
+      api.complete(new ServerMegatronApi(managementService, platformService, platformConfiguration.getServerName(), executorService, scheduledExecutorService));
       return serviceType.cast(plugins);
     }
 

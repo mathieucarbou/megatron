@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Mathieu Carbou
  */
-class DefaultMegatronApi implements MegatronApi {
+class ServerMegatronApi implements MegatronApi {
 
   private final ManagementService managementService;
   private final PlatformService platformService;
@@ -42,7 +42,7 @@ class DefaultMegatronApi implements MegatronApi {
   private final ExecutorService executorService;
   private final ScheduledExecutorService scheduledExecutorService;
 
-  DefaultMegatronApi(ManagementService managementService, PlatformService platformService, String serverName, ExecutorService executorService, ScheduledExecutorService scheduledExecutorService) {
+  ServerMegatronApi(ManagementService managementService, PlatformService platformService, String serverName, ExecutorService executorService, ScheduledExecutorService scheduledExecutorService) {
     this.managementService = Objects.requireNonNull(managementService);
     this.platformService = Objects.requireNonNull(platformService);
     this.serverName = Objects.requireNonNull(serverName);
