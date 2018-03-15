@@ -69,13 +69,28 @@ public class DisoveringMegatronPlugins implements MegatronPlugin {
   }
 
   @Override
-  public void init(MegatronConfiguration configuration) {
-    plugins.forEach(plugin -> plugin.init(configuration));
+  public void init(MegatronConfiguration configuration) throws ConfigurationException {
+    ConfigurationException configurationException = new ConfigurationException("Megatron configuration failed for some plugins, they will be disabled. See stacktrace for more information.");
+    for (MegatronPlugin plugin : plugins) {
+      try {
+        plugin.init(configuration);
+      } catch (RuntimeException e) {
+        configurationException.addSuppressed(e);
+      }
+    }
+    if (configurationException.getSuppressed().length > 0) {
+      throw configurationException;
+    }
   }
 
   @Override
   public boolean isEnable() {
     return plugins.stream().allMatch(MegatronPlugin::isEnable);
+  }
+
+  @Override
+  public boolean isInitialized() {
+    return plugins.stream().allMatch(MegatronPlugin::isInitialized);
   }
 
   @Override

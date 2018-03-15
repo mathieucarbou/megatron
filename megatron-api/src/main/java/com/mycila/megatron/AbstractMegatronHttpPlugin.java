@@ -27,7 +27,7 @@ import java.net.URL;
 @CommonComponent
 public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin {
 
-  @Config protected URL url;
+  @Config(required = true) protected URL url;
   @Config protected String prefix = "megatron";
   @Config protected int queueSize = Integer.MAX_VALUE;
   @Config protected boolean async = true;

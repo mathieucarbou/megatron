@@ -17,23 +17,19 @@ package com.mycila.megatron;
 
 import com.tc.classloader.CommonComponent;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * @author Mathieu Carbou
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-@Inherited
 @CommonComponent
-public @interface Config {
-  String value() default "";
+public class ConfigurationException extends MegatronException {
 
-  String split() default ",|;";
+  private static final long serialVersionUID = 1L;
 
-  boolean required() default false;
+  public ConfigurationException(String message) {
+    super(message);
+  }
+
+  public ConfigurationException(Throwable cause) {
+    super(cause);
+  }
 }

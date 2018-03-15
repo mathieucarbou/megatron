@@ -44,7 +44,9 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Config protected boolean enable = false;
 
   private final Map<String, Object> pluginConfig = new TreeMap<>();
-  private MegatronApi api;
+
+  private volatile boolean initialized;
+  private volatile MegatronApi api;
 
   public AbstractMegatronPlugin() {
     converters.put(String.class, s -> s);
@@ -69,7 +71,47 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   }
 
   @Override
-  public final void init(MegatronConfiguration configuration) {
+  public final void init(MegatronConfiguration configuration) throws ConfigurationException {
+    if (!initialized) {
+      try {
+        logger.trace("init()");
+
+        injectConfig(configuration);
+
+        if (logger.isInfoEnabled()) {
+          StringBuilder log = new StringBuilder("Plugin initialized:");
+          for (Map.Entry<String, Object> entry : pluginConfig.entrySet()) {
+            Object value = entry.getValue();
+            if (value != null && value.getClass().isArray()) {
+              if (value.getClass().getComponentType().isPrimitive()) {
+                try {
+                  value = Arrays.class.getMethod("toString", value.getClass()).invoke(null, value);
+                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                  throw new ConfigurationException(e);
+                }
+              } else {
+                value = Arrays.toString((Object[]) value);
+              }
+            }
+            log.append("\n - ").append(entry.getKey()).append("=").append(value);
+          }
+          logger.info("{}", log);
+        }
+      } catch (ConfigurationException e) {
+        enable = false;
+        throw e;
+      }
+
+      initialized = true;
+
+      if (enable) {
+        logger.info("Enabling plugin...");
+        enable(configuration);
+      }
+    }
+  }
+
+  private void injectConfig(MegatronConfiguration configuration) throws ConfigurationException {
     Namespace namespace = getClass().getAnnotation(Namespace.class);
     String ns = namespace == null ? "" : (namespace.value() + ".");
 
@@ -80,9 +122,13 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
           .forEach(field -> {
             Config config = field.getAnnotation(Config.class);
             String name = config.value().isEmpty() ? field.getName() : config.value();
-            String value = configuration.getProperty(ns + name);
-            field.setAccessible(true);
-            if (value != null) {
+            String propertyKey = ns + name;
+            String value = configuration.getProperty(propertyKey);
+            if (value == null) {
+              if (config.required()) {
+                throw new ConfigurationException("Missing configuration '" + propertyKey + "' for plugin " + getClass().getSimpleName());
+              }
+            } else {
               Object converted;
               if (field.getType().isArray()) {
                 String[] values = value.split(config.split());
@@ -95,48 +141,35 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
                 converted = converters.get(field.getType()).apply(value);
               }
               try {
+                if (!field.isAccessible()) {
+                  field.setAccessible(true);
+                }
                 field.set(this, converted);
               } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new ConfigurationException(e);
               }
             }
             try {
-              this.pluginConfig.put(ns + name, field.get(this));
+              if (!field.isAccessible()) {
+                field.setAccessible(true);
+              }
+              this.pluginConfig.put(propertyKey, field.get(this));
             } catch (IllegalAccessException e) {
-              throw new RuntimeException(e);
+              throw new ConfigurationException(e);
             }
           });
       c = c.getSuperclass();
-    }
-
-    if (logger.isInfoEnabled()) {
-      StringBuilder log = new StringBuilder("init()");
-      for (Map.Entry<String, Object> entry : pluginConfig.entrySet()) {
-        Object value = entry.getValue();
-        if (value.getClass().isArray()) {
-          if (value.getClass().getComponentType().isPrimitive()) {
-            try {
-              value = Arrays.class.getMethod("toString", value.getClass()).invoke(null, value);
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-              throw new RuntimeException(e);
-            }
-          } else {
-            value = Arrays.toString((Object[]) value);
-          }
-        }
-        log.append("\n - ").append(entry.getKey()).append("=").append(value);
-      }
-      logger.info("{}", log);
-    }
-
-    if (enable) {
-      enable(configuration);
     }
   }
 
   @Override
   public final boolean isEnable() {
     return enable;
+  }
+
+  @Override
+  public final boolean isInitialized() {
+    return initialized;
   }
 
   @Override
