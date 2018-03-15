@@ -41,12 +41,17 @@ public interface MegatronPlugin extends MegatronEventListener, Closeable {
    * Called at plugin initialization time.
    * Can be used to start a socket or prepare the streaming and access the plugin configuration.
    */
-  default void init(MegatronConfiguration configuration) {}
+  default void init(MegatronConfiguration configuration) throws ConfigurationException {}
 
   /**
    * @return True is this plugin must be enabled
    */
   default boolean isEnable() { return false; }
+
+  /**
+   * @return True is this plugin is initialized
+   */
+  default boolean isInitialized() { return false; }
 
   /**
    * Close the plugin
