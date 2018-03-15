@@ -36,6 +36,14 @@ import java.io.Closeable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -51,11 +59,39 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
       MegatronEventListener.class
   );
 
+  private static final AtomicLong schedulerCounter = new AtomicLong();
+  private static final AtomicLong executerCounter = new AtomicLong();
+
+  private final ScheduledExecutorService scheduledExecutorService = Executors.unconfigurableScheduledExecutorService(new ScheduledThreadPoolExecutor(
+      Runtime.getRuntime().availableProcessors(),
+      r -> {
+        Thread t = Executors.defaultThreadFactory().newThread(r);
+        t.setDaemon(true);
+        t.setName("MegatronScheduler-" + schedulerCounter.incrementAndGet());
+        t.setUncaughtExceptionHandler((thread, err) -> LOGGER.error("UncaughtException in thread " + thread.getName() + ": " + err.getMessage(), err));
+        return t;
+      },
+      new ThreadPoolExecutor.AbortPolicy()
+  ));
+
+  private final ExecutorService executorService = Executors.unconfigurableExecutorService(new ThreadPoolExecutor(
+      0, Math.min(Integer.MAX_VALUE / 100, Runtime.getRuntime().availableProcessors()) * 100,
+      10, TimeUnit.SECONDS,
+      new SynchronousQueue<>(),
+      r -> {
+        Thread t = Executors.defaultThreadFactory().newThread(r);
+        t.setDaemon(true);
+        t.setName("MegatronScheduler-" + schedulerCounter.incrementAndGet());
+        t.setUncaughtExceptionHandler((thread, err) -> LOGGER.error("UncaughtException in thread " + thread.getName() + ": " + err.getMessage(), err));
+        return t;
+      },
+      new ThreadPoolExecutor.AbortPolicy()
+  ));
+
   private final DisoveringMegatronPlugins plugins = new DisoveringMegatronPlugins();
-
   private final DefaultMegatronConfiguration megatronConfiguration = new DefaultMegatronConfiguration();
-  private PlatformConfiguration platformConfiguration;
 
+  private PlatformConfiguration platformConfiguration;
   private CompletableFuture<MegatronApi> api = new CompletableFuture<>();
 
   public MegatronServiceProvider() {
@@ -94,10 +130,23 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
 
   @Override
   public void close() {
+    LOGGER.info("Closing...");
     try {
       plugins.close();
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
+    }
+    scheduledExecutorService.shutdown();
+    executorService.shutdown();
+    try {
+      if (!executorService.awaitTermination(20, TimeUnit.SECONDS)) {
+        LOGGER.error("Some tasks did not terminated within 10 seconds");
+      }
+      if (!scheduledExecutorService.awaitTermination(20, TimeUnit.SECONDS)) {
+        LOGGER.error("Some tasks did not terminated within 10 seconds");
+      }
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -118,7 +167,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     if (MegatronEventListener.class == serviceType && configuration instanceof MegatronServiceConfiguration) {
       ManagementService managementService = ((MegatronServiceConfiguration) configuration).getManagementService();
       PlatformService platformService = ((MegatronServiceConfiguration) configuration).getPlatformService();
-      api.complete(new DefaultMegatronApi(managementService, platformService, platformConfiguration.getServerName()));
+      api.complete(new DefaultMegatronApi(managementService, platformService, platformConfiguration.getServerName(), executorService, scheduledExecutorService));
       return serviceType.cast(plugins);
     }
 

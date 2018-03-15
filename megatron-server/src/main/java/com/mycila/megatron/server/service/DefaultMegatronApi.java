@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Mathieu Carbou
@@ -34,11 +39,15 @@ class DefaultMegatronApi implements MegatronApi {
   private final ManagementService managementService;
   private final PlatformService platformService;
   private final String serverName;
+  private final ExecutorService executorService;
+  private final ScheduledExecutorService scheduledExecutorService;
 
-  DefaultMegatronApi(ManagementService managementService, PlatformService platformService, String serverName) {
+  DefaultMegatronApi(ManagementService managementService, PlatformService platformService, String serverName, ExecutorService executorService, ScheduledExecutorService scheduledExecutorService) {
     this.managementService = Objects.requireNonNull(managementService);
     this.platformService = Objects.requireNonNull(platformService);
-    this.serverName = serverName;
+    this.serverName = Objects.requireNonNull(serverName);
+    this.executorService = Objects.requireNonNull(executorService);
+    this.scheduledExecutorService = Objects.requireNonNull(scheduledExecutorService);
   }
 
   @Override
@@ -67,6 +76,16 @@ class DefaultMegatronApi implements MegatronApi {
   @Override
   public String getServerName() {
     return serverName;
+  }
+
+  @Override
+  public Executor getAsyncExecutor() {
+    return executorService;
+  }
+
+  @Override
+  public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+    return scheduledExecutorService.schedule(command, delay, unit);
   }
 
 }

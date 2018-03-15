@@ -18,11 +18,19 @@ package com.mycila.megatron;
 import com.tc.classloader.CommonComponent;
 import org.terracotta.management.model.cluster.Cluster;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Mathieu Carbou
  */
 @CommonComponent
 public interface MegatronApi {
+
+  Executor getAsyncExecutor();
+
+  ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit);
 
   Cluster readLiveTopology();
 
@@ -31,4 +39,5 @@ public interface MegatronApi {
   String getPlatformXMLConfiguration();
 
   String getServerName();
+
 }
