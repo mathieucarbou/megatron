@@ -16,12 +16,14 @@
 package com.mycila.megatron.http;
 
 import com.mycila.megatron.Client;
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.List;
 
+@CommonComponent
 public final class BlockingHttpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BlockingHttpClient.class);

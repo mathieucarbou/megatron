@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron.http;
 
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class Http {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Http.class);

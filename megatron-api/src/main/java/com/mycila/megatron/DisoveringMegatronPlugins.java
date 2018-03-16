@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron;
 
+import com.tc.classloader.CommonComponent;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
@@ -25,6 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class DisoveringMegatronPlugins implements MegatronPlugin {
 
   private final Collection<MegatronPlugin> plugins = new CopyOnWriteArrayList<>();

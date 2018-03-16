@@ -15,6 +15,8 @@
  */
 package com.mycila.megatron;
 
+import com.tc.classloader.CommonComponent;
+
 import java.io.Closeable;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public interface Client extends Closeable {
 
   @Override

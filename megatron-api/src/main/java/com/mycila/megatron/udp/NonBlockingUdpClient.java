@@ -16,6 +16,7 @@
 package com.mycila.megatron.udp;
 
 import com.mycila.megatron.Client;
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static com.mycila.megatron.Utils.closeSilently;
 
+@CommonComponent
 public final class NonBlockingUdpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonBlockingUdpClient.class);

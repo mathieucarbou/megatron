@@ -15,12 +15,15 @@
  */
 package com.mycila.megatron;
 
+import com.tc.classloader.CommonComponent;
+
 import java.io.Closeable;
 import java.io.IOException;
 
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class Utils {
 
   public static void closeSilently(Closeable... closeables) {
