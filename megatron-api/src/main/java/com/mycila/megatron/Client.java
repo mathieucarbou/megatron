@@ -18,8 +18,8 @@ package com.mycila.megatron;
 import com.tc.classloader.CommonComponent;
 
 import java.io.Closeable;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Mathieu Carbou
@@ -31,8 +31,13 @@ public interface Client extends Closeable {
   default void close() {}
 
   default void send(String message) {
-    send(Collections.singletonList(message));
+    send(Stream.of(message));
   }
 
-  void send(List<String> messages);
+  default void send(List<String> messages) {
+    send(messages.stream());
+  }
+
+  void send(Stream<String> messages);
+
 }

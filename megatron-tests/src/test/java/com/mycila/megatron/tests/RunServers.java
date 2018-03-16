@@ -53,9 +53,9 @@ public class RunServers {
   private static final String RESOURCE_CONFIG =
       "<config xmlns:mc='http://www.mycila.com/config/megatron-config'>" +
           "  <mc:megatron-config>" +
-          "    <mc:statisticCollectorInterval unit=\"seconds\">10</mc:statisticCollectorInterval>" +
+          "    <mc:statisticCollectorInterval unit=\"seconds\">5</mc:statisticCollectorInterval>" +
 
-          "    <mc:set name=\"megatron.console.enable\" value=\"false\"/>" +
+          "    <mc:set name=\"megatron.console.enable\" value=\"true\"/>" +
 
           "    <mc:set name=\"megatron.rest.enable\" value=\"false\"/>" +
           "    <mc:set name=\"megatron.rest.bindAddress\" value=\"0.0.0.0\"/>" +
@@ -92,7 +92,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.statsd.async\" value=\"true\"/>\n" +
           "    <mc:set name=\"megatron.statsd.queueSize\" value=\"-1\"/>\n" +
 
-          //"    <mc:set name=\"megatron.prometheus.statsd.enable\" value=\"false\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.statsd.enable\" value=\"false\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.server\" value=\"localhost\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.port\" value=\"9125\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.statsd.prefix\" value=\"megatron\"/>\n" +
@@ -101,7 +101,7 @@ public class RunServers {
           "    <mc:set name=\"megatron.prometheus.statsd.queueSize\" value=\"-1\"/>\n" +
 
           "    <mc:set name=\"megatron.prometheus.gateway.enable\" value=\"true\"/>\n" +
-          //"    <mc:set name=\"megatron.prometheus.gateway.url\" value=\"http://localhost:9091/metrics/job/megatron\"/>\n" +
+          "    <mc:set name=\"megatron.prometheus.gateway.url\" value=\"http://localhost:9091/metrics/job/megatron\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.prefix\" value=\"megatron\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.tags\" value=\"stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;\"/>\n" +
           "    <mc:set name=\"megatron.prometheus.gateway.async\" value=\"true\"/>\n" +

@@ -17,6 +17,8 @@ package com.mycila.megatron;
 
 import com.tc.classloader.CommonComponent;
 
+import java.util.Properties;
+
 /**
  * @author Mathieu Carbou
  */
@@ -26,6 +28,8 @@ public interface MegatronConfiguration {
   long getStatisticCollectorInterval();
 
   String getProperty(String key, String def);
+
+  Properties getProperties();
 
   default String getProperty(String key) {
     return getProperty(key, null);

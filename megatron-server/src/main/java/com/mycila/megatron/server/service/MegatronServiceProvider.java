@@ -125,7 +125,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
     try {
       plugins.close();
     } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
+      LOGGER.warn(e.getMessage(), e);
     }
     scheduledExecutorService.shutdown();
     executorService.shutdown();
@@ -166,7 +166,7 @@ public class MegatronServiceProvider implements ServiceProvider, Closeable {
         try {
           plugins.init(megatronConfiguration);
         } catch (ConfigurationException e) {
-          LOGGER.error(e.getMessage(), e);
+          LOGGER.warn(e.getMessage(), e);
         }
       }
       return serviceType.cast(plugins);

@@ -44,6 +44,10 @@
     </dependency>
     <dependency>
       <groupId>com.mycila.megatron</groupId>
+      <artifactId>megatron-ehcache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mycila.megatron</groupId>
       <artifactId>megatron-api</artifactId>
     </dependency>
     <dependency>

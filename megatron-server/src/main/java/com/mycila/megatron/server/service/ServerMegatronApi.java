@@ -59,12 +59,12 @@ class ServerMegatronApi implements MegatronApi {
   }
 
   @Override
-  public void dumpPlatformState() {
+  public void dumpState() {
     platformService.dumpPlatformState();
   }
 
   @Override
-  public String getPlatformXMLConfiguration() {
+  public String getConfiguration() {
     try (InputStream inputStream = platformService.getPlatformConfiguration(); ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       int c;
       while ((c = inputStream.read()) != -1) {
@@ -77,7 +77,7 @@ class ServerMegatronApi implements MegatronApi {
   }
 
   @Override
-  public String getServerName() {
+  public String getNodeName() {
     return serverName;
   }
 

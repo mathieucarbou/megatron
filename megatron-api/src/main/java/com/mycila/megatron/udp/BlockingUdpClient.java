@@ -28,7 +28,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static com.mycila.megatron.Utils.closeSilently;
 
@@ -64,21 +64,27 @@ public final class BlockingUdpClient implements Client {
   }
 
   @Override
-  public void send(List<String> messages) {
-    if (!closed && !messages.isEmpty()) {
-      if (LOGGER.isTraceEnabled()) {
-        LOGGER.trace("[{}:{}] UDP > \n{}", hostname, port, String.join("\n", messages));
-      }
+  public void send(Stream<String> messages) {
+    if (!closed) {
+      InetSocketAddress target;
       try {
-        InetSocketAddress target = getTarget();
-        for (String message : messages) {
-          byte[] bytes = (message + "\n").getBytes(StandardCharsets.UTF_8);
-          DatagramPacket packet = new DatagramPacket(bytes, bytes.length, target);
-          channel.send(packet);
-        }
+        target = getTarget();
       } catch (IOException e) {
         LOGGER.warn("[{}:{}] UDP ERROR: {}", hostname, port, e.getMessage(), e);
+        return;
       }
+      messages.forEach(message -> {
+        if (LOGGER.isTraceEnabled()) {
+          LOGGER.trace("[{}:{}] UDP > \n{}", hostname, port, message);
+        }
+          byte[] bytes = (message + "\n").getBytes(StandardCharsets.UTF_8);
+          DatagramPacket packet = new DatagramPacket(bytes, bytes.length, target);
+        try {
+          channel.send(packet);
+        } catch (IOException e) {
+          LOGGER.warn("[{}:{}] UDP ERROR: {}", hostname, port, e.getMessage(), e);
+        }
+      });
     }
   }
 

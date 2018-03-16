@@ -19,6 +19,8 @@ import com.tc.classloader.CommonComponent;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.util.List;
+
 /**
  * @author Mathieu Carbou
  */
@@ -28,11 +30,11 @@ public interface MegatronEventListener {
   /**
    * Callback called when a new stripe notification arrives.
    */
-  default void onNotification(ContextualNotification notification) {}
+  default void onNotifications(List<ContextualNotification> notifications) {}
 
   /**
    * Callback called when a new set of statistics has been collected from a manageable element on teh stripe.
    */
-  default void onStatistics(ContextualStatistics contextualStatistics) {}
+  default void onStatistics(List<ContextualStatistics> contextualStatistics) {}
 
 }

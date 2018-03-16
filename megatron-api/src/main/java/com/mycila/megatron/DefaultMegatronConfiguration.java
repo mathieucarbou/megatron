@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @CommonComponent
 public class DefaultMegatronConfiguration implements MegatronConfiguration {
 
-  private long statisticCollectorInterval = 5_000L;
+  private long statisticCollectorInterval = 10_000L;
   private final Properties properties = new Properties();
 
   @Override
@@ -47,6 +47,11 @@ public class DefaultMegatronConfiguration implements MegatronConfiguration {
     return properties.getProperty(key, def);
   }
 
+  @Override
+  public Properties getProperties() {
+    return properties;
+  }
+
   public DefaultMegatronConfiguration setStatisticCollectorInterval(long statisticCollectorInterval, TimeUnit timeUnit) {
     this.statisticCollectorInterval = TimeUnit.MILLISECONDS.convert(statisticCollectorInterval, timeUnit);
     return this;
@@ -59,7 +64,7 @@ public class DefaultMegatronConfiguration implements MegatronConfiguration {
 
   @SuppressWarnings("CollectionAddedToSelf")
   public DefaultMegatronConfiguration setProperties(Properties properties) {
-    properties.putAll(properties);
+    this.properties.putAll(properties);
     return this;
   }
 

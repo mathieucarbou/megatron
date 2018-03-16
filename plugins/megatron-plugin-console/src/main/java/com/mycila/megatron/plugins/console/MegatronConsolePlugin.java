@@ -26,8 +26,10 @@ import com.mycila.megatron.format.Statistics;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * @author Mathieu Carbou
@@ -45,24 +47,31 @@ public class MegatronConsolePlugin extends AbstractMegatronPlugin {
   }
 
   @Override
-  public void onNotification(ContextualNotification notification) {
+  public void onNotifications(List<ContextualNotification> notifications) {
     if (enable) {
-      System.out.println("NOTIFICATION: " + notification.getType() + "\n" + json(notification.getContext()));
+      System.out.println(notifications.stream()
+          .map(notification -> "NOTIFICATION: " + notification.getType() + "\n" + json(notification.getContext()))
+          .collect(joining("\n")));
     }
   }
 
   @Override
-  public void onStatistics(ContextualStatistics contextualStatistics) {
+  public void onStatistics(List<ContextualStatistics> contextualStatistics) {
     if (enable) {
-      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
-      System.out.println("STATISTICS:\n - " +
-          statistics
-              .entrySet()
-              .stream()
-              .map(e -> e.getKey() + "=" + e.getValue())
-              .sorted()
-              .collect(Collectors.joining("\n - ")) + "\n" +
-          json(contextualStatistics.getContext()));
+      System.out.println(contextualStatistics.stream()
+          .map(contextualStatistic -> {
+            Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistic);
+            return "STATISTICS:\n - " +
+                statistics
+                    .entrySet()
+                    .stream()
+                    .map(e -> e.getKey() + "=" + e.getValue())
+                    .sorted()
+                    .collect(joining("\n - ")) +
+                "\n" +
+                json(contextualStatistic.getContext());
+          })
+          .collect(joining("\n")));
     }
   }
 

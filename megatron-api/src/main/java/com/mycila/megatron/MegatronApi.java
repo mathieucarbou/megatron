@@ -37,10 +37,10 @@ public interface MegatronApi {
 
   Cluster readLiveTopology();
 
-  void dumpPlatformState();
+  void dumpState();
 
-  String getPlatformXMLConfiguration();
+  String getConfiguration();
 
-  String getServerName();
+  String getNodeName();
 
 }
