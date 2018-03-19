@@ -94,26 +94,52 @@ CacheManager cacheManager = newCacheManagerBuilder()
 __XML configuration__
 
 ```xml
-<service>
-  <m:megatron>
-    <m:statisticCollectorInterval unit="seconds">5</m:statisticCollectorInterval>
-    <m:properties>
-      <!-- Console plugin-->
-      <m:set name="megatron.console.enable" value="true"/>
-      <!-- REST plugin -->
-      <m:set name="megatron.rest.enable" value="true"/>
-      <m:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
-      <m:set name="megatron.rest.port" value="9470"/>
-      <!-- Prometheus PushGateway Plugin -->
-      <m:set name="megatron.prometheus.gateway.enable" value="true"/>
-      <m:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
-      <m:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
-      <m:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
-      <m:set name="megatron.prometheus.gateway.async" value="true"/>
-      <m:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
-    </m:properties>
-  </m:megatron>
-</service>
+<config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.ehcache.org/v3'
+    xmlns:mnm='http://www.ehcache.org/v3/management'
+    xmlns:m='https://mathieucarbou.github.io/megatron/ehcache/v1'>
+
+  <service>
+    <mnm:management cache-manager-alias="cm1">
+      <mnm:tags>
+        <mnm:tag>webapp-1</mnm:tag>
+        <mnm:tag>server-node-1</mnm:tag>
+      </mnm:tags>
+    </mnm:management>
+  </service>
+
+  <service>
+    <m:megatron>
+      <m:statisticCollectorInterval unit="seconds">5</m:statisticCollectorInterval>
+      <m:properties>
+        <!-- Console plugin-->
+        <m:set name="megatron.console.enable" value="true"/>
+        <!-- REST plugin -->
+        <m:set name="megatron.rest.enable" value="true"/>
+        <m:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
+        <m:set name="megatron.rest.port" value="9470"/>
+        <!-- Prometheus PushGateway Plugin -->
+        <m:set name="megatron.prometheus.gateway.enable" value="true"/>
+        <m:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
+        <m:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
+        <m:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
+        <m:set name="megatron.prometheus.gateway.async" value="true"/>
+        <m:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
+      </m:properties>
+    </m:megatron>
+  </service>
+
+  <cache alias="cache-1">
+    <key-type>java.lang.String</key-type>
+    <value-type>[B</value-type>
+    <resources>
+      <heap unit="entries">50</heap>
+      <offheap unit="MB">1</offheap>
+    </resources>
+  </cache>
+
+</config>
 ```
 
 ### Cloud support
