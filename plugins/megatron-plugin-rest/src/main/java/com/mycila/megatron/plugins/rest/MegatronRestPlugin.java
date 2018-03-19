@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,14 +80,14 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
 
             // platform service endpoints
 
-            .add("/api/v1/platform/server", json((exchange, params) -> Collections.singletonMap("serverName", getApi().getServerName())))
+            .add("/api/v1/platform/server", json((exchange, params) -> Collections.singletonMap("serverName", getApi().getNodeName())))
 
             .add("/api/v1/platform/dump", json((exchange, params) -> {
-              getApi().dumpPlatformState();
+              getApi().dumpState();
               return Boolean.TRUE;
             }))
 
-            .add("/api/v1/platform/config", xml((exchange, params) -> getApi().getPlatformXMLConfiguration()))
+            .add("/api/v1/platform/config", xml((exchange, params) -> getApi().getConfiguration()))
 
             // topology endpoints
 
@@ -180,28 +181,32 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   }
 
   @Override
-  public void onNotification(ContextualNotification notification) {
+  public void onNotifications(List<ContextualNotification> notifications) {
     if (enable) {
-      switch (notification.getType()) {
-        // cleanup the stats "buffer"
-        case "SERVER_ENTITY_DESTROYED":
-        case "CLIENT_DISCONNECTED":
-        case "SERVER_LEFT":
-        case "CACHE_REMOVED": {
-          statsPerContexts.entrySet().removeIf(e -> e.getKey().contains(notification.getContext()));
-          break;
+      for (ContextualNotification notification : notifications) {
+        switch (notification.getType()) {
+          // cleanup the stats "buffer"
+          case "SERVER_ENTITY_DESTROYED":
+          case "CLIENT_DISCONNECTED":
+          case "SERVER_LEFT":
+          case "CACHE_REMOVED": {
+            statsPerContexts.entrySet().removeIf(e -> e.getKey().contains(notification.getContext()));
+            break;
+          }
         }
       }
     }
   }
 
   @Override
-  public void onStatistics(ContextualStatistics contextualStatistics) {
+  public void onStatistics(List<ContextualStatistics> contextualStatistics) {
     if (enable) {
-      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
-      logger.trace("onStatistics({})", statistics.size());
-      Map<String, Number> stats = statsPerContexts.computeIfAbsent(contextualStatistics.getContext(), context -> new ConcurrentHashMap<>());
-      stats.putAll(statistics);
+      for (ContextualStatistics contextualStatistic : contextualStatistics) {
+        Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistic);
+        logger.trace("onStatistics({})", statistics.size());
+        Map<String, Number> stats = statsPerContexts.computeIfAbsent(contextualStatistic.getContext(), context -> new ConcurrentHashMap<>());
+        stats.putAll(statistics);
+      }
     }
   }
 

@@ -44,7 +44,9 @@ Megatron is a Terracotta server plugin that enables to query or stream statistic
 
 ## Installation
 
-### For Terracotta Servers
+### For Terracotta Servers (i.e. Ehcache Clustered)
+
+Installation of megatron on a clustered Terracotta server allows to collect all server-side statistics plus all client-side statistics as long as the client application has enabled management.
 
   1. Unzip the distribution at [https://github.com/mathieucarbou/megatron/releases](https://github.com/mathieucarbou/megatron/releases)
   2. Copy all the jar files from `server/plugins/lib` directory into your Terracotta Ehcache Kit ([http://www.ehcache.org/downloads/](http://www.ehcache.org/downloads/)).
@@ -62,9 +64,56 @@ Passive servers always send their data to the current active.
 So in case of a failover, it will change nothing for the plugins streaming data to some servers: the emitter will just change. 
 But for plugins like the REST plugin, then you'll gave to connect to the newly active server. 
 
-### Standalone Usage
+### Standalone Usage (i.e. Ehcache Standalone)
 
-Coming soon!
+Your applciation needs to depend on the libraries in `client/lib`, specifically:
+
+- `megatron-api`
+- `megatron-ehcache`
+- the Megatron plugins you need
+- and the Ehcache's management libraries 
+
+__Programmatic configuration__
+
+```java
+CacheManager cacheManager = newCacheManagerBuilder()
+    // management config
+    .using(new DefaultManagementRegistryConfiguration()
+        .addTags("webapp-1", "server-node-1")
+        .setCacheManagerAlias("cm1"))
+    // Megatron config
+    .using(new DefaultMegatronServiceConfiguration()
+        .setStatisticCollectorInterval(5, TimeUnit.SECONDS)
+        .loadProperties(ProgrammaticExample.class.getResource("/megatron.properties"))
+        .setProperty("megatron.console.enable", "true"))
+    //[...]
+    .build(true);
+```
+
+__XML configuration__
+
+```xml
+<service>
+  <m:megatron>
+    <m:statisticCollectorInterval unit="seconds">5</m:statisticCollectorInterval>
+    <m:properties>
+      <!-- Console plugin-->
+      <m:set name="megatron.console.enable" value="true"/>
+      <!-- REST plugin -->
+      <m:set name="megatron.rest.enable" value="true"/>
+      <m:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
+      <m:set name="megatron.rest.port" value="9470"/>
+      <!-- Prometheus PushGateway Plugin -->
+      <m:set name="megatron.prometheus.gateway.enable" value="true"/>
+      <m:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
+      <m:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
+      <m:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
+      <m:set name="megatron.prometheus.gateway.async" value="true"/>
+      <m:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
+    </m:properties>
+  </m:megatron>
+</service>
+```
 
 ### Cloud support
 

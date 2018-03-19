@@ -15,16 +15,19 @@
  */
 package com.mycila.megatron;
 
+import com.tc.classloader.CommonComponent;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class DisoveringMegatronPlugins implements MegatronPlugin {
 
   private final Collection<MegatronPlugin> plugins = new CopyOnWriteArrayList<>();
@@ -55,17 +58,17 @@ public class DisoveringMegatronPlugins implements MegatronPlugin {
   }
 
   @Override
-  public void onNotification(ContextualNotification notification) {
+  public void onNotifications(List<ContextualNotification> notifications) {
     plugins.stream()
         .filter(MegatronPlugin::isEnable)
-        .forEach(plugin -> plugin.onNotification(notification));
+        .forEach(plugin -> plugin.onNotifications(notifications));
   }
 
   @Override
-  public void onStatistics(ContextualStatistics statistics) {
+  public void onStatistics(List<ContextualStatistics> contextualStatistics) {
     plugins.stream()
         .filter(MegatronPlugin::isEnable)
-        .forEach(plugin -> plugin.onStatistics(statistics));
+        .forEach(plugin -> plugin.onStatistics(contextualStatistics));
   }
 
   @Override

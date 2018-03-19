@@ -24,8 +24,8 @@ import com.mycila.megatron.format.Statistics;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Mathieu Carbou
@@ -50,36 +50,41 @@ public class MegatronGraphitePlugin extends AbstractMegatronUdpPlugin {
   }
 
   @Override
-  public void onNotification(ContextualNotification notification) {
+  public void onNotifications(List<ContextualNotification> notifications) {
     if (enable) {
-      logger.trace("onNotification({})", notification.getType());
-      String time = String.valueOf(System.currentTimeMillis() / 1000);
-      String tags = formatter.formatTags(notification.getContext());
-      String metric = formatter.formatMetricName("events", notification.getContext(), notification.getType());
-      String value = formatter.formatValue(1);
-      client.send(formatLine(metric, tags, value, time));
+      client.send(notifications.stream()
+          .map(notification -> {
+            logger.trace("onNotifications({})", notification.getType());
+            String time = String.valueOf(System.currentTimeMillis() / 1000);
+            String metric = formatter.formatMetricName("events", notification.getContext(), notification.getType());
+            String value = formatter.formatValue(1);
+            String tags = formatter.formatTags(notification.getContext());
+            return formatLine(metric, value, tags, time);
+          }));
     }
   }
 
   @Override
-  public void onStatistics(ContextualStatistics contextualStatistics) {
+  public void onStatistics(List<ContextualStatistics> contextualStatistics) {
     if (enable) {
-      Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistics);
-      logger.trace("onStatistics({})", statistics.size());
-      String time = String.valueOf(System.currentTimeMillis() / 1000);
-      String tags = formatter.formatTags(contextualStatistics.getContext());
-      client.send(statistics.entrySet()
-          .stream()
-          .map(entry -> {
-            String metric = formatter.formatMetricName("statistics", contextualStatistics.getContext(), entry.getKey());
-            String value = formatter.formatValue(entry.getValue());
-            return formatLine(metric, tags, value, time);
-          })
-          .collect(Collectors.toList()));
+      client.send(contextualStatistics.stream()
+          .flatMap(contextualStatistic -> {
+            Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistic);
+            logger.trace("onStatistics({})", statistics.size());
+            String time = String.valueOf(System.currentTimeMillis() / 1000);
+            String tags = formatter.formatTags(contextualStatistic.getContext());
+            return statistics.entrySet()
+                .stream()
+                .map(entry -> {
+                  String metric = formatter.formatMetricName("statistics", contextualStatistic.getContext(), entry.getKey());
+                  String value = formatter.formatValue(entry.getValue());
+                  return formatLine(metric, value, tags, time);
+                });
+          }));
     }
   }
 
-  private static String formatLine(String metric, String tags, String value, String time) {
+  private static String formatLine(String metric, String value, String tags, String time) {
     metric = tags.isEmpty() ? metric : (metric + ";" + tags);
     return metric + " " + value + " " + time;
   }

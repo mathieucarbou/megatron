@@ -30,6 +30,7 @@
   <modules>
     <module>megatron-api</module>
     <module>megatron-server</module>
+    <module>megatron-ehcache</module>
     <module>plugins</module>
     <module>megatron-tests</module>
     <module>megatron-distribution</module>
@@ -170,6 +171,11 @@
       <dependency>
         <groupId>com.mycila.megatron</groupId>
         <artifactId>megatron-server</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.mycila.megatron</groupId>
+        <artifactId>megatron-ehcache</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

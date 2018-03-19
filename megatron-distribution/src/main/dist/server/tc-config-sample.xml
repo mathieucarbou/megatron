@@ -18,73 +18,73 @@
 <tc-config xmlns="http://www.terracotta.org/config">
   <plugins>
 
-    <config xmlns:mc='http://www.mycila.com/config/megatron-config'>
-      <mc:megatron-config>
+    <config xmlns:m='http://www.mycila.com/config/megatron-config'>
+      <m:megatron-config>
 
         <!-- interval to collect stats on servers and clients -->
-        <mc:statisticCollectorInterval unit="seconds">10</mc:statisticCollectorInterval>
+        <m:statisticCollectorInterval unit="seconds">10</m:statisticCollectorInterval>
 
         <!-- CONSOLE plugin -->
-        <mc:set name="megatron.console.enable" value="true"/>
+        <m:set name="megatron.console.enable" value="true"/>
 
         <!-- REST plugin -->
-        <mc:set name="megatron.rest.enable" value="true"/>
-        <mc:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
-        <mc:set name="megatron.rest.port" value="9470"/>
+        <m:set name="megatron.rest.enable" value="true"/>
+        <m:set name="megatron.rest.bindAddress" value="0.0.0.0"/>
+        <m:set name="megatron.rest.port" value="9470"/>
 
         <!-- Datadog plugin -->
-        <mc:set name="megatron.datadog.enable" value="false"/>
-        <mc:set name="megatron.datadog.server" value="localhost"/>
-        <mc:set name="megatron.datadog.port" value="8125"/>
-        <mc:set name="megatron.datadog.prefix" value="megatron"/>
-        <mc:set name="megatron.datadog.tags" value="stripe:stripe1,cluster:MyCluster"/>
-        <mc:set name="megatron.datadog.async" value="true"/>
-        <mc:set name="megatron.datadog.queueSize" value="-1"/>
+        <m:set name="megatron.datadog.enable" value="false"/>
+        <m:set name="megatron.datadog.server" value="localhost"/>
+        <m:set name="megatron.datadog.port" value="8125"/>
+        <m:set name="megatron.datadog.prefix" value="megatron"/>
+        <m:set name="megatron.datadog.tags" value="stripe:stripe1,cluster:MyCluster"/>
+        <m:set name="megatron.datadog.async" value="true"/>
+        <m:set name="megatron.datadog.queueSize" value="-1"/>
 
         <!-- Librato plugin -->
-        <mc:set name="megatron.librato.enable" value="false"/>
-        <mc:set name="megatron.librato.server" value="localhost"/>
-        <mc:set name="megatron.librato.port" value="8125"/>
-        <mc:set name="megatron.librato.prefix" value="megatron"/>
-        <mc:set name="megatron.librato.tags" value="stripe=tripe1,cluster=MyCluster"/>
-        <mc:set name="megatron.librato.async" value="true"/>
-        <mc:set name="megatron.librato.queueSize" value="-1"/>
+        <m:set name="megatron.librato.enable" value="false"/>
+        <m:set name="megatron.librato.server" value="localhost"/>
+        <m:set name="megatron.librato.port" value="8125"/>
+        <m:set name="megatron.librato.prefix" value="megatron"/>
+        <m:set name="megatron.librato.tags" value="stripe=tripe1,cluster=MyCluster"/>
+        <m:set name="megatron.librato.async" value="true"/>
+        <m:set name="megatron.librato.queueSize" value="-1"/>
 
         <!-- Graphite plugin -->
-        <mc:set name="megatron.graphite.enable" value="false"/>
-        <mc:set name="megatron.graphite.server" value="localhost"/>
-        <mc:set name="megatron.graphite.port" value="2003"/>
-        <mc:set name="megatron.graphite.prefix" value="megatron"/>
-        <mc:set name="megatron.graphite.tags" value="stripe=tripe1;cluster=MyCluster"/>
-        <mc:set name="megatron.graphite.async" value="true"/>
-        <mc:set name="megatron.graphite.queueSize" value="-1"/>
+        <m:set name="megatron.graphite.enable" value="false"/>
+        <m:set name="megatron.graphite.server" value="localhost"/>
+        <m:set name="megatron.graphite.port" value="2003"/>
+        <m:set name="megatron.graphite.prefix" value="megatron"/>
+        <m:set name="megatron.graphite.tags" value="stripe=tripe1;cluster=MyCluster"/>
+        <m:set name="megatron.graphite.async" value="true"/>
+        <m:set name="megatron.graphite.queueSize" value="-1"/>
 
         <!-- StatsD plugin -->
-        <mc:set name="megatron.statsd.enable" value="false"/>
-        <mc:set name="megatron.statsd.server" value="localhost"/>
-        <mc:set name="megatron.statsd.port" value="8125"/>
-        <mc:set name="megatron.statsd.prefix" value="megatron"/>
-        <mc:set name="megatron.statsd.async" value="true"/>
-        <mc:set name="megatron.statsd.queueSize" value="-1"/>
+        <m:set name="megatron.statsd.enable" value="false"/>
+        <m:set name="megatron.statsd.server" value="localhost"/>
+        <m:set name="megatron.statsd.port" value="8125"/>
+        <m:set name="megatron.statsd.prefix" value="megatron"/>
+        <m:set name="megatron.statsd.async" value="true"/>
+        <m:set name="megatron.statsd.queueSize" value="-1"/>
 
         <!-- Prometheus StatsD Plugin -->
-        <mc:set name="megatron.prometheus.statsd.enable" value="false"/>
-        <mc:set name="megatron.prometheus.statsd.server" value="localhost"/>
-        <mc:set name="megatron.prometheus.statsd.port" value="9125"/>
-        <mc:set name="megatron.prometheus.statsd.prefix" value="megatron"/>
-        <mc:set name="megatron.prometheus.statsd.tags" value="stripe:stripe1,cluster:MyCluster"/>
-        <mc:set name="megatron.prometheus.statsd.async" value="true"/>
-        <mc:set name="megatron.prometheus.statsd.queueSize" value="-1"/>
+        <m:set name="megatron.prometheus.statsd.enable" value="false"/>
+        <m:set name="megatron.prometheus.statsd.server" value="localhost"/>
+        <m:set name="megatron.prometheus.statsd.port" value="9125"/>
+        <m:set name="megatron.prometheus.statsd.prefix" value="megatron"/>
+        <m:set name="megatron.prometheus.statsd.tags" value="stripe:stripe1,cluster:MyCluster"/>
+        <m:set name="megatron.prometheus.statsd.async" value="true"/>
+        <m:set name="megatron.prometheus.statsd.queueSize" value="-1"/>
 
-        <!-- Prometheus StatsD Plugin -->
-        <mc:set name="megatron.prometheus.gateway.enable" value="false"/>
-        <mc:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
-        <mc:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
-        <mc:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
-        <mc:set name="megatron.prometheus.gateway.async" value="true"/>
-        <mc:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
+        <!-- Prometheus PushGateway Plugin -->
+        <m:set name="megatron.prometheus.gateway.enable" value="false"/>
+        <m:set name="megatron.prometheus.gateway.url" value="http://localhost:9091/metrics/job/megatron"/>
+        <m:set name="megatron.prometheus.gateway.prefix" value="megatron"/>
+        <m:set name="megatron.prometheus.gateway.tags" value="stripe=&quot;stripe1&quot;,cluster=&quot;MyCluster&quot;"/>
+        <m:set name="megatron.prometheus.gateway.async" value="true"/>
+        <m:set name="megatron.prometheus.gateway.queueSize" value="-1"/>
 
-      </mc:megatron-config>
+      </m:megatron-config>
     </config>
 
     <config xmlns:ohr='http://www.terracotta.org/config/offheap-resource'>

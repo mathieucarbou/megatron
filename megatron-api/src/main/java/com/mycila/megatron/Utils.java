@@ -15,12 +15,17 @@
  */
 package com.mycila.megatron;
 
+import com.tc.classloader.CommonComponent;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class Utils {
 
   public static void closeSilently(Closeable... closeables) {
@@ -30,6 +35,25 @@ public class Utils {
       } catch (IOException ignored) {
       }
     }
+  }
+
+  public static String generateShortUUID() {
+    UUID j = UUID.randomUUID();
+    byte[] data = new byte[16];
+    long msb = j.getMostSignificantBits();
+    long lsb = j.getLeastSignificantBits();
+    for (int i = 0; i < 8; i++) {
+      data[i] = (byte) (msb & 0xff);
+      msb >>>= 8;
+    }
+    for (int i = 8; i < 16; i++) {
+      data[i] = (byte) (lsb & 0xff);
+      lsb >>>= 8;
+    }
+    return DatatypeConverter.printBase64Binary(data)
+        // java-8 and otehr - compatible B64 url decoder using - and _ instead of + and /
+        // padding can be ignored to shorter the UUID
+        .replace('+', '-').replace('/', '_').replace("=", "");
   }
 
 }

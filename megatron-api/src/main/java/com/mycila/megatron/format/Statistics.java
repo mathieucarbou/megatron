@@ -15,6 +15,7 @@
  */
 package com.mycila.megatron.format;
 
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terracotta.management.model.stats.ContextualStatistics;
@@ -29,6 +30,7 @@ import java.util.TreeMap;
 /**
  * @author Mathieu Carbou
  */
+@CommonComponent
 public class Statistics {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Statistics.class);

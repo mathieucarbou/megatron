@@ -16,25 +16,28 @@
 package com.mycila.megatron.http;
 
 import com.mycila.megatron.Client;
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@CommonComponent
 public final class NonBlockingHttpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonBlockingHttpClient.class);
 
-  private final BlockingQueue<List<String>> batches;
+  private final BlockingQueue<String> batches;
   private final Thread sender;
   private final URL url;
 
@@ -46,12 +49,10 @@ public final class NonBlockingHttpClient implements Client {
     this.sender = threadFactory.newThread(() -> {
       while (!closed && !Thread.currentThread().isInterrupted()) {
         try {
-          List<String> messages = batches.poll(1, TimeUnit.SECONDS);
-          if (messages != null) {
-            drainAndSend(messages);
-          }
+          Optional<String> message = Optional.ofNullable(batches.poll(1, TimeUnit.SECONDS));
+          drainAndSend(message);
         } catch (InterruptedException e) {
-          drainAndSend(Collections.emptyList());
+          drainAndSend(Optional.empty());
           closed = true;
         }
       }
@@ -69,31 +70,32 @@ public final class NonBlockingHttpClient implements Client {
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
-      drainAndSend(Collections.emptyList());
+      drainAndSend(Optional.empty());
     }
   }
 
   @Override
-  public void send(List<String> messages) {
-    if (!closed && !messages.isEmpty()) {
-      batches.offer(messages);
+  public void send(Stream<String> messages) {
+    if (!closed) {
+      batches.offer(messages.collect(Collectors.joining("\n")));
     }
   }
 
-  private void drainAndSend(List<String> messages) {
-    List<List<String>> drained;
+  private void drainAndSend(Optional<String> polled) {
+    List<String> drained;
     int size = batches.size();
     if (size > 0) {
       drained = new ArrayList<>(1 + size);
-      drained.add(messages);
+      polled.ifPresent(drained::add);
       batches.drainTo(drained);
     } else {
-      drained = Collections.singletonList(messages);
+      drained = polled.map(Collections::singletonList).orElse(Collections.emptyList());
     }
-    String message = drained.stream()
-        .flatMap(Collection::stream)
-        .collect(Collectors.joining("\n")) + "\n";
-    Http.post(url, message);
+    if (!drained.isEmpty()) {
+      String message = drained.stream()
+          .collect(Collectors.joining("\n")) + "\n";
+      Http.post(url, message);
+    }
   }
 
 }

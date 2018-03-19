@@ -44,6 +44,7 @@ import org.terracotta.management.service.monitoring.SharedEntityManagementRegist
 import org.terracotta.voltron.proxy.server.ActiveProxiedServerEntity;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -135,8 +136,9 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
       switch (message.getType()) {
 
         case "NOTIFICATION": {
-          message.unwrap(ContextualNotification.class).forEach(notification -> {
-            LOGGER.trace("[{}] onNotification({}): {}", consumerId, notification.getType(), notification.getContext());
+          List<ContextualNotification> notifications = message.unwrap(ContextualNotification.class);
+          for (ContextualNotification notification : notifications) {
+            LOGGER.trace("[{}] onNotifications({}): {}", consumerId, notification.getType(), notification.getContext());
 
             switch (notification.getType()) {
 
@@ -154,17 +156,17 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
                 break;
               }
             }
-
-            sendNotificationToPlugins(notification);
-          });
+          }
+          sendNotificationToPlugins(notifications);
           break;
         }
 
         case "STATISTICS": {
-          message.unwrap(ContextualStatistics.class).forEach(statistics -> {
-            LOGGER.trace("[{}] onStatistics({}): {}", consumerId, statistics.size(), statistics.getContext());
-            sendStatisticsToPlugins(statistics);
-          });
+          List<ContextualStatistics> statistics = message.unwrap(ContextualStatistics.class);
+          for (ContextualStatistics statistic : statistics) {
+            LOGGER.trace("[{}] onStatistics({}): {}", consumerId, statistic.size(), statistic.getContext());
+          }
+          sendStatisticsToPlugins(statistics);
           break;
         }
       }
@@ -238,24 +240,28 @@ class MegatronActiveServerEntity extends ActiveProxiedServerEntity<Void, Void, M
     }
   }
 
-  private void sendNotificationToPlugins(ContextualNotification notification) {
-    listeners.forEach(plugin -> {
-      try {
-        plugin.onNotification(notification);
-      } catch (Exception e) {
-        LOGGER.error("[{}] sendNotificationToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
-      }
-    });
+  private void sendNotificationToPlugins(List<ContextualNotification> notifications) {
+    if (!notifications.isEmpty()) {
+      listeners.forEach(plugin -> {
+        try {
+          plugin.onNotifications(notifications);
+        } catch (Exception e) {
+          LOGGER.error("[{}] sendNotificationToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+        }
+      });
+    }
   }
 
-  private void sendStatisticsToPlugins(ContextualStatistics statistics) {
-    listeners.forEach(plugin -> {
-      try {
-        plugin.onStatistics(statistics);
-      } catch (Exception e) {
-        LOGGER.error("[{}] sendStatisticsToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
-      }
-    });
+  private void sendStatisticsToPlugins(List<ContextualStatistics> statistics) {
+    if (!statistics.isEmpty()) {
+      listeners.forEach(plugin -> {
+        try {
+          plugin.onStatistics(statistics);
+        } catch (Exception e) {
+          LOGGER.error("[{}] sendStatisticsToPlugins({}): ", consumerId, plugin.getClass(), e.getMessage(), e);
+        }
+      });
+    }
   }
 
 }

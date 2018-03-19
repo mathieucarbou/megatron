@@ -16,12 +16,15 @@
 package com.mycila.megatron.http;
 
 import com.mycila.megatron.Client;
+import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@CommonComponent
 public final class BlockingHttpClient implements Client {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BlockingHttpClient.class);
@@ -42,9 +45,9 @@ public final class BlockingHttpClient implements Client {
   }
 
   @Override
-  public void send(List<String> messages) {
-    if (!closed && !messages.isEmpty()) {
-      Http.post(url, String.join("\n", messages) + "\n");
+  public void send(Stream<String> messages) {
+    if (!closed) {
+      Http.post(url, messages.collect(Collectors.joining("\n")) + "\n");
     }
   }
 
