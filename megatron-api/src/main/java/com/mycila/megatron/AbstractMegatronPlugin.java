@@ -19,6 +19,7 @@ import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -56,6 +57,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     converters.put(float.class, Float::parseFloat);
     converters.put(double.class, Double::parseDouble);
     converters.put(List.class, Double::parseDouble);
+    converters.put(File.class, File::new);
     converters.put(URL.class, s -> {
       try {
         return new URL(s);
@@ -106,7 +108,12 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
 
       if (enable) {
         logger.info("Enabling plugin...");
-        enable(configuration);
+        try {
+          enable(configuration);
+        } catch (RuntimeException e) {
+          enable = false;
+          throw e;
+        }
       }
     }
   }

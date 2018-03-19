@@ -33,6 +33,7 @@
 
   <modules>
     <module>megatron-plugin-console</module>
+    <module>megatron-plugin-recorder</module>
     <module>megatron-plugin-rest</module>
     <module>megatron-plugin-datadoghq</module>
     <module>megatron-plugin-librato</module>

@@ -45,6 +45,7 @@ public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
   public void close() {
     if (enable) {
       client.close();
+      enable = false;
     }
   }
 

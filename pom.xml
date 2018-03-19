@@ -185,6 +185,11 @@
       </dependency>
       <dependency>
         <groupId>com.mycila.megatron.plugins</groupId>
+        <artifactId>megatron-plugin-recorder</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.mycila.megatron.plugins</groupId>
         <artifactId>megatron-plugin-rest</artifactId>
         <version>${project.version}</version>
       </dependency>

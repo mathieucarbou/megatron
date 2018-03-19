@@ -177,6 +177,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
     if (enable) {
       statsPerContexts.clear();
       server.stop();
+      enable = false;
     }
   }
 
