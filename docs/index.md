@@ -4,7 +4,8 @@
 
 - [Megatron](#megatron)
   - [Installation](#installation)
-    - [Usage](#usage)
+    - [Terracotta Servers](#for-terracotta-servers-ie-ehcache-clustered)
+    - [Standalone Usage](#standalone-usage-ie-ehcache-standalone)
     - [Cloud support](#cloud-support)
   - [CONSOLE Plugin](#console-plugin)
     - [Configuration](#configuration)
