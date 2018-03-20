@@ -26,6 +26,7 @@ import com.mycila.megatron.format.Statistics;
 import org.terracotta.management.model.notification.ContextualNotification;
 import org.terracotta.management.model.stats.ContextualStatistics;
 
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +39,18 @@ import static java.util.stream.Collectors.joining;
 public class MegatronConsolePlugin extends AbstractMegatronPlugin {
 
   private final ObjectMapper mapper = new ObjectMapper();
+  private final PrintWriter out;
+
+  public MegatronConsolePlugin() {
+    this(new PrintWriter(System.out));
+  }
+
+  public MegatronConsolePlugin(PrintWriter out) {
+    this.out = out;
+  }
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -49,7 +59,7 @@ public class MegatronConsolePlugin extends AbstractMegatronPlugin {
   @Override
   public void onNotifications(List<ContextualNotification> notifications) {
     if (enable) {
-      System.out.println(notifications.stream()
+      out.println(notifications.stream()
           .map(notification -> "NOTIFICATION: " + notification.getType() + "\n" + json(notification.getContext()))
           .collect(joining("\n")));
     }
@@ -58,7 +68,7 @@ public class MegatronConsolePlugin extends AbstractMegatronPlugin {
   @Override
   public void onStatistics(List<ContextualStatistics> contextualStatistics) {
     if (enable) {
-      System.out.println(contextualStatistics.stream()
+      out.println(contextualStatistics.stream()
           .map(contextualStatistic -> {
             Map<String, Number> statistics = Statistics.extractStatistics(contextualStatistic);
             return "STATISTICS:\n - " +

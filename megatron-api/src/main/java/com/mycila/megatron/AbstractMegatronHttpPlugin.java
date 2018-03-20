@@ -36,7 +36,7 @@ public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin 
   protected Client client;
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     client = async ?
         new NonBlockingHttpClient(url, queueSize <= 0 ? Integer.MAX_VALUE : queueSize, getApi().getThreadFactory()) :
         new BlockingHttpClient(url);
@@ -46,6 +46,7 @@ public abstract class AbstractMegatronHttpPlugin extends AbstractMegatronPlugin 
   public void close() {
     if (enable) {
       client.close();
+      enable = false;
     }
   }
 

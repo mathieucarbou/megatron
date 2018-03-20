@@ -30,8 +30,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author cdennis
@@ -44,7 +43,7 @@ public class MegatronConfigurationParserTest {
   @Before
   public void setUp() throws Exception {
     parser = new MegatronConfigurationParser();
-    assertThat(parser.getNamespace(), equalTo(URI.create("http://www.mycila.com/config/megatron-config")));
+    assertThat(parser.getNamespace()).isEqualTo(URI.create("http://www.mycila.com/config/megatron-config"));
 
     Collection<Source> schemaSources = new ArrayList<>();
     schemaSources.add(new StreamSource(getClass().getResourceAsStream("/terracotta.xsd")));
@@ -60,9 +59,9 @@ public class MegatronConfigurationParserTest {
     Document dom = domBuilderFactory.newDocumentBuilder().parse(getClass().getResourceAsStream("/valid.xml"));
 
     MegatronConfiguration config = parser.parse(dom.getDocumentElement(), "what is this thing?");
-    assertThat(config.getStatisticCollectorInterval(), equalTo(1_000L));
-    assertThat(config.getProperty("port"), equalTo("1234"));
-    assertThat(config.getProperty("udpPort"), equalTo("5678"));
+    assertThat(config.getStatisticCollectorInterval()).isEqualTo(1_000L);
+    assertThat(config.getProperty("port")).isEqualTo("1234");
+    assertThat(config.getProperty("udpPort")).isEqualTo("5678");
   }
 
   @Test(expected = IllegalArgumentException.class)

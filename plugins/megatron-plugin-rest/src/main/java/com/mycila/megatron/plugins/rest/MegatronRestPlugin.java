@@ -69,7 +69,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
   private Undertow server;
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
     mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -177,6 +177,7 @@ public class MegatronRestPlugin extends AbstractMegatronPlugin {
     if (enable) {
       statsPerContexts.clear();
       server.stop();
+      enable = false;
     }
   }
 

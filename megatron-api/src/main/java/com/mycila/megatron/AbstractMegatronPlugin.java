@@ -19,6 +19,7 @@ import com.tc.classloader.CommonComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -56,6 +57,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     converters.put(float.class, Float::parseFloat);
     converters.put(double.class, Double::parseDouble);
     converters.put(List.class, Double::parseDouble);
+    converters.put(File.class, File::new);
     converters.put(URL.class, s -> {
       try {
         return new URL(s);
@@ -73,10 +75,21 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Override
   public final void init(MegatronConfiguration configuration) throws ConfigurationException {
     if (!initialized) {
-      try {
+
+      Namespace namespace = getClass().getAnnotation(Namespace.class);
+      String ns = namespace == null ? "" : (namespace.value() + ".");
+
+      enable = Boolean.parseBoolean(configuration.getProperty(ns + "enable", "false"));
+
+      if (enable) {
         logger.trace("init()");
 
-        injectConfig(configuration);
+        try {
+          injectConfig(ns, configuration);
+        } catch (ConfigurationException e) {
+          enable = false;
+          throw e;
+        }
 
         if (logger.isInfoEnabled()) {
           StringBuilder log = new StringBuilder("Plugin initialized:");
@@ -97,24 +110,23 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
           }
           logger.info("{}", log);
         }
-      } catch (ConfigurationException e) {
-        enable = false;
-        throw e;
       }
 
       initialized = true;
 
       if (enable) {
         logger.info("Enabling plugin...");
-        enable(configuration);
+        try {
+          enable(configuration);
+        } catch (RuntimeException e) {
+          enable = false;
+          throw e;
+        }
       }
     }
   }
 
-  private void injectConfig(MegatronConfiguration configuration) throws ConfigurationException {
-    Namespace namespace = getClass().getAnnotation(Namespace.class);
-    String ns = namespace == null ? "" : (namespace.value() + ".");
-
+  private void injectConfig(String ns, MegatronConfiguration configuration) throws ConfigurationException {
     Class<?> c = getClass();
     while (c != Object.class) {
       Stream.of(c.getDeclaredFields())

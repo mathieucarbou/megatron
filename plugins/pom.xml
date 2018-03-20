@@ -33,6 +33,7 @@
 
   <modules>
     <module>megatron-plugin-console</module>
+    <module>megatron-plugin-recorder</module>
     <module>megatron-plugin-rest</module>
     <module>megatron-plugin-datadoghq</module>
     <module>megatron-plugin-librato</module>
@@ -47,6 +48,32 @@
       <groupId>com.mycila.megatron</groupId>
       <artifactId>megatron-api</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

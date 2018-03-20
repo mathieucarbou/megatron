@@ -99,6 +99,11 @@
         <version>4.12</version>
       </dependency>
       <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>3.9.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.terracotta</groupId>
         <artifactId>standard-cluster-services</artifactId>
         <version>${terracotta-apis.version}</version>
@@ -185,6 +190,11 @@
       </dependency>
       <dependency>
         <groupId>com.mycila.megatron.plugins</groupId>
+        <artifactId>megatron-plugin-recorder</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.mycila.megatron.plugins</groupId>
         <artifactId>megatron-plugin-rest</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -246,6 +256,10 @@
           <configuration>
             <source>${java.version}</source>
             <target>${java.version}</target>
+            <compilerArgs>
+              <arg>-Werror</arg>
+              <arg>-Xlint:all</arg>
+            </compilerArgs>
           </configuration>
         </plugin>
         <plugin>
@@ -280,6 +294,7 @@
               <exclude>mvnw</exclude>
               <exclude>mvnw.cmd</exclude>
               <exclude>.mvn/**</exclude>
+              <exclude>**/out.txt</exclude>
             </excludes>
           </configuration>
         </plugin>

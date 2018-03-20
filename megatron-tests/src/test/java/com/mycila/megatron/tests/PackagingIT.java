@@ -40,8 +40,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.terracotta.testing.rules.BasicExternalClusterBuilder.newCluster;
 
@@ -100,7 +99,7 @@ public class PackagingIT {
             .count();
         Thread.sleep(2_000);
       }
-      assertThat(count, equalTo(N_SERVERS));
+      assertThat(count).isEqualTo(N_SERVERS);
 
       FutureTask<List<Message>> task = new FutureTask<>(() -> nmsService.waitForMessage(message -> message.getType().equals("STATISTICS")));
       Thread t = new Thread(task);

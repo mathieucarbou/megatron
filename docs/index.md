@@ -563,7 +563,7 @@ public class MegatronGangliaPlugin extends AbstractMegatronPlugin {
   private GangliaClient client;
 
   @Override
-  public void enable(MegatronConfiguration configuration, MegatronApi api) {
+  protected void enable(MegatronConfiguration configuration, MegatronApi api) {
     client = new GangliaClient(prefix, server, port);  
   }
 
