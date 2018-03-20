@@ -37,7 +37,7 @@ public class MegatronDatadogPlugin extends AbstractMegatronUdpPlugin {
   private Formatter formatter;
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     super.enable(configuration);
     formatter = new DefaultFormatter()
         .prefixSeparator(".")

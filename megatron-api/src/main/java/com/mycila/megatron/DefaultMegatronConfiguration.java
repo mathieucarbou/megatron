@@ -17,6 +17,11 @@ package com.mycila.megatron;
 
 import com.tc.classloader.CommonComponent;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +55,24 @@ public class DefaultMegatronConfiguration implements MegatronConfiguration {
   @Override
   public Properties getProperties() {
     return properties;
+  }
+
+  public DefaultMegatronConfiguration loadProperties(File propertyFile) {
+    try {
+      return loadProperties(propertyFile.toURI().toURL());
+    } catch (MalformedURLException e) {
+      throw new IllegalArgumentException(propertyFile.toString(), e);
+    }
+  }
+
+  public DefaultMegatronConfiguration loadProperties(URL url) {
+    Properties properties = new Properties();
+    try (InputStream is = url.openStream()) {
+      properties.load(is);
+      return setProperties(properties);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Unable to real location " + url + " : " + e.getMessage(), e);
+    }
   }
 
   public DefaultMegatronConfiguration setStatisticCollectorInterval(long statisticCollectorInterval, TimeUnit timeUnit) {

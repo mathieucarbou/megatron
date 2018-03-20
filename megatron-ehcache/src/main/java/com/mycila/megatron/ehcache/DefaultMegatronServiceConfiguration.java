@@ -18,8 +18,6 @@ package com.mycila.megatron.ehcache;
 import com.mycila.megatron.DefaultMegatronConfiguration;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -56,22 +54,13 @@ public class DefaultMegatronServiceConfiguration implements MegatronServiceConfi
   }
 
   public DefaultMegatronServiceConfiguration loadProperties(File propertyFile) {
-    try {
-      return loadProperties(propertyFile.toURI().toURL());
-    } catch (MalformedURLException e) {
-      throw new IllegalArgumentException(propertyFile.toString(), e);
-    }
+    configuration.loadProperties(propertyFile);
+    return this;
   }
 
   public DefaultMegatronServiceConfiguration loadProperties(URL url) {
-    Properties properties = new Properties();
-    try (InputStream is = url.openStream()) {
-      properties.load(is);
-      setProperties(properties);
-      return this;
-    } catch (IOException e) {
-      throw new IllegalArgumentException("Unable to real location " + url + " : " + e.getMessage(), e);
-    }
+    configuration.loadProperties(url);
+    return this;
   }
 
   @Override

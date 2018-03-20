@@ -35,7 +35,7 @@ public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
   protected Client client;
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     client = async ?
         new NonBlockingUdpClient(server, port, queueSize <= 0 ? Integer.MAX_VALUE : queueSize, getApi().getThreadFactory()) :
         new BlockingUdpClient(server, port);
@@ -49,4 +49,27 @@ public abstract class AbstractMegatronUdpPlugin extends AbstractMegatronPlugin {
     }
   }
 
+  public String getServer() {
+    return server;
+  }
+
+  public int getPort() {
+    return port;
+  }
+
+  public String getPrefix() {
+    return prefix;
+  }
+
+  public int getQueueSize() {
+    return queueSize;
+  }
+
+  public boolean isAsync() {
+    return async;
+  }
+
+  public String[] getTags() {
+    return tags;
+  }
 }

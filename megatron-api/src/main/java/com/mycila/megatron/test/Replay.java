@@ -25,14 +25,21 @@ import java.io.ObjectInputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+
+import static com.mycila.megatron.test.Replay.Option.FASTER;
+import static com.mycila.megatron.test.Replay.Option.NORMAL_SPEED;
 
 /**
  * @author Mathieu Carbou
  */
 public class Replay {
+
+  public enum Option {NORMAL_SPEED, FASTER, FASTEST}
 
   private final URL recording;
   private final MegatronEventListener listener;
@@ -52,23 +59,27 @@ public class Replay {
   }
 
   public Future<Void> start() {
-    return start(false);
+    return start(NORMAL_SPEED);
   }
 
   @SuppressWarnings("unchecked")
-  public Future<Void> start(boolean fast) {
+  public Future<Void> start(Option... options) {
+    EnumSet<Option> opts = EnumSet.copyOf(Arrays.asList(options));
     FutureTask<Void> task = new FutureTask<>(() -> {
       try (ObjectInputStream ois = new ObjectInputStream(recording.openStream())) {
         long time = ois.readLong();
         while (!Thread.currentThread().isInterrupted()) {
           Event event = (Event) ois.readObject();
-          if (!fast) {
-            long sleep = event.getTime() - time;
-            if (sleep > 0) {
-              Thread.sleep(sleep);
-            }
-            time = event.getTime();
+          long sleep = 0;
+          if (opts.contains(NORMAL_SPEED)) {
+            sleep = event.getTime() - time;
+          } else if (opts.contains(FASTER)) {
+            sleep = (event.getTime() - time) / 2;
           }
+          if (sleep > 0) {
+            Thread.sleep(sleep);
+          }
+          time = event.getTime();
           switch (event.getType()) {
             case EOF:
               // finish thread

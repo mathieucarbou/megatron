@@ -34,17 +34,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.ehcache.clustered.client.config.builders.ClusteredResourcePoolBuilder.clusteredDedicated;
 import static org.ehcache.clustered.client.config.builders.ClusteredResourcePoolBuilder.clusteredShared;
 import static org.ehcache.clustered.client.config.builders.ClusteringServiceConfigurationBuilder.cluster;
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
 import static org.ehcache.config.builders.ResourcePoolsBuilder.newResourcePoolsBuilder;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.terracotta.testing.rules.BasicExternalClusterBuilder.newCluster;
 
 /**
@@ -151,25 +147,26 @@ public class RestIT {
     voltron.getClusterControl().terminateActive();
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_platform_server() throws Exception {
-    Map map = Unirest.get(REST + "/platform/server").asObject(Map.class).getBody();
+    Map<String, ?> map = Unirest.get(REST + "/platform/server").asObject(Map.class).getBody();
     System.out.println("==> active server=" + map);
-    assertThat(map.size(), equalTo(1));
-    assertThat(map.containsKey("serverName"), is(true));
+    assertThat(map).hasSize(1);
+    assertThat(map).containsKey("serverName");
   }
 
   @Test
   public void test_platform_dump() throws Exception {
     Boolean b = Unirest.get(REST + "/platform/dump").asObject(Boolean.class).getBody();
-    assertThat(b, is(true));
+    assertThat(b).isTrue();
   }
 
   @Test
   public void test_platform_config() throws Exception {
     String xml = Unirest.get(REST + "/platform/config").asObject(String.class).getBody();
     System.out.println("==> config\n" + xml);
-    assertThat(xml, containsString(
+    assertThat(xml).contains(
         "<plugins>\n" +
             "        <config>\n" +
             "            <mc:megatron-config xmlns:mc=\"http://www.mycila.com/config/megatron-config\">\n" +
@@ -185,7 +182,7 @@ public class RestIT {
             "                <ohr:resource name=\"main\" unit=\"MB\">128</ohr:resource>\n" +
             "            </ohr:offheap-resources>\n" +
             "        </config>\n" +
-            "    </plugins>"));
+            "    </plugins>");
   }
 
   @Test
@@ -196,9 +193,10 @@ public class RestIT {
     Map topology = Unirest.get(REST + "/topology").asObject(Map.class).getBody();
     System.out.println("==> topology:\n" + topology);
 
-    assertThat(topology.toString(), containsString(active));
+    assertThat(topology.toString()).contains(active);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_topology_servers() throws Exception {
     Map map = Unirest.get(REST + "/platform/server").asObject(Map.class).getBody();
@@ -207,25 +205,28 @@ public class RestIT {
     List<Map<String, Object>> servers = Unirest.get(REST + "/topology/servers").asObject(List.class).getBody();
     System.out.println("==> servers:\n" + servers);
 
-    assertThat(servers.size(), equalTo(N_SERVERS));
-    assertThat(servers.stream().anyMatch(server -> active.equals(server.get("serverName"))), is(true));
+    assertThat(servers).hasSize(N_SERVERS);
+    assertThat(servers.stream()).anyMatch(server -> active.equals(server.get("serverName")));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_topology_clients() throws Exception {
     List<Map<String, Object>> clients = Unirest.get(REST + "/topology/clients").asObject(List.class).getBody();
     System.out.println("==> clients:\n" + clients);
-    assertThat(clients.size(), equalTo(1));
+    assertThat(clients).hasSize(1);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_topology_clients_ehcache() throws Exception {
     List<Map<String, Object>> clients = Unirest.get(REST + "/topology/clients").asObject(List.class).getBody();
     System.out.println("==> clients:\n" + clients);
-    assertThat(clients.size(), equalTo(1));
-    assertThat((String) clients.get(0).get("clientId"), containsString(":Ehcache:"));
+    assertThat(clients).hasSize(1);
+    assertThat((String) clients.get(0).get("clientId")).contains(":Ehcache:");
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_statistics() throws Exception {
     pounder.start();
@@ -237,14 +238,15 @@ public class RestIT {
         .queryString("statNames", "Cache:PutCount,OffHeapResource:AllocatedMemory,Pool:AllocatedSize,Store:AllocatedMemory")
         .asObject(List.class).getBody();
     System.out.println(list);
-    assertThat(list.size(), equalTo(10));
+    assertThat(list).hasSize(10);
     for (Map<String, Object> context : list) {
       Map<String, Number> stats = (Map<String, Number>) context.get("statistics");
-      assertThat(stats.size() <= 5, is(true));
-      assertThat(stats.size() > 0, is(true));
+      assertThat(stats).size().isLessThanOrEqualTo(5);
+      assertThat(stats).size().isGreaterThan(0);
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_statistics_client_cm_cache() throws Exception {
     pounder.start();
@@ -262,10 +264,11 @@ public class RestIT {
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
     System.out.println(stats);
-    assertThat(stats.size(), equalTo(2));
-    assertThat(stats.keySet(), hasItems("Cache:PutCount", "Cache:HitCount"));
+    assertThat(stats).hasSize(2);
+    assertThat(stats).containsKeys("Cache:PutCount", "Cache:HitCount");
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_statistics_client_cm() throws Exception {
     pounder.start();
@@ -282,12 +285,13 @@ public class RestIT {
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
     System.out.println(caches);
-    assertThat(caches.size(), equalTo(3));
+    assertThat(caches).hasSize(3);
     Map<String, Object> stats = caches.get("cache-1");
-    assertThat(stats.size(), equalTo(2));
-    assertThat(stats.keySet(), hasItems("Cache:PutCount", "Cache:HitCount"));
+    assertThat(stats).hasSize(2);
+    assertThat(stats).containsKeys("Cache:PutCount", "Cache:HitCount");
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void test_statistics_client() throws Exception {
     pounder.start();
@@ -303,12 +307,12 @@ public class RestIT {
         .queryString("statNames", "Cache:PutCount,Cache:HitCount,Cache:INEXISTING")
         .asObject(Map.class).getBody();
     System.out.println(cms);
-    assertThat(cms.size(), equalTo(1));
+    assertThat(cms).hasSize(1);
     Map<String, Map<String, Object>> caches = cms.get("cm1");
-    assertThat(caches.size(), equalTo(3));
+    assertThat(caches).hasSize(3);
     Map<String, Object> stats = caches.get("cache-1");
-    assertThat(stats.size(), equalTo(2));
-    assertThat(stats.keySet(), hasItems("Cache:PutCount", "Cache:HitCount"));
+    assertThat(stats).hasSize(2);
+    assertThat(stats).containsKeys("Cache:PutCount", "Cache:HitCount");
   }
 
 }

@@ -18,8 +18,7 @@ package com.mycila.megatron.ehcache;
 import org.ehcache.xml.XmlConfiguration;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Mathieu Carbou
@@ -35,8 +34,8 @@ public class MegatronServiceConfigurationParserTest {
         .findFirst()
         .map(MegatronServiceConfiguration.class::cast)
         .get();
-    assertThat(megatronServiceConfiguration.getStatisticCollectorInterval(), equalTo(5_000L));
-    assertThat(megatronServiceConfiguration.getProperties().size(), equalTo(10));
+    assertThat(megatronServiceConfiguration.getStatisticCollectorInterval()).isEqualTo(5_000L);
+    assertThat(megatronServiceConfiguration.getProperties()).hasSize(10);
   }
 
 }

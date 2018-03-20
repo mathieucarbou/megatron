@@ -25,8 +25,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static com.mycila.megatron.test.Replay.Option.FASTEST;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Mathieu Carbou
@@ -50,11 +50,11 @@ public class ReplayTest {
       }
     });
 
-    Future<Void> end = replay.start(true);
+    Future<Void> end = replay.start(FASTEST);
 
     end.get();
 
-    assertThat(notifs.get(), equalTo(48));
-    assertThat(stats.get(), equalTo(54));
+    assertThat(notifs.get()).isEqualTo(48);
+    assertThat(stats.get()).isEqualTo(54);
   }
 }

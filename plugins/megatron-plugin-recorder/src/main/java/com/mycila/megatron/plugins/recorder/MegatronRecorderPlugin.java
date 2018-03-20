@@ -48,7 +48,7 @@ public class MegatronRecorderPlugin extends AbstractMegatronPlugin {
   private volatile ObjectOutputStream oos;
 
   @Override
-  public void enable(MegatronConfiguration configuration) {
+  protected void enable(MegatronConfiguration configuration) {
     try {
       oos = new ObjectOutputStream(new FileOutputStream(output, false));
       oos.writeLong(System.currentTimeMillis());

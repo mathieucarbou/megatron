@@ -1,0 +1,2183 @@
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: CLIENT_CONNECTED
+{
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "1",
+  "entityId" : "SystemLeaseAcquirer:org.terracotta.lease.LeaseAcquirer",
+  "entityName" : "SystemLeaseAcquirer",
+  "entityType" : "org.terracotta.lease.LeaseAcquirer",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: OFFHEAP_RESOURCE_THRESHOLD_REACHED
+{
+  "alias" : "offheap-1",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+NOTIFICATION: OFFHEAP_RESOURCE_THRESHOLD_REACHED
+{
+  "alias" : "offheap-1",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_RESOURCE_POOLS_CONFIGURED
+{
+  "alias" : "PoolBinding#all-shared",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_RESOURCE_POOLS_CONFIGURED
+{
+  "alias" : "PoolBinding#all-shared",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+NOTIFICATION: SERVER_ENTITY_UNFETCHED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_DESTROYED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_DESTROYED
+{
+  "consumerId" : "4",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "6",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "6",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "6",
+  "entityId" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity:org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "entityName" : "VoltronReadWriteLock-ClusterTierManagerClientEntityFactory-AccessLock-cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.lock.VoltronReadWriteLockClient",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-1",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-1",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-2",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-2",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_CREATED
+{
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: ENTITY_REGISTRY_AVAILABLE
+{
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: EHCACHE_SERVER_STORE_CREATED
+{
+  "alias" : "cache-3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: SERVER_ENTITY_FETCHED
+{
+  "consumerId" : "2",
+  "entityId" : "NmsAgent:org.terracotta.management.entity.nms.agent.client.NmsAgentEntity",
+  "entityName" : "NmsAgent",
+  "entityType" : "org.terracotta.management.entity.nms.agent.client.NmsAgentEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE"
+}
+NOTIFICATION: CLIENT_REGISTRY_AVAILABLE
+{
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+NOTIFICATION: CLIENT_TAGS_UPDATED
+{
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=32768
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=32768
+ - Store:DataAllocatedMemory=0
+ - Store:DataOccupiedMemory=0
+ - Store:DataSize=0
+ - Store:DataVitalMemory=0
+ - Store:Entries=0
+ - Store:OccupiedMemory=0
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=0
+ - Store:VitalMemory=32768
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:HitCount=0
+ - Cache:MissCount=0
+ - Cache:PutCount=3
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=0
+ - Clustered:PutCount=3
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=0
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=0
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-1",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=2636975
+ - Cache:HitCount=0
+ - Cache:MissCount=4
+ - Cache:PutCount=3
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=4
+ - Clustered:PutCount=3
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=4
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=4
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-2",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=7930321
+ - Cache:HitCount=0
+ - Cache:MissCount=2
+ - Cache:PutCount=0
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=2
+ - Clustered:PutCount=0
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=2
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=2
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-3",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=40960
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=49152
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=53248
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=53248
+ - Store:DataAllocatedMemory=20480
+ - Store:DataOccupiedMemory=1904
+ - Store:DataSize=20480
+ - Store:DataVitalMemory=1904
+ - Store:Entries=6
+ - Store:OccupiedMemory=2000
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=6
+ - Store:VitalMemory=34672
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=49152
+ - Store:DataAllocatedMemory=16384
+ - Store:DataOccupiedMemory=2256
+ - Store:DataSize=16384
+ - Store:DataVitalMemory=2256
+ - Store:Entries=6
+ - Store:OccupiedMemory=2352
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=6
+ - Store:VitalMemory=35024
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=40960
+ - Store:DataAllocatedMemory=8192
+ - Store:DataOccupiedMemory=160
+ - Store:DataSize=8192
+ - Store:DataVitalMemory=160
+ - Store:Entries=2
+ - Store:OccupiedMemory=192
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=2
+ - Store:VitalMemory=32928
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=40960
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=49152
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=53248
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=53248
+ - Store:DataAllocatedMemory=20480
+ - Store:DataOccupiedMemory=1904
+ - Store:DataSize=20480
+ - Store:DataVitalMemory=1904
+ - Store:Entries=6
+ - Store:OccupiedMemory=2000
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=6
+ - Store:VitalMemory=34672
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=49152
+ - Store:DataAllocatedMemory=16384
+ - Store:DataOccupiedMemory=2256
+ - Store:DataSize=16384
+ - Store:DataVitalMemory=2256
+ - Store:Entries=6
+ - Store:OccupiedMemory=2352
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=6
+ - Store:VitalMemory=35024
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=40960
+ - Store:DataAllocatedMemory=8192
+ - Store:DataOccupiedMemory=160
+ - Store:DataSize=8192
+ - Store:DataVitalMemory=160
+ - Store:Entries=2
+ - Store:OccupiedMemory=192
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=2
+ - Store:VitalMemory=32928
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Cache:EvictionCount=1
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=4426020
+ - Cache:HitCount=0
+ - Cache:MissCount=5
+ - Cache:PutCount=5
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=1
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=5
+ - Clustered:PutCount=5
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=5
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=5
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-1",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1617977
+ - Cache:HitCount=0
+ - Cache:MissCount=6
+ - Cache:PutCount=5
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=6
+ - Clustered:PutCount=5
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=6
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=6
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-2",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1626885
+ - Cache:HitCount=0
+ - Cache:MissCount=3
+ - Cache:PutCount=4
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=3
+ - Clustered:PutCount=4
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=3
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=3
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-3",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=65536
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=61440
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=59408
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=59408
+ - Store:DataAllocatedMemory=28672
+ - Store:DataOccupiedMemory=3296
+ - Store:DataSize=28672
+ - Store:DataVitalMemory=3296
+ - Store:Entries=9
+ - Store:OccupiedMemory=3440
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=9
+ - Store:VitalMemory=34032
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=61440
+ - Store:DataAllocatedMemory=28672
+ - Store:DataOccupiedMemory=3504
+ - Store:DataSize=28672
+ - Store:DataVitalMemory=3504
+ - Store:Entries=10
+ - Store:OccupiedMemory=3664
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=10
+ - Store:VitalMemory=36272
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=65536
+ - Store:DataAllocatedMemory=32768
+ - Store:DataOccupiedMemory=1632
+ - Store:DataSize=32768
+ - Store:DataVitalMemory=1632
+ - Store:Entries=8
+ - Store:OccupiedMemory=1760
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=8
+ - Store:VitalMemory=34400
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=65536
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=61440
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=59408
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=59408
+ - Store:DataAllocatedMemory=28672
+ - Store:DataOccupiedMemory=3296
+ - Store:DataSize=28672
+ - Store:DataVitalMemory=3296
+ - Store:Entries=9
+ - Store:OccupiedMemory=3440
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=9
+ - Store:VitalMemory=34032
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=61440
+ - Store:DataAllocatedMemory=28672
+ - Store:DataOccupiedMemory=3504
+ - Store:DataSize=28672
+ - Store:DataVitalMemory=3504
+ - Store:Entries=10
+ - Store:OccupiedMemory=3664
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=10
+ - Store:VitalMemory=36272
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=65536
+ - Store:DataAllocatedMemory=32768
+ - Store:DataOccupiedMemory=1632
+ - Store:DataSize=32768
+ - Store:DataVitalMemory=1632
+ - Store:Entries=8
+ - Store:OccupiedMemory=1760
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=8
+ - Store:VitalMemory=34400
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Cache:EvictionCount=1
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1874216
+ - Cache:HitCount=0
+ - Cache:MissCount=6
+ - Cache:PutCount=6
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=1
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=6
+ - Clustered:PutCount=6
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=6
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=6
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-1",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=2019338
+ - Cache:HitCount=0
+ - Cache:MissCount=11
+ - Cache:PutCount=8
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=11
+ - Clustered:PutCount=8
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=11
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=11
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-2",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1464007
+ - Cache:HitCount=0
+ - Cache:MissCount=4
+ - Cache:PutCount=7
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=4
+ - Clustered:PutCount=7
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=4
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=4
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-3",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=77824
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=73728
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=63504
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=63504
+ - Store:DataAllocatedMemory=32768
+ - Store:DataOccupiedMemory=3824
+ - Store:DataSize=32768
+ - Store:DataVitalMemory=3824
+ - Store:Entries=13
+ - Store:OccupiedMemory=4032
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=13
+ - Store:VitalMemory=34560
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=73728
+ - Store:DataAllocatedMemory=40960
+ - Store:DataOccupiedMemory=6576
+ - Store:DataSize=40960
+ - Store:DataVitalMemory=6576
+ - Store:Entries=17
+ - Store:OccupiedMemory=6848
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=17
+ - Store:VitalMemory=39344
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=77824
+ - Store:DataAllocatedMemory=45056
+ - Store:DataOccupiedMemory=4240
+ - Store:DataSize=45056
+ - Store:DataVitalMemory=4240
+ - Store:Entries=13
+ - Store:OccupiedMemory=4448
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=13
+ - Store:VitalMemory=37008
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=77824
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=73728
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=63504
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=63504
+ - Store:DataAllocatedMemory=32768
+ - Store:DataOccupiedMemory=3824
+ - Store:DataSize=32768
+ - Store:DataVitalMemory=3824
+ - Store:Entries=13
+ - Store:OccupiedMemory=4032
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=13
+ - Store:VitalMemory=34560
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=73728
+ - Store:DataAllocatedMemory=40960
+ - Store:DataOccupiedMemory=6576
+ - Store:DataSize=40960
+ - Store:DataVitalMemory=6576
+ - Store:Entries=17
+ - Store:OccupiedMemory=6848
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=17
+ - Store:VitalMemory=39344
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=77824
+ - Store:DataAllocatedMemory=45056
+ - Store:DataOccupiedMemory=4240
+ - Store:DataSize=45056
+ - Store:DataVitalMemory=4240
+ - Store:Entries=13
+ - Store:OccupiedMemory=4448
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=13
+ - Store:VitalMemory=37008
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Cache:EvictionCount=1
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1291963
+ - Cache:HitCount=0
+ - Cache:MissCount=8
+ - Cache:PutCount=9
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=1
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=8
+ - Clustered:PutCount=9
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=8
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=8
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-1",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=1
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1734368
+ - Cache:HitCount=0
+ - Cache:MissCount=13
+ - Cache:PutCount=10
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=1
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=13
+ - Clustered:PutCount=10
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=13
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=13
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-2",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - Cache:EvictionCount=0
+ - Cache:ExpirationCount=0
+ - Cache:GetLatency=1523261
+ - Cache:HitCount=0
+ - Cache:MissCount=8
+ - Cache:PutCount=10
+ - Cache:RemovalCount=0
+ - Clustered:EvictionCount=0
+ - Clustered:ExpirationCount=0
+ - Clustered:HitCount=0
+ - Clustered:MissCount=8
+ - Clustered:PutCount=10
+ - Clustered:RemovalCount=0
+ - OffHeap:AllocatedByteSize=4096
+ - OffHeap:EvictionCount=0
+ - OffHeap:ExpirationCount=0
+ - OffHeap:HitCount=0
+ - OffHeap:MappingCount=0
+ - OffHeap:MissCount=8
+ - OffHeap:OccupiedByteSize=0
+ - OffHeap:PutCount=0
+ - OffHeap:RemovalCount=0
+ - OnHeap:EvictionCount=0
+ - OnHeap:ExpirationCount=0
+ - OnHeap:HitCount=0
+ - OnHeap:MappingCount=0
+ - OnHeap:MissCount=8
+ - OnHeap:PutCount=0
+ - OnHeap:RemovalCount=0
+{
+  "cacheManagerName" : "cm1",
+  "cacheName" : "cache-3",
+  "clientId" : "10309@127.0.0.1:Ehcache:cm1-entity:064ffa124a964c1a8753f5d133ff6f77"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=77824
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=84000
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=71696
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=71696
+ - Store:DataAllocatedMemory=40960
+ - Store:DataOccupiedMemory=6160
+ - Store:DataSize=40960
+ - Store:DataVitalMemory=6160
+ - Store:Entries=19
+ - Store:OccupiedMemory=6464
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=19
+ - Store:VitalMemory=36896
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=84000
+ - Store:DataAllocatedMemory=53248
+ - Store:DataOccupiedMemory=7008
+ - Store:DataSize=53248
+ - Store:DataVitalMemory=7008
+ - Store:Entries=20
+ - Store:OccupiedMemory=7328
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1922
+ - Store:UsedSlotCount=20
+ - Store:VitalMemory=37760
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=77824
+ - Store:DataAllocatedMemory=45056
+ - Store:DataOccupiedMemory=6896
+ - Store:DataSize=45056
+ - Store:DataVitalMemory=6896
+ - Store:Entries=17
+ - Store:OccupiedMemory=7168
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=17
+ - Store:VitalMemory=39664
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer0",
+  "serverName" : "testServer0",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - OffHeapResource:AllocatedMemory=134217728
+{
+  "alias" : "offheap-1",
+  "collectorId" : "3",
+  "consumerId" : "3",
+  "entityId" : "MegatronEntity:com.mycila.megatron.server.entity.MegatronEntity",
+  "entityName" : "MegatronEntity",
+  "entityType" : "com.mycila.megatron.server.entity.MegatronEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "OffHeapResource"
+}
+STATISTICS:
+ - Pool:AllocatedSize=77824
+{
+  "alias" : "pool-b",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=84000
+{
+  "alias" : "pool-a",
+  "collectorId" : "3",
+  "consumerId" : "5",
+  "entityId" : "cm1-entity:org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "entityName" : "cm1-entity",
+  "entityType" : "org.ehcache.clustered.client.internal.ClusterTierManagerClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Pool:AllocatedSize=71696
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "Pool"
+}
+STATISTICS:
+ - Store:AllocatedMemory=71696
+ - Store:DataAllocatedMemory=40960
+ - Store:DataOccupiedMemory=6160
+ - Store:DataSize=40960
+ - Store:DataVitalMemory=6160
+ - Store:Entries=19
+ - Store:OccupiedMemory=6464
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1921
+ - Store:UsedSlotCount=19
+ - Store:VitalMemory=36896
+{
+  "alias" : "cache-1",
+  "collectorId" : "3",
+  "consumerId" : "7",
+  "entityId" : "cm1-entity$cache-1:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-1",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=84000
+ - Store:DataAllocatedMemory=53248
+ - Store:DataOccupiedMemory=7008
+ - Store:DataSize=53248
+ - Store:DataVitalMemory=7008
+ - Store:Entries=20
+ - Store:OccupiedMemory=7328
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=1922
+ - Store:UsedSlotCount=20
+ - Store:VitalMemory=37760
+{
+  "alias" : "cache-2",
+  "collectorId" : "3",
+  "consumerId" : "8",
+  "entityId" : "cm1-entity$cache-2:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-2",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}
+STATISTICS:
+ - Store:AllocatedMemory=77824
+ - Store:DataAllocatedMemory=45056
+ - Store:DataOccupiedMemory=6896
+ - Store:DataSize=45056
+ - Store:DataVitalMemory=6896
+ - Store:Entries=17
+ - Store:OccupiedMemory=7168
+ - Store:RemovedSlotCount=0
+ - Store:TableCapacity=2048
+ - Store:UsedSlotCount=17
+ - Store:VitalMemory=39664
+{
+  "alias" : "cache-3",
+  "collectorId" : "3",
+  "consumerId" : "9",
+  "entityId" : "cm1-entity$cache-3:org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "entityName" : "cm1-entity$cache-3",
+  "entityType" : "org.ehcache.clustered.client.internal.store.InternalClusterTierClientEntity",
+  "serverId" : "testServer1",
+  "serverName" : "testServer1",
+  "stripeId" : "SINGLE",
+  "type" : "ServerStore"
+}

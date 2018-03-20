@@ -75,10 +75,21 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
   @Override
   public final void init(MegatronConfiguration configuration) throws ConfigurationException {
     if (!initialized) {
-      try {
+
+      Namespace namespace = getClass().getAnnotation(Namespace.class);
+      String ns = namespace == null ? "" : (namespace.value() + ".");
+
+      enable = Boolean.parseBoolean(configuration.getProperty(ns + "enable", "false"));
+
+      if (enable) {
         logger.trace("init()");
 
-        injectConfig(configuration);
+        try {
+          injectConfig(ns, configuration);
+        } catch (ConfigurationException e) {
+          enable = false;
+          throw e;
+        }
 
         if (logger.isInfoEnabled()) {
           StringBuilder log = new StringBuilder("Plugin initialized:");
@@ -99,9 +110,6 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
           }
           logger.info("{}", log);
         }
-      } catch (ConfigurationException e) {
-        enable = false;
-        throw e;
       }
 
       initialized = true;
@@ -118,10 +126,7 @@ public abstract class AbstractMegatronPlugin implements MegatronPlugin {
     }
   }
 
-  private void injectConfig(MegatronConfiguration configuration) throws ConfigurationException {
-    Namespace namespace = getClass().getAnnotation(Namespace.class);
-    String ns = namespace == null ? "" : (namespace.value() + ".");
-
+  private void injectConfig(String ns, MegatronConfiguration configuration) throws ConfigurationException {
     Class<?> c = getClass();
     while (c != Object.class) {
       Stream.of(c.getDeclaredFields())
