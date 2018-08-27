@@ -24,12 +24,16 @@ section {
     border-radius: 4px;
     -webkit-font-smoothing: antialiased;
     display: block;
-    font-size: 16px;
+    font-size: 12px;
 
     a {
       color: #FDFDFB;
       font-weight: normal;
     }
+  }
+
+  ul {
+    margin-top: 0;
   }
 }
 
